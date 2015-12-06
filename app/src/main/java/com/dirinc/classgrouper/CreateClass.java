@@ -2,6 +2,7 @@ package com.dirinc.classgrouper;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -26,9 +27,13 @@ public class CreateClass extends AppCompatActivity {
     private Button createClass;
 
     private SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferencesClassOne;
     private SharedPreferences.Editor prefsEdit;
 
     private static final String SHARED_PREFS = "shared_preferences";
+    private static final String SHARED_PREFS_CLASS1 = "class1";
+
+    private HashMap <Integer, String> classOne = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,7 @@ public class CreateClass extends AppCompatActivity {
         setContentView(R.layout.activity_create_class);
 
         sharedPreferences = getSharedPreferences(SHARED_PREFS, 0);
+        sharedPreferencesClassOne = getSharedPreferences(SHARED_PREFS_CLASS1,0);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -52,6 +58,7 @@ public class CreateClass extends AppCompatActivity {
                 establishClass();
                 promptStudents();
                 establishStudents();
+                switchActivities("MainActivity");
             }
         });
     }
@@ -64,22 +71,40 @@ public class CreateClass extends AppCompatActivity {
 
         Log.d("SHARED_PREFS", "Putting " + newClass);
         prefsEdit = sharedPreferences.edit();
-        prefsEdit.putString("Class", newClass);
+        prefsEdit.putString("class1", newClass);
         prefsEdit.apply();
     }
 
     public void promptStudents() {
-        //persist
-        HashMap<String, Integer> counters; //the hashmap you want to save
-        SharedPreferences pref = this.getSharedPreferences("Your_Shared_Prefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        for (String s : counters.keySet()) {
-            editor.putInteger(s, counters.get(s));
-        }
-        editor.commit();
+        classOne.put(1, "Test");
+        classOne.put(2, "Testing");
     }
     
     public void establishStudents() {
+        // Save classOne HashMap of students to shared_prefs/class1.xml
+        SharedPreferences.Editor editor = sharedPreferencesClassOne.edit();
 
+        for (int s : classOne.keySet()) {
+            editor.putString(String.valueOf(s), classOne.get(s));
+        }
+        editor.apply();
+    }
+
+    public void switchActivities(String newActivity) {
+        Intent changeActivities;
+
+        switch (newActivity) {
+            case "CreateClass":
+                changeActivities = new Intent(this, CreateClass.class);
+                Log.d("ActivitySwitch", "Switching to CreateClass Activity");
+                startActivity(changeActivities);
+                break;
+
+            case "SettingsActivity":
+                changeActivities = new Intent(this, SettingsActivity.class);
+                Log.d("ActivitySwitch", "Switching to Settings Activity");
+                startActivity(changeActivities);
+                break;
+        }
     }
 }

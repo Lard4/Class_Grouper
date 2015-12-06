@@ -8,23 +8,48 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#FFEEEEEE"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.dirinc.classgrouper.MainActivity"
     tools:showIn="@layout/activity_main">
 
     <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/cardClass"
-        android:layout_gravity="center"
-        android:layout_width="400dp"
-        android:layout_height="200dp"
-        card_view:cardCornerRadius="4dp" >
+        android:id="@+id/class1"
+        android:layout_width="188dp"
+        android:layout_height="188dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <TextView
-            android:id="@+id/cardClass_info"
-            android:background="@color/cardview_light_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:id="@+id/class1_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_classes"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginBottom="38dp"
+            android:textSize="28sp"
+            />
+
+        <TextView
+            android:id="@+id/class1_student_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_classes_create_one"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize="12sp"
+            />
+
+        <ImageView
+            android:id="@+id/class1_color"
+            android:layout_width="40dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:background="#FF006699"
+            />
+
     </android.support.v7.widget.CardView>
 
 </RelativeLayout>
