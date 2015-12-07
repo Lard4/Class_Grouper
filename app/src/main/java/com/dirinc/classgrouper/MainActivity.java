@@ -27,26 +27,52 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import java.io.File;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private HashMap <Integer, String> classOne = new HashMap<>();
+    private HashMap <Integer, String> class1 = new HashMap<>();
 
     private SharedPreferences sharedPreferences;
-    private SharedPreferences sharedPreferencesClassOne;
+    private SharedPreferences sharedPreferencesclass1;
     private SharedPreferences.Editor editor;
 
     private Toolbar toolbar;
-    private TextView classOneTitle;
-    private TextView classOneStudentCount;
-    private ImageView classOneColor;
+
+    private TextView classTitle1;
+    private TextView classStudentCount1;
+    private CardView classcard1;
+
+    private TextView classTitle2;
+    private TextView classStudentCount2;
+    private CardView classcard2;
+    private ImageView classColor2;
+
+    private TextView classTitle3;
+    private TextView classStudentCount3;
+    private CardView classcard3;
+    private ImageView classColor3;
+
+    private TextView classTitle4;
+    private TextView classStudentCount4;
+    private CardView classcard4;
+    private ImageView classColor4;
+
+    private TextView classTitle5;
+    private TextView classStudentCount5;
+    private CardView classcard5;
+    private ImageView classColor5;
+
+    private TextView classTitle6;
+    private TextView classStudentCount6;
+    private CardView classcard6;
+    private ImageView classColor6;
 
     private static final String SHARED_PREFS = "shared_preferences";
     private static final String SHARED_PREFS_CLASS1 = "class1";
 
     private String[] files;
+    private int student = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         sharedPreferences = getSharedPreferences(SHARED_PREFS, 0);
-        sharedPreferencesClassOne = getSharedPreferences(SHARED_PREFS_CLASS1,0);
+        sharedPreferencesclass1 = getSharedPreferences(SHARED_PREFS_CLASS1,0);
 
         // Init toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -67,9 +93,28 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         setupDrawer();
 
-        classOneTitle = (TextView) findViewById(R.id.class1_title);
-        classOneStudentCount = (TextView) findViewById(R.id.class1_student_count);
-        classOneColor = (ImageView) findViewById(R.id.class1_color);
+        classTitle1 = (TextView) findViewById(R.id.class1_title);
+        classStudentCount1 = (TextView) findViewById(R.id.class1_student_count);
+
+        classTitle2 = (TextView) findViewById(R.id.class2_title);
+        classStudentCount2 = (TextView) findViewById(R.id.class2_student_count);
+        classColor2 = (ImageView) findViewById(R.id.class2_color);
+
+        classTitle3 = (TextView) findViewById(R.id.class3_title);
+        classStudentCount3 = (TextView) findViewById(R.id.class3_student_count);
+        classColor3 = (ImageView) findViewById(R.id.class3_color);
+
+        classTitle4 = (TextView) findViewById(R.id.class4_title);
+        classStudentCount4 = (TextView) findViewById(R.id.class4_student_count);
+        classColor4 = (ImageView) findViewById(R.id.class4_color);
+
+        classTitle5 = (TextView) findViewById(R.id.class5_title);
+        classStudentCount5 = (TextView) findViewById(R.id.class5_student_count);
+        classColor5 = (ImageView) findViewById(R.id.class5_color);
+
+        classTitle6 = (TextView) findViewById(R.id.class6_title);
+        classStudentCount6 = (TextView) findViewById(R.id.class6_student_count);
+        classColor6 = (ImageView) findViewById(R.id.class6_color);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -79,15 +124,53 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        CardView classOne = (CardView) findViewById(R.id.class1);
-        classOne.setOnClickListener(new View.OnClickListener() {
+        classcard1 = (CardView) findViewById(R.id.cardclass1);
+        classcard1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switchActivities("CreateClass");
             }
         });
 
-        files = fileList();
+        classcard2 = (CardView) findViewById(R.id.cardclass2);
+        classcard2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchActivities("CreateClass");
+            }
+        });
+
+        classcard3 = (CardView) findViewById(R.id.cardclass3);
+        classcard3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchActivities("CreateClass");
+            }
+        });
+
+        classcard4 = (CardView) findViewById(R.id.cardclass4);
+        classcard4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchActivities("CreateClass");
+            }
+        });
+
+        classcard5 = (CardView) findViewById(R.id.cardclass5);
+        classcard5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchActivities("CreateClass");
+            }
+        });
+
+        classcard6 = (CardView) findViewById(R.id.cardclass6);
+        classcard6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchActivities("CreateClass");
+            }
+        });
 
         boolean userIsNew = sharedPreferences.getBoolean("userIsNew", false);
 
@@ -126,8 +209,28 @@ public class MainActivity extends AppCompatActivity {
                 .withName("All Classes")
                 .withTextColor(Color.parseColor("#9E9E9E"));
 
-        SecondaryDrawerItem classOneDrawer = new SecondaryDrawerItem()
+        SecondaryDrawerItem class1Drawer = new SecondaryDrawerItem()
                 .withName(getClassName(1))
+                .withIcon(R.drawable.class_ic_png);
+
+        SecondaryDrawerItem class2Drawer = new SecondaryDrawerItem()
+                .withName(getClassName(2))
+                .withIcon(R.drawable.class_ic_png);
+
+        SecondaryDrawerItem class3Drawer = new SecondaryDrawerItem()
+                .withName(getClassName(3))
+                .withIcon(R.drawable.class_ic_png);
+
+        SecondaryDrawerItem class4Drawer = new SecondaryDrawerItem()
+                .withName(getClassName(4))
+                .withIcon(R.drawable.class_ic_png);
+
+        SecondaryDrawerItem class5Drawer = new SecondaryDrawerItem()
+                .withName(getClassName(5))
+                .withIcon(R.drawable.class_ic_png);
+
+        SecondaryDrawerItem class6Drawer = new SecondaryDrawerItem()
+                .withName(getClassName(6))
                 .withIcon(R.drawable.class_ic_png);
 
         // TODO: Class 2
@@ -152,8 +255,7 @@ public class MainActivity extends AppCompatActivity {
                         homeDrawer,
                         dividerDrawer,
                         classesDrawer,
-                        classOneDrawer,
-                        // TODO: Class 2
+                        class1Drawer,
                         dividerDrawer,
                         settingsDrawer
                 )
@@ -175,19 +277,124 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .build();
+
+        switch (getNumberOfClasses()) {
+            case 2:
+                result.addItemAtPosition(class2Drawer, 5);
+                break;
+
+            case 3:
+                result.addItemAtPosition(class2Drawer, 5);
+                result.addItemAtPosition(class3Drawer, 6);
+                break;
+
+            case 4:
+                result.addItemAtPosition(class2Drawer, 5);
+                result.addItemAtPosition(class3Drawer, 6);
+                result.addItemAtPosition(class4Drawer, 7);
+                break;
+
+            case 5:
+                result.addItemAtPosition(class2Drawer, 5);
+                result.addItemAtPosition(class3Drawer, 6);
+                result.addItemAtPosition(class4Drawer, 7);
+                result.addItemAtPosition(class5Drawer, 8);
+                break;
+
+            case 6:
+                result.addItemAtPosition(class2Drawer, 5);
+                result.addItemAtPosition(class3Drawer, 6);
+                result.addItemAtPosition(class4Drawer, 7);
+                result.addItemAtPosition(class5Drawer, 8);
+                result.addItemAtPosition(class6Drawer, 9);
+                break;
+        }
     }
 
     public void createCards() {
         if (sharedPreferences.contains("class1")) {
-            classOneTitle.setText(
+            classTitle1.setText(
                     getClassName(1)
             );
-            //classOneStudentCount.setText(
-            //      getStudentCount()
-            //);
+            classStudentCount1.setText(
+                    (student - 1) + "  STUDENTS"
+            );
         }
 
-        // TODO: Class 2
+        // CLASS 2
+        if (sharedPreferences.contains("class2")) {
+            classTitle2.setText(
+                    getClassName(2)
+            );
+            classStudentCount2.setText(
+                    (student - 1) + "  STUDENTS"
+            );
+        } else {
+            if (classcard2 != null) classcard2.setVisibility(View.GONE);
+            if (classTitle2 != null) classTitle2.setVisibility(View.GONE);
+            if (classStudentCount2 != null) classStudentCount2.setVisibility(View.GONE);
+            if (classColor2 != null) classColor2.setVisibility(View.GONE);
+        }
+
+        // CLASS 3
+        if (sharedPreferences.contains("class3")) {
+            classTitle3.setText(
+                    getClassName(3)
+            );
+            classStudentCount3.setText(
+                    (student - 1) + "  STUDENTS"
+            );
+        } else {
+            if (classcard3 != null) classcard3.setVisibility(View.GONE);
+            if (classTitle3 != null) classTitle3.setVisibility(View.GONE);
+            if (classStudentCount3 != null) classStudentCount3.setVisibility(View.GONE);
+            if (classColor3 != null) classColor3.setVisibility(View.GONE);
+        }
+
+        // CLASS 4
+        if (sharedPreferences.contains("class4")) {
+            classTitle4.setText(
+                    getClassName(4)
+            );
+            classStudentCount4.setText(
+                    (student - 1) + "  STUDENTS"
+            );
+        } else {
+            if (classcard4 != null) classcard4.setVisibility(View.GONE);
+            if (classTitle4 != null) classTitle4.setVisibility(View.GONE);
+            if (classStudentCount4 != null) classStudentCount4.setVisibility(View.GONE);
+            if (classColor4 != null) classColor4.setVisibility(View.GONE);
+        }
+
+        // CLASS 5
+        if (sharedPreferences.contains("class5")) {
+            classTitle5.setText(
+                    getClassName(5)
+            );
+            classStudentCount5.setText(
+                    (student - 1) + "  STUDENTS"
+            );
+        } else {
+            if (classcard5 != null) classcard5.setVisibility(View.GONE);
+            if (classTitle5 != null) classTitle5.setVisibility(View.GONE);
+            if (classStudentCount5 != null) classStudentCount5.setVisibility(View.GONE);
+            if (classColor5 != null) classColor5.setVisibility(View.GONE);
+        }
+
+        // CLASS 6
+        if (sharedPreferences.contains("class6")) {
+            classTitle6.setText(
+                    getClassName(6)
+            );
+            classStudentCount6.setText(
+                    (student - 1) + "  STUDENTS"
+            );
+        } else {
+            if (classcard6 != null) classcard6.setVisibility(View.INVISIBLE);
+            if (classTitle6 != null) classTitle6.setVisibility(View.GONE);
+            if (classStudentCount6 != null) classStudentCount6.setVisibility(View.GONE);
+            if (classColor6 != null) classColor6.setVisibility(View.GONE);
+        }
     }
 
     public String getClassName(int whichClass) {
@@ -206,12 +413,14 @@ public class MainActivity extends AppCompatActivity {
             case "CreateClass":
                 changeActivities = new Intent(this, CreateClass.class);
                 Log.d("ActivitySwitch", "Switching to CreateClass Activity");
+                finish();
                 startActivity(changeActivities);
                 break;
 
             case "SettingsActivity":
                 changeActivities = new Intent(this, SettingsActivity.class);
                 Log.d("ActivitySwitch", "Switching to Settings Activity");
+                finish();
                 startActivity(changeActivities);
                 break;
         }
@@ -234,30 +443,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public int getNumberOfClasses() {
-        int numberOfClasses = 0;
-        boolean hasClasses = true;
-
-        while (hasClasses) {
-            if (!getClassName(numberOfClasses).equals("No Classes!")) {
-                numberOfClasses++;
-            }
-            else {
-                hasClasses = false;
-            }
-        }
-        return numberOfClasses;
+        return sharedPreferences.getInt("numberOfClasses", 0);
     }
-/*
+
     public HashMap getRoster(int whichClass) {
+        HashMap <Integer, String> thisClass = new HashMap<>();
+        boolean hasStudents = true;
+        String name;
+
         // if class exists
         if (whichClass <= getNumberOfClasses()) {
-
+            while (hasStudents) {
+                if (sharedPreferencesclass1.contains(String.valueOf(student))) {
+                    name = sharedPreferencesclass1.getString(String.valueOf(student), "");
+                    thisClass.put(student, name);
+                    student++;
+                }
+                else {
+                    hasStudents = false;
+                }
+            }
         }
-    }*/
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        createCards();
+        return thisClass;
     }
 }

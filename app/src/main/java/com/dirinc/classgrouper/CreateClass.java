@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,13 +29,14 @@ public class CreateClass extends AppCompatActivity {
     private Button createClass;
 
     private SharedPreferences sharedPreferences;
-    private SharedPreferences sharedPreferencesClassOne;
+    private SharedPreferences sharedPreferencesclass1;
     private SharedPreferences.Editor prefsEdit;
 
     private static final String SHARED_PREFS = "shared_preferences";
     private static final String SHARED_PREFS_CLASS1 = "class1";
 
-    private HashMap <Integer, String> classOne = new HashMap<>();
+    private HashMap <Integer, String> class1 = new HashMap<>();
+    private int numberOfClasses = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,14 @@ public class CreateClass extends AppCompatActivity {
         setContentView(R.layout.activity_create_class);
 
         sharedPreferences = getSharedPreferences(SHARED_PREFS, 0);
-        sharedPreferencesClassOne = getSharedPreferences(SHARED_PREFS_CLASS1,0);
+        sharedPreferencesclass1 = getSharedPreferences(SHARED_PREFS_CLASS1,0);
+
+        if (sharedPreferences.contains("numberOfClasses")) {
+            numberOfClasses = sharedPreferences.getInt("numberOfClasses", 0);
+        }
+
+        View view = this.getWindow().getDecorView();
+        view.setBackgroundColor(getResources().getColor(R.color.darkBackground));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -52,6 +62,7 @@ public class CreateClass extends AppCompatActivity {
         createClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO: Hide keyboard
                 Snackbar.make(v, "Class Created", Snackbar.LENGTH_SHORT)
                         .show();
 
@@ -66,26 +77,28 @@ public class CreateClass extends AppCompatActivity {
     public void establishClass() {
         // No clue what this is
         className.setError(null);
+        numberOfClasses++;
 
         String newClass = className.getText().toString();
 
         Log.d("SHARED_PREFS", "Putting " + newClass);
         prefsEdit = sharedPreferences.edit();
-        prefsEdit.putString("class1", newClass);
+        prefsEdit.putString(("class" + numberOfClasses), newClass);
+        prefsEdit.putInt("numberOfClasses", numberOfClasses);
         prefsEdit.apply();
     }
 
     public void promptStudents() {
-        classOne.put(1, "Test");
-        classOne.put(2, "Testing");
+        class1.put(1, "Test");
+        class1.put(2, "Testing");
     }
     
     public void establishStudents() {
-        // Save classOne HashMap of students to shared_prefs/class1.xml
-        SharedPreferences.Editor editor = sharedPreferencesClassOne.edit();
+        // Save class1 HashMap of students to shared_prefs/class1.xml
+        SharedPreferences.Editor editor = sharedPreferencesclass1.edit();
 
-        for (int s : classOne.keySet()) {
-            editor.putString(String.valueOf(s), classOne.get(s));
+        for (int s : class1.keySet()) {
+            editor.putString(String.valueOf(s), class1.get(s));
         }
         editor.apply();
     }
@@ -105,6 +118,17 @@ public class CreateClass extends AppCompatActivity {
                 Log.d("ActivitySwitch", "Switching to Settings Activity");
                 startActivity(changeActivities);
                 break;
+
+            case "MainActivity":
+                changeActivities = new Intent(this, MainActivity.class);
+                Log.d("ActivitySwitch", "Switching to Main Activity");
+                startActivity(changeActivities);
+                break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        switchActivities("MainActivity");
     }
 }
