@@ -18,6 +18,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -26,6 +28,9 @@ public class CreateClass extends AppCompatActivity {
 
     private final Context context = this;
     private EditText className;
+    private EditText studentOneName;
+    private EditText addNewStudent;
+    private EditText studentNamex;
     private Button createClass;
 
     private SharedPreferences sharedPreferences;
@@ -44,19 +49,18 @@ public class CreateClass extends AppCompatActivity {
         setContentView(R.layout.activity_create_class);
 
         sharedPreferences = getSharedPreferences(SHARED_PREFS, 0);
-        sharedPreferencesclass1 = getSharedPreferences(SHARED_PREFS_CLASS1,0);
+        sharedPreferencesclass1 = getSharedPreferences(SHARED_PREFS_CLASS1, 0);
 
         if (sharedPreferences.contains("numberOfClasses")) {
             numberOfClasses = sharedPreferences.getInt("numberOfClasses", 0);
         }
 
-        View view = this.getWindow().getDecorView();
-        view.setBackgroundColor(getResources().getColor(R.color.darkBackground));
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         className = (EditText) findViewById(R.id.className);
+        studentOneName = (EditText) findViewById(R.id.student_name);
+        addNewStudent = (EditText) findViewById(R.id.prompt_student_name);
         createClass = (Button) findViewById(R.id.createClass);
 
         createClass.setOnClickListener(new View.OnClickListener() {
@@ -89,8 +93,7 @@ public class CreateClass extends AppCompatActivity {
     }
 
     public void promptStudents() {
-        class1.put(1, "Test");
-        class1.put(2, "Testing");
+        class1.put(1, studentOneName.getText().toString());
     }
     
     public void establishStudents() {

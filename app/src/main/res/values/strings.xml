@@ -12,6 +12,8 @@
     <string name="no_classes">No Classes!</string>
 
     <string name="create_class">Create Class</string>
-    <string name="prompt_class_name">Class Name</string>
+    <string name="prompt_class_name">Class name</string>
+    <string name="prompt_student_name">Student\'s first name</string>
+    <string name="prompt_new_student_name">+ Add another student</string>
 
 </resources>

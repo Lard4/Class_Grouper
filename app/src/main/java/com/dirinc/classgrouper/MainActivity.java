@@ -180,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putBoolean("userIsNew", false);
         editor.apply();
 
+        getRoster(1); // Will update student count!
         createCards();
     }
 
