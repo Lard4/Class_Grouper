@@ -30,8 +30,16 @@
         <activity
             android:name=".CreateClass"
             android:label="@string/action_create_class"
-            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ClassRoster"
+            android:label="@string/title_activity_class_roster"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dirinc.classgrouper.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

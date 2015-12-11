@@ -8,13 +8,17 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -43,33 +47,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView classStudentCount1;
     private CardView classcard1;
 
-    private TextView classTitle2;
-    private TextView classStudentCount2;
-    private CardView classcard2;
-    private ImageView classColor2;
-
-    private TextView classTitle3;
-    private TextView classStudentCount3;
-    private CardView classcard3;
-    private ImageView classColor3;
-
-    private TextView classTitle4;
-    private TextView classStudentCount4;
-    private CardView classcard4;
-    private ImageView classColor4;
-
-    private TextView classTitle5;
-    private TextView classStudentCount5;
-    private CardView classcard5;
-    private ImageView classColor5;
-
-    private TextView classTitle6;
-    private TextView classStudentCount6;
-    private CardView classcard6;
-    private ImageView classColor6;
+    private int id = 1;
 
     private static final String SHARED_PREFS = "shared_preferences";
     private static final String SHARED_PREFS_CLASS1 = "class1";
+    private static final int CLASS_CARD = 1;
+    private static final int CLASS_TITLE = 2;
+    private static final int CLASS_COUNT = 3;
 
     private String[] files;
     private int student = 1;
@@ -96,26 +80,6 @@ public class MainActivity extends AppCompatActivity {
         classTitle1 = (TextView) findViewById(R.id.class1_title);
         classStudentCount1 = (TextView) findViewById(R.id.class1_student_count);
 
-        classTitle2 = (TextView) findViewById(R.id.class2_title);
-        classStudentCount2 = (TextView) findViewById(R.id.class2_student_count);
-        classColor2 = (ImageView) findViewById(R.id.class2_color);
-
-        classTitle3 = (TextView) findViewById(R.id.class3_title);
-        classStudentCount3 = (TextView) findViewById(R.id.class3_student_count);
-        classColor3 = (ImageView) findViewById(R.id.class3_color);
-
-        classTitle4 = (TextView) findViewById(R.id.class4_title);
-        classStudentCount4 = (TextView) findViewById(R.id.class4_student_count);
-        classColor4 = (ImageView) findViewById(R.id.class4_color);
-
-        classTitle5 = (TextView) findViewById(R.id.class5_title);
-        classStudentCount5 = (TextView) findViewById(R.id.class5_student_count);
-        classColor5 = (ImageView) findViewById(R.id.class5_color);
-
-        classTitle6 = (TextView) findViewById(R.id.class6_title);
-        classStudentCount6 = (TextView) findViewById(R.id.class6_student_count);
-        classColor6 = (ImageView) findViewById(R.id.class6_color);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,46 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
         classcard1 = (CardView) findViewById(R.id.cardclass1);
         classcard1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchActivities("CreateClass");
-            }
-        });
-
-        classcard2 = (CardView) findViewById(R.id.cardclass2);
-        classcard2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchActivities("CreateClass");
-            }
-        });
-
-        classcard3 = (CardView) findViewById(R.id.cardclass3);
-        classcard3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchActivities("CreateClass");
-            }
-        });
-
-        classcard4 = (CardView) findViewById(R.id.cardclass4);
-        classcard4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchActivities("CreateClass");
-            }
-        });
-
-        classcard5 = (CardView) findViewById(R.id.cardclass5);
-        classcard5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchActivities("CreateClass");
-            }
-        });
-
-        classcard6 = (CardView) findViewById(R.id.cardclass6);
-        classcard6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switchActivities("CreateClass");
@@ -233,8 +157,6 @@ public class MainActivity extends AppCompatActivity {
         SecondaryDrawerItem class6Drawer = new SecondaryDrawerItem()
                 .withName(getClassName(6))
                 .withIcon(R.drawable.class_ic_png);
-
-        // TODO: Class 2
 
         PrimaryDrawerItem settingsDrawer = new PrimaryDrawerItem()
                 .withName("Settings")
@@ -322,79 +244,43 @@ public class MainActivity extends AppCompatActivity {
             );
         }
 
-        // CLASS 2
-        if (sharedPreferences.contains("class2")) {
-            classTitle2.setText(
-                    getClassName(2)
-            );
-            classStudentCount2.setText(
-                    (student - 1) + "  STUDENTS"
-            );
-        } else {
-            if (classcard2 != null) classcard2.setVisibility(View.GONE);
-            if (classTitle2 != null) classTitle2.setVisibility(View.GONE);
-            if (classStudentCount2 != null) classStudentCount2.setVisibility(View.GONE);
-            if (classColor2 != null) classColor2.setVisibility(View.GONE);
-        }
+        // CLASS X
+        for (int cardsToCreate = 2; sharedPreferences.contains("class " + cardsToCreate); cardsToCreate++) {
+            id++;
+            RelativeLayout thisLayout = (RelativeLayout) findViewById(R.id.rel_layout);
+            CardView newClass = new CardView(
+                    (new ContextThemeWrapper(this, R.style.class_card)));
+            TextView newClassTitle = new TextView(
+                    (new ContextThemeWrapper(this, R.style.class_card_title)));
+            TextView newClassCount = new TextView(
+                    (new ContextThemeWrapper(this, R.style.class_card_count)));
 
-        // CLASS 3
-        if (sharedPreferences.contains("class3")) {
-            classTitle3.setText(
-                    getClassName(3)
-            );
-            classStudentCount3.setText(
-                    (student - 1) + "  STUDENTS"
-            );
-        } else {
-            if (classcard3 != null) classcard3.setVisibility(View.GONE);
-            if (classTitle3 != null) classTitle3.setVisibility(View.GONE);
-            if (classStudentCount3 != null) classStudentCount3.setVisibility(View.GONE);
-            if (classColor3 != null) classColor3.setVisibility(View.GONE);
-        }
+            newClass.setId(CLASS_CARD + id);
+            newClassTitle.setId(CLASS_TITLE + id);
+            newClassCount.setId(CLASS_COUNT + id);
 
-        // CLASS 4
-        if (sharedPreferences.contains("class4")) {
-            classTitle4.setText(
-                    getClassName(4)
-            );
-            classStudentCount4.setText(
-                    (student - 1) + "  STUDENTS"
-            );
-        } else {
-            if (classcard4 != null) classcard4.setVisibility(View.GONE);
-            if (classTitle4 != null) classTitle4.setVisibility(View.GONE);
-            if (classStudentCount4 != null) classStudentCount4.setVisibility(View.GONE);
-            if (classColor4 != null) classColor4.setVisibility(View.GONE);
-        }
+            newClassTitle.setText(getClassName(id));
+            newClassCount.setText((student - 1) + " STUDENTS");
 
-        // CLASS 5
-        if (sharedPreferences.contains("class5")) {
-            classTitle5.setText(
-                    getClassName(5)
-            );
-            classStudentCount5.setText(
-                    (student - 1) + "  STUDENTS"
-            );
-        } else {
-            if (classcard5 != null) classcard5.setVisibility(View.GONE);
-            if (classTitle5 != null) classTitle5.setVisibility(View.GONE);
-            if (classStudentCount5 != null) classStudentCount5.setVisibility(View.GONE);
-            if (classColor5 != null) classColor5.setVisibility(View.GONE);
-        }
+            RelativeLayout.LayoutParams EditLayoutParams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-        // CLASS 6
-        if (sharedPreferences.contains("class6")) {
-            classTitle6.setText(
-                    getClassName(6)
-            );
-            classStudentCount6.setText(
-                    (student - 1) + "  STUDENTS"
-            );
-        } else {
-            if (classcard6 != null) classcard6.setVisibility(View.INVISIBLE);
-            if (classTitle6 != null) classTitle6.setVisibility(View.GONE);
-            if (classStudentCount6 != null) classStudentCount6.setVisibility(View.GONE);
-            if (classColor6 != null) classColor6.setVisibility(View.GONE);
+            if (id == 2) {
+                EditLayoutParams.addRule(RelativeLayout.RIGHT_OF, R.id.cardclass1);
+            } else if (id == 3) {
+                EditLayoutParams.addRule(RelativeLayout.BELOW, R.id.cardclass1);
+            } else if (id % 2 == 0) {
+                EditLayoutParams.addRule(RelativeLayout.RIGHT_OF, (CLASS_CARD + id));
+            } else if (id % 2 != 0) {
+                EditLayoutParams.addRule(RelativeLayout.BELOW, ((CLASS_CARD + id) - 2));
+            }
+
+            newClass.setLayoutParams(EditLayoutParams);
+
+            (thisLayout).addView(newClass);
+
+            ScrollView sv = (ScrollView)findViewById(R.id.scrollView);
+            sv.scrollTo(0, sv.getBottom());
         }
     }
 
@@ -466,5 +352,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return thisClass;
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

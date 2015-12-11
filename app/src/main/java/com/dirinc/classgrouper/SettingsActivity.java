@@ -1,5 +1,6 @@
 package com.dirinc.classgrouper;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -7,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -57,11 +59,10 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     prefsEdit = sharedPreferences.edit();
                     prefsEdit.putBoolean("HCTchecked", true);
-                }
-                else{
+                } else {
                     prefsEdit = sharedPreferences.edit();
                     prefsEdit.putBoolean("HCTchecked", false);
                 }
@@ -89,5 +90,23 @@ public class SettingsActivity extends AppCompatActivity {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    public void switchActivities(String newActivity) {
+        Intent changeActivities;
+
+        switch (newActivity) {
+            case "MainActivity":
+                changeActivities = new Intent(this, MainActivity.class);
+                Log.d("ActivitySwitch", "Switching to Main Activity");
+                startActivity(changeActivities);
+                break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        switchActivities("MainActivity");
     }
 }

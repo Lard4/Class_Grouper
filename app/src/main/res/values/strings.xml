@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Random Group Generator</string>
     <string name="action_settings">Settings</string>
-    <string name="action_create_class">Create A Class</string>
+    <string name="action_create_class">Create a Class</string>
 
     <string name="toolbar_title">Group Generator</string>
     <string name="title_activity_settings">SettingsActivity</string>
@@ -15,5 +15,5 @@
     <string name="prompt_class_name">Class name</string>
     <string name="prompt_student_name">Student\'s first name</string>
     <string name="prompt_new_student_name">+ Add another student</string>
-
+    <string name="title_activity_class_roster">ClassRoster</string>
 </resources>

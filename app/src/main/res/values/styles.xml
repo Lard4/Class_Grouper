@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/semiTransparent</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -19,6 +19,32 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="new_student">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorHint">@android:color/tertiary_text_dark</item>
+        <item name="android:layout_width">500dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:hint">@string/prompt_student_name</item>
+        <item name="android:imeOptions">actionUnspecified</item>
+        <item name="android:inputType">textAutoCorrect</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_alignParentStart">true</item>
+    </style>
+
+    <style name="class_card">
+
+    </style>
+
+    <style name="class_card_title">
+
+    </style>
+
+    <style name="class_card_count">
+
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

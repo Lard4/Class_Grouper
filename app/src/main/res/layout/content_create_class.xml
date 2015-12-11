@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/create_class_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,6 +20,7 @@
         android:id="@+id/scrollView">
 
         <RelativeLayout
+            android:id="@+id/scrollView_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -63,7 +65,7 @@
                 android:textSize="15sp"
                 android:textColorHint="@android:color/tertiary_text_dark"
                 android:textColor="@android:color/white"
-                android:layout_width="200dp"
+                android:layout_width="@dimen/newStudentWidth"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_student_name"
                 android:imeActionId="@+id/login"
@@ -71,26 +73,8 @@
                 android:inputType="textAutoCorrect"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:layout_marginStart="28dp"
+                android:layout_marginStart="@dimen/newStudentMarginLeft"
                 android:layout_below="@+id/student_roster"
-                android:layout_marginTop="20dp"
-                android:layout_alignParentStart="true" />
-
-            <EditText
-                android:id="@+id/prompt_student_name"
-                android:textSize="15sp"
-                android:textColorHint="@android:color/tertiary_text_dark"
-                android:textColor="@android:color/white"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_new_student_name"
-                android:imeActionId="@+id/login"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textAutoCorrect"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:layout_marginStart="28dp"
-                android:layout_below="@+id/student_name"
                 android:layout_marginTop="20dp"
                 android:layout_alignParentStart="true" />
 
@@ -98,15 +82,12 @@
 
     </ScrollView>
 
-    <Button
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/createClass"
-        style="?android:textAppearanceSmall"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/create_class"
-        android:textStyle="bold"
-        android:textColor="@android:color/secondary_text_light"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/fab_done" />
 
 </RelativeLayout>
