@@ -6,4 +6,6 @@
 
     <dimen name="newStudentMarginLeft">28dp</dimen>
     <dimen name="newStudentWidth">200dp</dimen>
+
+    <dimen name="newClassWidthHeight">188dp</dimen>
 </resources>

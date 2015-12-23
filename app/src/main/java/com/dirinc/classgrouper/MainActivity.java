@@ -245,7 +245,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // CLASS X
-        for (int cardsToCreate = 2; sharedPreferences.contains("class " + cardsToCreate); cardsToCreate++) {
+        for (int cardsToCreate = 2; sharedPreferences.contains("class" + cardsToCreate); cardsToCreate++) {
+            Log.d("CLASS_CARDS", "Creating card " + cardsToCreate);
             id++;
             RelativeLayout thisLayout = (RelativeLayout) findViewById(R.id.rel_layout);
             CardView newClass = new CardView(
@@ -259,28 +260,28 @@ public class MainActivity extends AppCompatActivity {
             newClassTitle.setId(CLASS_TITLE + id);
             newClassCount.setId(CLASS_COUNT + id);
 
+            newClass.setMinimumHeight( (int)(getResources().getDimension(R.dimen.newClassWidthHeight)));
+            newClass.setMinimumWidth((int) (getResources().getDimension(R.dimen.newClassWidthHeight)));
+
             newClassTitle.setText(getClassName(id));
             newClassCount.setText((student - 1) + " STUDENTS");
 
             RelativeLayout.LayoutParams EditLayoutParams = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-            if (id == 2) {
+            if (cardsToCreate == 2) {
                 EditLayoutParams.addRule(RelativeLayout.RIGHT_OF, R.id.cardclass1);
-            } else if (id == 3) {
+            } else if (cardsToCreate == 3) {
                 EditLayoutParams.addRule(RelativeLayout.BELOW, R.id.cardclass1);
-            } else if (id % 2 == 0) {
+            } else if (cardsToCreate % 2 == 0) {
                 EditLayoutParams.addRule(RelativeLayout.RIGHT_OF, (CLASS_CARD + id));
-            } else if (id % 2 != 0) {
+            } else if (cardsToCreate % 2 != 0) {
                 EditLayoutParams.addRule(RelativeLayout.BELOW, ((CLASS_CARD + id) - 2));
             }
 
             newClass.setLayoutParams(EditLayoutParams);
 
             (thisLayout).addView(newClass);
-
-            ScrollView sv = (ScrollView)findViewById(R.id.scrollView);
-            sv.scrollTo(0, sv.getBottom());
         }
     }
 

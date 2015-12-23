@@ -128,8 +128,6 @@ public class CreateClass extends AppCompatActivity {
         sv.scrollTo(0, sv.getBottom());
 
         // Move cursor to new edit text
-        newStudent.requestFocus();
-
         class1.put(id, newStudent.getText().toString());
     }
 

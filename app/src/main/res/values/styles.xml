@@ -36,7 +36,8 @@
     </style>
 
     <style name="class_card">
-
+        <item name="android:layout_width">@dimen/newClassWidthHeight</item>
+        <item name="android:layout_height">@dimen/newClassWidthHeight</item>
     </style>
 
     <style name="class_card_title">
