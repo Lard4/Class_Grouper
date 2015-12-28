@@ -13,6 +13,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
@@ -122,7 +124,7 @@ public class CreateClass extends AppCompatActivity {
     public void addEditText() {
         id++;
         RelativeLayout thisLayout = (RelativeLayout) findViewById(R.id.scrollView_layout);
-        EditText newStudent = new EditText((new ContextThemeWrapper(this, R.style.new_student)));
+        final EditText newStudent = new EditText((new ContextThemeWrapper(this, R.style.new_student)));
 
         newStudent.setId(id);
         newStudent.setTextColor(Color.parseColor("#FFFFFF"));
@@ -144,45 +146,60 @@ public class CreateClass extends AppCompatActivity {
         }
 
         newStudent.setLayoutParams(EditLayoutParams);
-
         (thisLayout).addView(newStudent);
 
-        ScrollView sv = (ScrollView)findViewById(R.id.scrollView);
+        newStudent.setError(null);
+
+        // Get student name
+        newStudent.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Auto-generated method stub
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // Auto-generated method stub
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                switch (getClassCount()) {
+                    case 0:
+                        class1.put(id, String.valueOf(newStudent.getText()));
+                        break;
+
+                    case 1:
+                        class2.put(id, String.valueOf(newStudent.getText()));
+                        break;
+
+                    case 2:
+                        class3.put(id, String.valueOf(newStudent.getText()));
+                        break;
+
+                    case 3:
+                        class4.put(id, String.valueOf(newStudent.getText()));
+                        break;
+
+                    case 4:
+                        class5.put(id, String.valueOf(newStudent.getText()));
+                        break;
+
+                    case 5:
+                        class6.put(id, String.valueOf(newStudent.getText()));
+                        break;
+                }
+            }
+        });
+
+        ScrollView sv = (ScrollView) findViewById(R.id.scrollView);
         sv.scrollTo(0, sv.getBottom());
-
-        // TODO: Move cursor to new edit text
-
         newStudent.requestFocus();
-
-        switch (getClassCount()) {
-            case 0:
-                class1.put(id, newStudent.getText().toString());
-                break;
-
-            case 1:
-                class2.put(id, newStudent.getText().toString());
-                break;
-
-            case 2:
-                class3.put(id, newStudent.getText().toString());
-                break;
-
-            case 3:
-                class4.put(id, newStudent.getText().toString());
-                break;
-
-            case 4:
-                class5.put(id, newStudent.getText().toString());
-                break;
-
-            case 5:
-                class6.put(id, newStudent.getText().toString());
-                break;
-        }
     }
 
     public void establishClass() {
-        // No clue what this is
         className.setError(null);
         numberOfClasses++;
 
@@ -212,54 +229,50 @@ public class CreateClass extends AppCompatActivity {
         switch (getClassCount()) {
             case 1:
                 editor = sharedPreferencesclass1.edit();
-
-                for (int s : class1.keySet()) {
-                    editor.putString(String.valueOf(s), class1.get(s));
+                for (int x = 0; x <= class1.size(); x++) {
+                    editor.putString(String.valueOf(x), class1.get(x));
                 }
                 editor.apply();
                 break;
 
             case 2:
                 editor = sharedPreferencesclass2.edit();
-
-                for (int s : class2.keySet()) {
-                    editor.putString(String.valueOf(s), class2.get(s));
+                for (int x = 0; x <= class2.size(); x++) {
+                    editor.putString(String.valueOf(x), class2.get(x));
                 }
                 editor.apply();
                 break;
 
             case 3:
                 editor = sharedPreferencesclass3.edit();
-
-                for (int s : class3.keySet()) {
-                    editor.putString(String.valueOf(s), class3.get(s));
+                for (int x = 0; x <= class3.size(); x++) {
+                    editor.putString(String.valueOf(x), class3.get(x));
                 }
                 editor.apply();
                 break;
 
             case 4:
                 editor = sharedPreferencesclass4.edit();
-
-                for (int s : class4.keySet()) {
-                    editor.putString(String.valueOf(s), class4.get(s));
+                for (int x = 0; x <= class4.size(); x++) {
+                    editor.putString(String.valueOf(x), class4.get(x));
                 }
                 editor.apply();
                 break;
 
             case 5:
                 editor = sharedPreferencesclass5.edit();
-
-                for (int s : class5.keySet()) {
-                    editor.putString(String.valueOf(s), class5.get(s));
+                for (int x = 0; x <= class5.size(); x++) {
+                    editor.putString(String.valueOf(x), class5.get(x));
                 }
                 editor.apply();
                 break;
 
             case 6:
+                String hue = "";
                 editor = sharedPreferencesclass6.edit();
-
-                for (int s : class6.keySet()) {
-                    editor.putString(String.valueOf(s), class6.get(s));
+                for (int x = 0; x <= class6.size(); x++) {
+                    editor.putString(String.valueOf(x), class6.get(x));
+                    hue = class6.get(x);
                 }
                 editor.apply();
                 break;
