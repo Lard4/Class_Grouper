@@ -35,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences sharedPreferencesclass1;
+    private SharedPreferences sharedPreferencesclass2;
+    private SharedPreferences sharedPreferencesclass3;
+    private SharedPreferences sharedPreferencesclass4;
+    private SharedPreferences sharedPreferencesclass5;
+    private SharedPreferences sharedPreferencesclass6;
     private SharedPreferences.Editor editor;
 
     private Toolbar toolbar;
@@ -70,8 +75,12 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String SHARED_PREFS = "shared_preferences";
     private static final String SHARED_PREFS_CLASS1 = "class1";
+    private static final String SHARED_PREFS_CLASS2 = "class2";
+    private static final String SHARED_PREFS_CLASS3 = "class3";
+    private static final String SHARED_PREFS_CLASS4 = "class4";
+    private static final String SHARED_PREFS_CLASS5 = "class5";
+    private static final String SHARED_PREFS_CLASS6 = "class6";
 
-    private String[] files;
     private int student = 1;
 
     @Override
@@ -80,7 +89,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         sharedPreferences = getSharedPreferences(SHARED_PREFS, 0);
-        sharedPreferencesclass1 = getSharedPreferences(SHARED_PREFS_CLASS1,0);
+        sharedPreferencesclass1 = getSharedPreferences(SHARED_PREFS_CLASS1, 0);
+        sharedPreferencesclass2 = getSharedPreferences(SHARED_PREFS_CLASS2, 0);
+        sharedPreferencesclass3 = getSharedPreferences(SHARED_PREFS_CLASS3, 0);
+        sharedPreferencesclass4 = getSharedPreferences(SHARED_PREFS_CLASS4, 0);
+        sharedPreferencesclass5 = getSharedPreferences(SHARED_PREFS_CLASS5, 0);
+        sharedPreferencesclass6 = getSharedPreferences(SHARED_PREFS_CLASS6, 0);
 
         // Init toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -314,6 +328,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void createCards() {
         if (sharedPreferences.contains("class1")) {
+            getRoster(1); // effectively update student count
             classTitle1.setText(
                     getClassName(1)
             );
@@ -324,6 +339,7 @@ public class MainActivity extends AppCompatActivity {
 
         // CLASS 2
         if (sharedPreferences.contains("class2")) {
+            getRoster(2);
             classTitle2.setText(
                     getClassName(2)
             );
@@ -339,6 +355,7 @@ public class MainActivity extends AppCompatActivity {
 
         // CLASS 3
         if (sharedPreferences.contains("class3")) {
+            getRoster(3);
             classTitle3.setText(
                     getClassName(3)
             );
@@ -354,6 +371,7 @@ public class MainActivity extends AppCompatActivity {
 
         // CLASS 4
         if (sharedPreferences.contains("class4")) {
+            getRoster(4);
             classTitle4.setText(
                     getClassName(4)
             );
@@ -369,6 +387,7 @@ public class MainActivity extends AppCompatActivity {
 
         // CLASS 5
         if (sharedPreferences.contains("class5")) {
+            getRoster(5);
             classTitle5.setText(
                     getClassName(5)
             );
@@ -384,6 +403,7 @@ public class MainActivity extends AppCompatActivity {
 
         // CLASS 6
         if (sharedPreferences.contains("class6")) {
+            getRoster(6);
             classTitle6.setText(
                     getClassName(6)
             );
@@ -455,14 +475,74 @@ public class MainActivity extends AppCompatActivity {
         // if class exists
         if (whichClass <= getNumberOfClasses()) {
             while (hasStudents) {
-                if (sharedPreferencesclass1.contains(String.valueOf(student))) {
-                    name = sharedPreferencesclass1.getString(String.valueOf(student), "");
-                    thisClass.put(student, name);
-                    student++;
+                switch (whichClass) {
+                    case 1:
+                        if (sharedPreferencesclass1.contains(String.valueOf(student))) {
+                            name = sharedPreferencesclass1.getString(String.valueOf(student), "");
+                            thisClass.put(student, name);
+                            student++;
+                        }
+                        else {
+                            hasStudents = false;
+                        }
+                        break;
+
+                    case 2:
+                        if (sharedPreferencesclass2.contains(String.valueOf(student))) {
+                            name = sharedPreferencesclass2.getString(String.valueOf(student), "");
+                            thisClass.put(student, name);
+                            student++;
+                        }
+                        else {
+                            hasStudents = false;
+                        }
+                        break;
+
+                    case 3:
+                        if (sharedPreferencesclass3.contains(String.valueOf(student))) {
+                            name = sharedPreferencesclass3.getString(String.valueOf(student), "");
+                            thisClass.put(student, name);
+                            student++;
+                        }
+                        else {
+                            hasStudents = false;
+                        }
+                        break;
+
+                    case 4:
+                        if (sharedPreferencesclass4.contains(String.valueOf(student))) {
+                            name = sharedPreferencesclass4.getString(String.valueOf(student), "");
+                            thisClass.put(student, name);
+                            student++;
+                        }
+                        else {
+                            hasStudents = false;
+                        }
+                        break;
+
+                    case 5:
+                        if (sharedPreferencesclass5.contains(String.valueOf(student))) {
+                            name = sharedPreferencesclass5.getString(String.valueOf(student), "");
+                            thisClass.put(student, name);
+                            student++;
+                        }
+                        else {
+                            hasStudents = false;
+                        }
+                        break;
+
+                    case 6:
+                        if (sharedPreferencesclass6.contains(String.valueOf(student))) {
+                            name = sharedPreferencesclass6.getString(String.valueOf(student), "");
+                            thisClass.put(student, name);
+                            student++;
+                        }
+                        else {
+                            hasStudents = false;
+                        }
+                        break;
                 }
-                else {
-                    hasStudents = false;
-                }
+
             }
         }
         return thisClass;
