@@ -471,6 +471,7 @@ public class MainActivity extends AppCompatActivity {
         HashMap <Integer, String> thisClass = new HashMap<>();
         boolean hasStudents = true;
         String name;
+        student = 1;
 
         // if class exists
         if (whichClass <= getNumberOfClasses()) {

@@ -152,6 +152,8 @@ public class CreateClass extends AppCompatActivity {
 
         // TODO: Move cursor to new edit text
 
+        newStudent.requestFocus();
+
         switch (getClassCount()) {
             case 0:
                 class1.put(id, newStudent.getText().toString());
