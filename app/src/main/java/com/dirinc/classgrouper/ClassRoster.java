@@ -10,6 +10,7 @@ import android.view.View;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -22,6 +23,8 @@ public class ClassRoster extends AppCompatActivity {
     private HashMap<Integer, String> class4 = new HashMap<>();
     private HashMap<Integer, String> class5 = new HashMap<>();
     private HashMap<Integer, String> class6 = new HashMap<>();
+
+    private static final String SHARED_PREFS_CLASS1 = "class1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,20 +50,11 @@ public class ClassRoster extends AppCompatActivity {
     }
 
     public void loadClasses() {
-        SharedPreferences pSharedPref = getApplicationContext().getSharedPreferences("MyVariables", Context.MODE_PRIVATE);
-        try {
-            if (pSharedPref != null) {
-                String jsonString = pSharedPref.getString("My_map", (new JSONObject()).toString());
-                JSONObject jsonObject = new JSONObject(jsonString);
-                Iterator<String> keysItr = jsonObject.keys();
-                while (keysItr.hasNext()) {
-                    int key = Integer.parseInt(keysItr.next());
-                    String value = (String) jsonObject.get(String.valueOf(key));
-                    addToMap(key, value);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(SHARED_PREFS_CLASS1, Context.MODE_PRIVATE);
+        HashMap<String, Integer> map= (HashMap <String, Integer> ) pref.getAll();
+        for (String s : map.keySet()) {
+            String value = String.valueOf(map.get(s));
+            addToMap(Integer.parseInt(s), value);
         }
     }
 
