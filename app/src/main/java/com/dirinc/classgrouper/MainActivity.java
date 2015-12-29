@@ -139,52 +139,28 @@ public class MainActivity extends AppCompatActivity {
         });
 
         classcard1 = (CardView) findViewById(R.id.cardclass1);
-        classcard1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchActivities("CreateClass");
-            }
-        });
+        classcard1.setOnClickListener(new Listener());
+        classcard1.setOnLongClickListener(new Listener());
 
         classcard2 = (CardView) findViewById(R.id.cardclass2);
-        classcard2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchActivities("CreateClass");
-            }
-        });
+        classcard2.setOnClickListener(new Listener());
+        classcard2.setOnLongClickListener(new Listener());
 
         classcard3 = (CardView) findViewById(R.id.cardclass3);
-        classcard3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchActivities("CreateClass");
-            }
-        });
+        classcard3.setOnClickListener(new Listener());
+        classcard3.setOnLongClickListener(new Listener());
 
         classcard4 = (CardView) findViewById(R.id.cardclass4);
-        classcard4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchActivities("CreateClass");
-            }
-        });
+        classcard4.setOnClickListener(new Listener());
+        classcard4.setOnLongClickListener(new Listener());
 
         classcard5 = (CardView) findViewById(R.id.cardclass5);
-        classcard5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchActivities("CreateClass");
-            }
-        });
+        classcard5.setOnClickListener(new Listener());
+        classcard5.setOnLongClickListener(new Listener());
 
         classcard6 = (CardView) findViewById(R.id.cardclass6);
-        classcard6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchActivities("CreateClass");
-            }
-        });
+        classcard6.setOnClickListener(new Listener());
+        classcard6.setOnLongClickListener(new Listener());
 
         boolean userIsNew = sharedPreferences.getBoolean("userIsNew", false);
 
@@ -547,5 +523,79 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return thisClass;
+    }
+
+    class Listener implements View.OnLongClickListener, View.OnClickListener {
+
+        public void switchActivities(String newActivity, int nClass) {
+            Intent changeActivities;
+
+            switch (newActivity) {
+                case "ClassRoster":
+                    changeActivities = new Intent(getApplicationContext(), ClassRoster.class);
+                    Log.d("ActivitySwitch", "Switching to ClassRoster Activity");
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("huey", nClass);
+                    changeActivities.putExtras(bundle);
+                    finish();
+                    startActivity(changeActivities);
+                    break;
+            }
+        }
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.cardclass1:
+                    switchActivities("ClassRoster", 1);
+                    break;
+
+                case R.id.cardclass2:
+                    switchActivities("ClassRoster", 2);
+                    break;
+
+                case R.id.cardclass3:
+                    switchActivities("ClassRoster", 3);
+                    break;
+
+                case R.id.cardclass4:
+                    switchActivities("ClassRoster", 4);
+                    break;
+
+                case R.id.cardclass5:
+                    switchActivities("ClassRoster", 5);
+                    break;
+
+                case R.id.cardclass6:
+                    switchActivities("ClassRoster", 6);
+                    break;
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            switch (view.getId()) {
+                case R.id.cardclass1:
+                    return true;
+
+                case R.id.cardclass2:
+                    return true;
+
+                case R.id.cardclass3:
+                    return true;
+
+                case R.id.cardclass4:
+                    return true;
+
+                case R.id.cardclass5:
+                    return true;
+
+                case R.id.cardclass6:
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
     }
 }
