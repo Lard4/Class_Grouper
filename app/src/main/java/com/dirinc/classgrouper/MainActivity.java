@@ -111,22 +111,22 @@ public class MainActivity extends AppCompatActivity {
         classColor6 = (ImageView) findViewById(R.id.class6_color);
 
         classcard1 = (CardView) findViewById(R.id.cardclass1);
-        classcard1.setOnClickListener(new Listener());
+        classcard1.setOnClickListener(new Listener(0));
 
         classcard2 = (CardView) findViewById(R.id.cardclass2);
-        classcard2.setOnClickListener(new Listener());
+        classcard2.setOnClickListener(new Listener(0));
 
         classcard3 = (CardView) findViewById(R.id.cardclass3);
-        classcard3.setOnClickListener(new Listener());
+        classcard3.setOnClickListener(new Listener(0));
 
         classcard4 = (CardView) findViewById(R.id.cardclass4);
-        classcard4.setOnClickListener(new Listener());
+        classcard4.setOnClickListener(new Listener(0));
 
         classcard5 = (CardView) findViewById(R.id.cardclass5);
-        classcard5.setOnClickListener(new Listener());
+        classcard5.setOnClickListener(new Listener(0));
 
         classcard6 = (CardView) findViewById(R.id.cardclass6);
-        classcard6.setOnClickListener(new Listener());
+        classcard6.setOnClickListener(new Listener(0));
 
         Toolbar class1Toolbar = (Toolbar) findViewById(R.id.class1_toolbar);
         Toolbar class2Toolbar = (Toolbar) findViewById(R.id.class2_toolbar);
@@ -138,17 +138,17 @@ public class MainActivity extends AppCompatActivity {
         if ((class1Toolbar != null) && (class2Toolbar != null) && (class3Toolbar != null)
                 && (class4Toolbar != null) && (class5Toolbar != null) && (class6Toolbar != null)) {
             class1Toolbar.inflateMenu(R.menu.menu_delete);
-            class1Toolbar.setOnMenuItemClickListener(new Listener());
+            class1Toolbar.setOnMenuItemClickListener(new Listener(1));
             class2Toolbar.inflateMenu(R.menu.menu_delete);
-            class2Toolbar.setOnMenuItemClickListener(new Listener());
+            class2Toolbar.setOnMenuItemClickListener(new Listener(2));
             class3Toolbar.inflateMenu(R.menu.menu_delete);
-            class3Toolbar.setOnMenuItemClickListener(new Listener());
+            class3Toolbar.setOnMenuItemClickListener(new Listener(3));
             class4Toolbar.inflateMenu(R.menu.menu_delete);
-            class4Toolbar.setOnMenuItemClickListener(new Listener());
+            class4Toolbar.setOnMenuItemClickListener(new Listener(4));
             class5Toolbar.inflateMenu(R.menu.menu_delete);
-            class5Toolbar.setOnMenuItemClickListener(new Listener());
+            class5Toolbar.setOnMenuItemClickListener(new Listener(5));
             class6Toolbar.inflateMenu(R.menu.menu_delete);
-            class6Toolbar.setOnMenuItemClickListener(new Listener());
+            class6Toolbar.setOnMenuItemClickListener(new Listener(6));
         }
         getRoster(1); // Will update student count!
         createCards();
@@ -571,6 +571,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     class Listener implements View.OnClickListener, Toolbar.OnMenuItemClickListener {
+        int nClass = 0;
+
+        public Listener(int nClass) {
+            this.nClass = nClass;
+        }
 
         public void switchActivities(String newActivity, int nClass) {
             Intent changeActivities;
@@ -589,41 +594,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            switch (menuItem.getItemId()) {
-                case R.id.class1_toolbar:
-                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
-                            "Are you sure you want to continue", "Delete", "Cancel", 1);
-                    return true;
-
-                case R.id.class2_toolbar:
-                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
-                            "Are you sure you want to continue", "Delete", "Cancel", 2);
-                    return true;
-
-                case R.id.class3_toolbar:
-                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
-                            "Are you sure you want to continue", "Delete", "Cancel", 3);
-                    return true;
-
-                case R.id.class4_toolbar:
-                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
-                            "Are you sure you want to continue", "Delete", "Cancel", 4);
-                    return true;
-
-                case R.id.class5_toolbar:
-                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
-                            "Are you sure you want to continue", "Delete", "Cancel", 5);
-                    return true;
-
-                case R.id.class6_toolbar:
-                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
-                            "Are you sure you want to continue", "Delete", "Cancel", 6);
-                    return true;
-
-                default:
-                    return false;
-            }
+        public boolean onMenuItemClick(MenuItem item) {
+            showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
+                    "Are you sure you want to continue", "Delete", "Cancel", nClass);
+            return true;
         }
 
         @Override
