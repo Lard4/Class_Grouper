@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.View;
 import java.util.HashMap;
 
 public class ClassRoster extends AppCompatActivity {
+
     private int classNumber;
 
     private HashMap<Integer, String> class1 = new HashMap<>();
@@ -19,8 +21,6 @@ public class ClassRoster extends AppCompatActivity {
     private HashMap<Integer, String> class4 = new HashMap<>();
     private HashMap<Integer, String> class5 = new HashMap<>();
     private HashMap<Integer, String> class6 = new HashMap<>();
-
-    private static final String SHARED_PREFS_CLASS1 = "class1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class ClassRoster extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Snackbar.make(view, "Nothing to do!", Snackbar.LENGTH_LONG).show();
             }
         });
         loadClasses();

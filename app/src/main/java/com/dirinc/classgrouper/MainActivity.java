@@ -34,46 +34,17 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences sharedPreferencesclass1;
-    private SharedPreferences sharedPreferencesclass2;
-    private SharedPreferences sharedPreferencesclass3;
-    private SharedPreferences sharedPreferencesclass4;
-    private SharedPreferences sharedPreferencesclass5;
-    private SharedPreferences sharedPreferencesclass6;
+    private SharedPreferences sharedPreferences, sharedPreferencesClass1, sharedPreferencesClass2,
+            sharedPreferencesClass3, sharedPreferencesClass4, sharedPreferencesClass5, sharedPreferencesClass6;
     private SharedPreferences.Editor editor;
 
-    private Toolbar toolbar;
     private View view;
-
-    private TextView classTitle1;
-    private TextView classStudentCount1;
-    private CardView classcard1;
-
-    private TextView classTitle2;
-    private TextView classStudentCount2;
-    private CardView classcard2;
-    private ImageView classColor2;
-
-    private TextView classTitle3;
-    private TextView classStudentCount3;
-    private CardView classcard3;
-    private ImageView classColor3;
-
-    private TextView classTitle4;
-    private TextView classStudentCount4;
-    private CardView classcard4;
-    private ImageView classColor4;
-
-    private TextView classTitle5;
-    private TextView classStudentCount5;
-    private CardView classcard5;
-    private ImageView classColor5;
-
-    private TextView classTitle6;
-    private TextView classStudentCount6;
-    private CardView classcard6;
-    private ImageView classColor6;
+    private Toolbar toolbar;
+    private TextView classTitle1, classStudentCount1, classTitle2, classStudentCount2, classTitle3,
+            classStudentCount3, classTitle4, classStudentCount4, classTitle5, classStudentCount5,
+            classTitle6, classStudentCount6;
+    private CardView classcard1, classcard2, classcard3, classcard4, classcard5, classcard6;
+    private ImageView classColor2, classColor3, classColor4, classColor5, classColor6;
 
     private static final String SHARED_PREFS = "shared_preferences";
     private static final String SHARED_PREFS_CLASS1 = "class1";
@@ -89,26 +60,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        view = findViewById(android.R.id.content);
+        view = findViewById(R.id.main_layout);
 
         sharedPreferences = getSharedPreferences(SHARED_PREFS, 0);
-        sharedPreferencesclass1 = getSharedPreferences(SHARED_PREFS_CLASS1, 0);
-        sharedPreferencesclass2 = getSharedPreferences(SHARED_PREFS_CLASS2, 0);
-        sharedPreferencesclass3 = getSharedPreferences(SHARED_PREFS_CLASS3, 0);
-        sharedPreferencesclass4 = getSharedPreferences(SHARED_PREFS_CLASS4, 0);
-        sharedPreferencesclass5 = getSharedPreferences(SHARED_PREFS_CLASS5, 0);
-        sharedPreferencesclass6 = getSharedPreferences(SHARED_PREFS_CLASS6, 0);
+        sharedPreferencesClass1 = getSharedPreferences(SHARED_PREFS_CLASS1, 0);
+        sharedPreferencesClass2 = getSharedPreferences(SHARED_PREFS_CLASS2, 0);
+        sharedPreferencesClass3 = getSharedPreferences(SHARED_PREFS_CLASS3, 0);
+        sharedPreferencesClass4 = getSharedPreferences(SHARED_PREFS_CLASS4, 0);
+        sharedPreferencesClass5 = getSharedPreferences(SHARED_PREFS_CLASS5, 0);
+        sharedPreferencesClass6 = getSharedPreferences(SHARED_PREFS_CLASS6, 0);
 
-        // Init toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Init drawer
         new DrawerBuilder()
                 .withActivity(this)
                 .withActionBarDrawerToggle(true)
                 .build();
         setupDrawer();
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchActivities("CreateClass");
+            }
+        });
 
         classTitle1 = (TextView) findViewById(R.id.class1_title);
         classStudentCount1 = (TextView) findViewById(R.id.class1_student_count);
@@ -132,14 +109,6 @@ public class MainActivity extends AppCompatActivity {
         classTitle6 = (TextView) findViewById(R.id.class6_title);
         classStudentCount6 = (TextView) findViewById(R.id.class6_student_count);
         classColor6 = (ImageView) findViewById(R.id.class6_color);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchActivities("CreateClass");
-            }
-        });
 
         classcard1 = (CardView) findViewById(R.id.cardclass1);
         classcard1.setOnClickListener(new Listener());
@@ -169,70 +138,18 @@ public class MainActivity extends AppCompatActivity {
         if ((class1Toolbar != null) && (class2Toolbar != null) && (class3Toolbar != null)
                 && (class4Toolbar != null) && (class5Toolbar != null) && (class6Toolbar != null)) {
             class1Toolbar.inflateMenu(R.menu.menu_delete);
+            class1Toolbar.setOnMenuItemClickListener(new Listener());
             class2Toolbar.inflateMenu(R.menu.menu_delete);
+            class2Toolbar.setOnMenuItemClickListener(new Listener());
             class3Toolbar.inflateMenu(R.menu.menu_delete);
+            class3Toolbar.setOnMenuItemClickListener(new Listener());
             class4Toolbar.inflateMenu(R.menu.menu_delete);
+            class4Toolbar.setOnMenuItemClickListener(new Listener());
             class5Toolbar.inflateMenu(R.menu.menu_delete);
+            class5Toolbar.setOnMenuItemClickListener(new Listener());
             class6Toolbar.inflateMenu(R.menu.menu_delete);
-
-            class1Toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
-                            "Are you sure you want to continue", "Delete", "Cancel", 1);
-                    return true;
-                }
-            });
-            class2Toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
-                            "Are you sure you want to continue", "Delete", "Cancel", 2);
-                    return true;
-                }
-            });
-            class3Toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
-                            "Are you sure you want to continue", "Delete", "Cancel", 3);
-                    return true;
-                }
-            });
-            class4Toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
-                            "Are you sure you want to continue", "Delete", "Cancel", 4);
-                    return true;
-                }
-            });
-            class5Toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
-                            "Are you sure you want to continue", "Delete", "Cancel", 5);
-                    return true;
-                }
-            });
-            class6Toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
-                            "Are you sure you want to continue", "Delete", "Cancel", 6);
-                    return true;
-                }
-            });
+            class6Toolbar.setOnMenuItemClickListener(new Listener());
         }
-
-        boolean userIsNew = sharedPreferences.getBoolean("userIsNew", false);
-
-        // TODO: Tutorial
-
-        editor = sharedPreferences.edit();
-        editor.putBoolean("userIsNew", false);
-        editor.apply();
-
         getRoster(1); // Will update student count!
         createCards();
     }
@@ -375,42 +292,42 @@ public class MainActivity extends AppCompatActivity {
 
         switch (whichClass) {
             case 1:
-                editor = sharedPreferencesclass1.edit();
+                editor = sharedPreferencesClass1.edit();
                 editor.clear();
                 editor.commit();
                 new File(dir, "class1.xml").delete();
                 break;
 
             case 2:
-                editor = sharedPreferencesclass2.edit();
+                editor = sharedPreferencesClass2.edit();
                 editor.clear();
                 editor.commit();
                 new File(dir, "class2.xml").delete();
                 break;
 
             case 3:
-                editor = sharedPreferencesclass3.edit();
+                editor = sharedPreferencesClass3.edit();
                 editor.clear();
                 editor.commit();
                 new File(dir, "class3.xml").delete();
                 break;
 
             case 4:
-                editor = sharedPreferencesclass4.edit();
+                editor = sharedPreferencesClass4.edit();
                 editor.clear();
                 editor.commit();
                 new File(dir, "class4.xml").delete();
                 break;
 
             case 5:
-                editor = sharedPreferencesclass5.edit();
+                editor = sharedPreferencesClass5.edit();
                 editor.clear();
                 editor.commit();
                 new File(dir, "class5.xml").delete();
                 break;
 
             case 6:
-                editor = sharedPreferencesclass6.edit();
+                editor = sharedPreferencesClass6.edit();
                 editor.clear();
                 editor.commit();
                 new File(dir, "class6.xml").delete();
@@ -430,10 +347,10 @@ public class MainActivity extends AppCompatActivity {
             );
         } else {
             classTitle1.setText(
-                    "No Classes!"
+                    R.string.no_classes
             );
             classStudentCount1.setText(
-                    "CREATE A CLASS TO GET STARTED"
+                    R.string.no_classes_create_one
             );
         }
 
@@ -516,6 +433,7 @@ public class MainActivity extends AppCompatActivity {
             if (classStudentCount6 != null) classStudentCount6.setVisibility(View.GONE);
             if (classColor6 != null) classColor6.setVisibility(View.GONE);
         }
+        setupDrawer(); // Effectively update the drawer
     }
 
     public String getClassName(int whichClass) {
@@ -561,7 +479,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialoginterface, int i) {
                         deleteClass(nClass);
                         Snackbar.make(view, "Class " + nClass + " deleted", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
+                                .show();
                     }
                 }).show();
     }
@@ -581,8 +499,8 @@ public class MainActivity extends AppCompatActivity {
             while (hasStudents) {
                 switch (whichClass) {
                     case 1:
-                        if (sharedPreferencesclass1.contains(String.valueOf(student))) {
-                            name = sharedPreferencesclass1.getString(String.valueOf(student), "");
+                        if (sharedPreferencesClass1.contains(String.valueOf(student))) {
+                            name = sharedPreferencesClass1.getString(String.valueOf(student), "");
                             thisClass.put(student, name);
                             student++;
                         }
@@ -592,8 +510,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 2:
-                        if (sharedPreferencesclass2.contains(String.valueOf(student))) {
-                            name = sharedPreferencesclass2.getString(String.valueOf(student), "");
+                        if (sharedPreferencesClass2.contains(String.valueOf(student))) {
+                            name = sharedPreferencesClass2.getString(String.valueOf(student), "");
                             thisClass.put(student, name);
                             student++;
                         }
@@ -603,8 +521,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 3:
-                        if (sharedPreferencesclass3.contains(String.valueOf(student))) {
-                            name = sharedPreferencesclass3.getString(String.valueOf(student), "");
+                        if (sharedPreferencesClass3.contains(String.valueOf(student))) {
+                            name = sharedPreferencesClass3.getString(String.valueOf(student), "");
                             thisClass.put(student, name);
                             student++;
                         }
@@ -614,8 +532,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 4:
-                        if (sharedPreferencesclass4.contains(String.valueOf(student))) {
-                            name = sharedPreferencesclass4.getString(String.valueOf(student), "");
+                        if (sharedPreferencesClass4.contains(String.valueOf(student))) {
+                            name = sharedPreferencesClass4.getString(String.valueOf(student), "");
                             thisClass.put(student, name);
                             student++;
                         }
@@ -625,8 +543,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 5:
-                        if (sharedPreferencesclass5.contains(String.valueOf(student))) {
-                            name = sharedPreferencesclass5.getString(String.valueOf(student), "");
+                        if (sharedPreferencesClass5.contains(String.valueOf(student))) {
+                            name = sharedPreferencesClass5.getString(String.valueOf(student), "");
                             thisClass.put(student, name);
                             student++;
                         }
@@ -636,8 +554,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 6:
-                        if (sharedPreferencesclass6.contains(String.valueOf(student))) {
-                            name = sharedPreferencesclass6.getString(String.valueOf(student), "");
+                        if (sharedPreferencesClass6.contains(String.valueOf(student))) {
+                            name = sharedPreferencesClass6.getString(String.valueOf(student), "");
                             thisClass.put(student, name);
                             student++;
                         }
@@ -652,7 +570,7 @@ public class MainActivity extends AppCompatActivity {
         return thisClass;
     }
 
-    class Listener implements View.OnClickListener {
+    class Listener implements View.OnClickListener, Toolbar.OnMenuItemClickListener {
 
         public void switchActivities(String newActivity, int nClass) {
             Intent changeActivities;
@@ -667,6 +585,44 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                     startActivity(changeActivities);
                     break;
+            }
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.class1_toolbar:
+                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
+                            "Are you sure you want to continue", "Delete", "Cancel", 1);
+                    return true;
+
+                case R.id.class2_toolbar:
+                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
+                            "Are you sure you want to continue", "Delete", "Cancel", 2);
+                    return true;
+
+                case R.id.class3_toolbar:
+                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
+                            "Are you sure you want to continue", "Delete", "Cancel", 3);
+                    return true;
+
+                case R.id.class4_toolbar:
+                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
+                            "Are you sure you want to continue", "Delete", "Cancel", 4);
+                    return true;
+
+                case R.id.class5_toolbar:
+                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
+                            "Are you sure you want to continue", "Delete", "Cancel", 5);
+                    return true;
+
+                case R.id.class6_toolbar:
+                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
+                            "Are you sure you want to continue", "Delete", "Cancel", 6);
+                    return true;
+
+                default:
+                    return false;
             }
         }
 

@@ -7,6 +7,7 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_create_class">CreateClass</string>
     <string name="title_activity_delete_login">Sign in</string>
+    <string name="title_activity_class_roster">Class Roster</string>
 
     <string name="no_classes_create_one">CREATE A CLASS TO GET STARTED</string>
     <string name="no_classes">No Classes!</string>
@@ -15,5 +16,4 @@
     <string name="prompt_class_name">Class name</string>
     <string name="prompt_student_name">Student\'s first name</string>
     <string name="prompt_new_student_name">+ Add another student</string>
-    <string name="title_activity_class_roster">ClassRoster</string>
 </resources>
