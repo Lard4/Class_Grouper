@@ -8,11 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class ClassRoster extends AppCompatActivity {
     private int classNumber;
@@ -32,7 +28,7 @@ public class ClassRoster extends AppCompatActivity {
         setContentView(R.layout.activity_class_roster);
 
         Bundle bundle = getIntent().getExtras();
-        classNumber = bundle.getInt("huey");
+        classNumber = bundle.getInt("bzofghia");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -44,17 +40,42 @@ public class ClassRoster extends AppCompatActivity {
 
             }
         });
-
         loadClasses();
-        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public void loadClasses() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(SHARED_PREFS_CLASS1, Context.MODE_PRIVATE);
-        HashMap<String, Integer> map= (HashMap <String, Integer> ) pref.getAll();
-        for (String s : map.keySet()) {
-            String value = String.valueOf(map.get(s));
-            addToMap(Integer.parseInt(s), value);
+        SharedPreferences pref = null;
+        switch (classNumber) {
+            case 1:
+                pref = getApplicationContext().getSharedPreferences("class1", Context.MODE_PRIVATE);
+                break;
+
+            case 2:
+                pref = getApplicationContext().getSharedPreferences("class2", Context.MODE_PRIVATE);
+                break;
+
+            case 3:
+                pref = getApplicationContext().getSharedPreferences("class3", Context.MODE_PRIVATE);
+                break;
+
+            case 4:
+                pref = getApplicationContext().getSharedPreferences("class4", Context.MODE_PRIVATE);
+                break;
+
+            case 5:
+                pref = getApplicationContext().getSharedPreferences("class5", Context.MODE_PRIVATE);
+                break;
+
+            case 6:
+                pref = getApplicationContext().getSharedPreferences("class6", Context.MODE_PRIVATE);
+                break;
+        }
+        if (pref != null) {
+            HashMap<String, Integer> map = (HashMap<String, Integer>) pref.getAll();
+            for (String s : map.keySet()) {
+                String value = String.valueOf(map.get(s));
+                addToMap(Integer.parseInt(s), value);
+            }
         }
     }
 

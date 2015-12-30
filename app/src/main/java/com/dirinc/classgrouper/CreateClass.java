@@ -238,6 +238,7 @@ public class CreateClass extends AppCompatActivity {
 
             establishStudents();
             switchActivities("MainActivity");
+            finish();
         } else {
             Toast.makeText(getApplicationContext(), "Name your class!", Toast.LENGTH_SHORT)
                     .show();
@@ -292,11 +293,9 @@ public class CreateClass extends AppCompatActivity {
                 break;
 
             case 6:
-                String hue = "";
                 editor = sharedPreferencesclass6.edit();
                 for (int x = 0; x <= class6.size(); x++) {
                     editor.putString(String.valueOf(x), class6.get(x));
-                    hue = class6.get(x);
                 }
                 editor.apply();
                 break;

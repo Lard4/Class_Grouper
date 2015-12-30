@@ -662,7 +662,7 @@ public class MainActivity extends AppCompatActivity {
                     changeActivities = new Intent(getApplicationContext(), ClassRoster.class);
                     Log.d("ActivitySwitch", "Switching to ClassRoster Activity");
                     Bundle bundle = new Bundle();
-                    bundle.putInt("huey", nClass);
+                    bundle.putInt("bzofghia", nClass);
                     changeActivities.putExtras(bundle);
                     finish();
                     startActivity(changeActivities);
