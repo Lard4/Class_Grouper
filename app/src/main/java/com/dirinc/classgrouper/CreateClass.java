@@ -1,15 +1,10 @@
 package com.dirinc.classgrouper;
 
-import android.app.ActionBar;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
@@ -17,30 +12,17 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
-import java.util.zip.Inflater;
-
-import javax.xml.datatype.Duration;
 
 public class CreateClass extends AppCompatActivity {
 
-    private final Context context = this;
     private EditText className;
     private EditText studentOneName;
     private ImageButton createClass;
@@ -102,6 +84,48 @@ public class CreateClass extends AppCompatActivity {
         studentOneName = (EditText) findViewById(R.id.student_name);
         createClass = (ImageButton) findViewById(R.id.createClass);ImageButton
         addNewStudent = (FloatingActionButton) findViewById(R.id.prompt_student_name);
+
+        studentOneName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Auto-generated method stub
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // Auto-generated method stub
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                switch (getClassCount()) {
+                    case 0:
+                        class1.put(id, String.valueOf(studentOneName.getText()));
+                        break;
+
+                    case 1:
+                        class2.put(id, String.valueOf(studentOneName.getText()));
+                        break;
+
+                    case 2:
+                        class3.put(id, String.valueOf(studentOneName.getText()));
+                        break;
+
+                    case 3:
+                        class4.put(id, String.valueOf(studentOneName.getText()));
+                        break;
+
+                    case 4:
+                        class5.put(id, String.valueOf(studentOneName.getText()));
+                        break;
+
+                    case 5:
+                        class6.put(id, String.valueOf(studentOneName.getText()));
+                        break;
+                }
+            }
+        });
 
         addNewStudent.setOnClickListener(new View.OnClickListener() {
             @Override

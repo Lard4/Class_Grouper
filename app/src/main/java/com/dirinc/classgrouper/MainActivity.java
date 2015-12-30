@@ -1,5 +1,6 @@
 package com.dirinc.classgrouper;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +28,7 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import java.io.File;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
@@ -300,6 +302,56 @@ public class MainActivity extends AppCompatActivity {
                 result.addItemAtPosition(class6Drawer, 9);
                 break;
         }
+    }
+
+    @SuppressLint("CommitPrefEdits") // COMMIT IT NOW!!!
+    public void deleteClass(int whichClass) {
+        File dir = new File(getApplicationContext().getFilesDir().getParent() + "/shared_prefs/");
+        editor = sharedPreferences.edit();
+        editor.remove("class" + whichClass);
+        int newNumberOfClasses = (getNumberOfClasses() - 1);
+        editor.remove("numberOfClasses");
+        editor.putInt("numberOfClasses", newNumberOfClasses);
+        editor.commit();
+
+        switch (whichClass) {
+            case 1:
+                editor = sharedPreferencesclass1.edit();
+                editor.clear();
+                editor.commit();
+                new File(dir, "class1.xml").delete();
+                break;
+
+            case 2:
+                editor = sharedPreferencesclass2.edit();
+                editor.clear();
+                editor.commit();
+                break;
+
+            case 3:
+                editor = sharedPreferencesclass3.edit();
+                editor.clear();
+                editor.commit();
+                break;
+
+            case 4:
+                editor = sharedPreferencesclass4.edit();
+                editor.clear();
+                editor.commit();
+                break;
+
+            case 5:
+                editor = sharedPreferencesclass5.edit();
+                editor.clear();
+                editor.commit();
+                break;
+
+            case 6:
+                editor = sharedPreferencesclass6.edit();
+                editor.clear();
+                editor.commit();
+                break;
+        } createCards();
     }
 
     public void createCards() {
@@ -576,21 +628,27 @@ public class MainActivity extends AppCompatActivity {
         public boolean onLongClick(View view) {
             switch (view.getId()) {
                 case R.id.cardclass1:
+                    deleteClass(1);
                     return true;
 
                 case R.id.cardclass2:
+                    deleteClass(2);
                     return true;
 
                 case R.id.cardclass3:
+                    deleteClass(3);
                     return true;
 
                 case R.id.cardclass4:
+                    deleteClass(4);
                     return true;
 
                 case R.id.cardclass5:
+                    deleteClass(5);
                     return true;
 
                 case R.id.cardclass6:
+                    deleteClass(6);
                     return true;
 
                 default:
