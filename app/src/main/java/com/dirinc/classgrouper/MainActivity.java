@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -33,8 +34,6 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private HashMap <Integer, String> class1 = new HashMap<>();
-
     private SharedPreferences sharedPreferences;
     private SharedPreferences sharedPreferencesclass1;
     private SharedPreferences sharedPreferencesclass2;
@@ -45,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
 
     private Toolbar toolbar;
+    private View view;
 
     private TextView classTitle1;
     private TextView classStudentCount1;
@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        view = findViewById(android.R.id.content);
 
         sharedPreferences = getSharedPreferences(SHARED_PREFS, 0);
         sharedPreferencesclass1 = getSharedPreferences(SHARED_PREFS_CLASS1, 0);
@@ -142,27 +143,87 @@ public class MainActivity extends AppCompatActivity {
 
         classcard1 = (CardView) findViewById(R.id.cardclass1);
         classcard1.setOnClickListener(new Listener());
-        classcard1.setOnLongClickListener(new Listener());
 
         classcard2 = (CardView) findViewById(R.id.cardclass2);
         classcard2.setOnClickListener(new Listener());
-        classcard2.setOnLongClickListener(new Listener());
 
         classcard3 = (CardView) findViewById(R.id.cardclass3);
         classcard3.setOnClickListener(new Listener());
-        classcard3.setOnLongClickListener(new Listener());
 
         classcard4 = (CardView) findViewById(R.id.cardclass4);
         classcard4.setOnClickListener(new Listener());
-        classcard4.setOnLongClickListener(new Listener());
 
         classcard5 = (CardView) findViewById(R.id.cardclass5);
         classcard5.setOnClickListener(new Listener());
-        classcard5.setOnLongClickListener(new Listener());
 
         classcard6 = (CardView) findViewById(R.id.cardclass6);
         classcard6.setOnClickListener(new Listener());
-        classcard6.setOnLongClickListener(new Listener());
+
+        Toolbar class1Toolbar = (Toolbar) findViewById(R.id.class1_toolbar);
+        Toolbar class2Toolbar = (Toolbar) findViewById(R.id.class2_toolbar);
+        Toolbar class3Toolbar = (Toolbar) findViewById(R.id.class3_toolbar);
+        Toolbar class4Toolbar = (Toolbar) findViewById(R.id.class4_toolbar);
+        Toolbar class5Toolbar = (Toolbar) findViewById(R.id.class5_toolbar);
+        Toolbar class6Toolbar = (Toolbar) findViewById(R.id.class6_toolbar);
+
+        if ((class1Toolbar != null) && (class2Toolbar != null) && (class3Toolbar != null)
+                && (class4Toolbar != null) && (class5Toolbar != null) && (class6Toolbar != null)) {
+            class1Toolbar.inflateMenu(R.menu.menu_delete);
+            class2Toolbar.inflateMenu(R.menu.menu_delete);
+            class3Toolbar.inflateMenu(R.menu.menu_delete);
+            class4Toolbar.inflateMenu(R.menu.menu_delete);
+            class5Toolbar.inflateMenu(R.menu.menu_delete);
+            class6Toolbar.inflateMenu(R.menu.menu_delete);
+
+            class1Toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
+                            "Are you sure you want to continue", "Delete", "Cancel", 1);
+                    return true;
+                }
+            });
+            class2Toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
+                            "Are you sure you want to continue", "Delete", "Cancel", 2);
+                    return true;
+                }
+            });
+            class3Toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
+                            "Are you sure you want to continue", "Delete", "Cancel", 3);
+                    return true;
+                }
+            });
+            class4Toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
+                            "Are you sure you want to continue", "Delete", "Cancel", 4);
+                    return true;
+                }
+            });
+            class5Toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
+                            "Are you sure you want to continue", "Delete", "Cancel", 5);
+                    return true;
+                }
+            });
+            class6Toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
+                            "Are you sure you want to continue", "Delete", "Cancel", 6);
+                    return true;
+                }
+            });
+        }
 
         boolean userIsNew = sharedPreferences.getBoolean("userIsNew", false);
 
@@ -225,8 +286,6 @@ public class MainActivity extends AppCompatActivity {
         SecondaryDrawerItem class6Drawer = new SecondaryDrawerItem()
                 .withName(getClassName(6))
                 .withIcon(R.drawable.class_ic_png);
-
-        // TODO: Class 2
 
         PrimaryDrawerItem settingsDrawer = new PrimaryDrawerItem()
                 .withName("Settings")
@@ -326,32 +385,38 @@ public class MainActivity extends AppCompatActivity {
                 editor = sharedPreferencesclass2.edit();
                 editor.clear();
                 editor.commit();
+                new File(dir, "class2.xml").delete();
                 break;
 
             case 3:
                 editor = sharedPreferencesclass3.edit();
                 editor.clear();
                 editor.commit();
+                new File(dir, "class3.xml").delete();
                 break;
 
             case 4:
                 editor = sharedPreferencesclass4.edit();
                 editor.clear();
                 editor.commit();
+                new File(dir, "class4.xml").delete();
                 break;
 
             case 5:
                 editor = sharedPreferencesclass5.edit();
                 editor.clear();
                 editor.commit();
+                new File(dir, "class5.xml").delete();
                 break;
 
             case 6:
                 editor = sharedPreferencesclass6.edit();
                 editor.clear();
                 editor.commit();
+                new File(dir, "class6.xml").delete();
                 break;
-        } createCards();
+        }
+        createCards();
     }
 
     public void createCards() {
@@ -361,7 +426,14 @@ public class MainActivity extends AppCompatActivity {
                     getClassName(1)
             );
             classStudentCount1.setText(
-                    (student - 1) + "  STUDENTS"
+                    (student) + "  STUDENTS"
+            );
+        } else {
+            classTitle1.setText(
+                    "No Classes!"
+            );
+            classStudentCount1.setText(
+                    "CREATE A CLASS TO GET STARTED"
             );
         }
 
@@ -372,7 +444,7 @@ public class MainActivity extends AppCompatActivity {
                     getClassName(2)
             );
             classStudentCount2.setText(
-                    (student - 1) + "  STUDENTS"
+                    (student) + "  STUDENTS"
             );
         } else {
             if (classcard2 != null) classcard2.setVisibility(View.GONE);
@@ -388,7 +460,7 @@ public class MainActivity extends AppCompatActivity {
                     getClassName(3)
             );
             classStudentCount3.setText(
-                    (student - 1) + "  STUDENTS"
+                    (student) + "  STUDENTS"
             );
         } else {
             if (classcard3 != null) classcard3.setVisibility(View.GONE);
@@ -404,7 +476,7 @@ public class MainActivity extends AppCompatActivity {
                     getClassName(4)
             );
             classStudentCount4.setText(
-                    (student - 1) + "  STUDENTS"
+                    (student) + "  STUDENTS"
             );
         } else {
             if (classcard4 != null) classcard4.setVisibility(View.GONE);
@@ -420,7 +492,7 @@ public class MainActivity extends AppCompatActivity {
                     getClassName(5)
             );
             classStudentCount5.setText(
-                    (student - 1) + "  STUDENTS"
+                    (student) + "  STUDENTS"
             );
         } else {
             if (classcard5 != null) classcard5.setVisibility(View.GONE);
@@ -436,7 +508,7 @@ public class MainActivity extends AppCompatActivity {
                     getClassName(6)
             );
             classStudentCount6.setText(
-                    (student - 1) + "  STUDENTS"
+                    (student) + "  STUDENTS"
             );
         } else {
             if (classcard6 != null) classcard6.setVisibility(View.INVISIBLE);
@@ -476,7 +548,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showAlertDialog(String title, String message,
-                                String positiveButton, String negativeButton) {
+                                String positiveButton, String negativeButton, final int nClass) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(title)
                 .setMessage(message)
@@ -487,6 +559,9 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialoginterface, int i) {
+                        deleteClass(nClass);
+                        Snackbar.make(view, "Class " + nClass + " deleted", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
                     }
                 }).show();
     }
@@ -577,7 +652,7 @@ public class MainActivity extends AppCompatActivity {
         return thisClass;
     }
 
-    class Listener implements View.OnLongClickListener, View.OnClickListener {
+    class Listener implements View.OnClickListener {
 
         public void switchActivities(String newActivity, int nClass) {
             Intent changeActivities;
@@ -621,38 +696,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.cardclass6:
                     switchActivities("ClassRoster", 6);
                     break;
-            }
-        }
-
-        @Override
-        public boolean onLongClick(View view) {
-            switch (view.getId()) {
-                case R.id.cardclass1:
-                    deleteClass(1);
-                    return true;
-
-                case R.id.cardclass2:
-                    deleteClass(2);
-                    return true;
-
-                case R.id.cardclass3:
-                    deleteClass(3);
-                    return true;
-
-                case R.id.cardclass4:
-                    deleteClass(4);
-                    return true;
-
-                case R.id.cardclass5:
-                    deleteClass(5);
-                    return true;
-
-                case R.id.cardclass6:
-                    deleteClass(6);
-                    return true;
-
-                default:
-                    return false;
             }
         }
     }
