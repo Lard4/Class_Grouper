@@ -4,6 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
+    <dimen name="roster_card_height">60dp</dimen>
+
     <dimen name="newStudentMarginLeft">28dp</dimen>
     <dimen name="newStudentWidth">200dp</dimen>
 

@@ -111,22 +111,17 @@ public class MainActivity extends AppCompatActivity {
         classColor6 = (ImageView) findViewById(R.id.class6_color);
 
         classcard1 = (CardView) findViewById(R.id.cardclass1);
-        classcard1.setOnClickListener(new Listener(0));
-
+        classcard1.setOnClickListener(new Listener(69)); // Pass 69 because it's unused
         classcard2 = (CardView) findViewById(R.id.cardclass2);
-        classcard2.setOnClickListener(new Listener(0));
-
+        classcard2.setOnClickListener(new Listener(69)); // Hey, gotta have some fun here
         classcard3 = (CardView) findViewById(R.id.cardclass3);
-        classcard3.setOnClickListener(new Listener(0));
-
+        classcard3.setOnClickListener(new Listener(69)); // Immaturity FTW
         classcard4 = (CardView) findViewById(R.id.cardclass4);
-        classcard4.setOnClickListener(new Listener(0));
-
+        classcard4.setOnClickListener(new Listener(69)); // Still going strong
         classcard5 = (CardView) findViewById(R.id.cardclass5);
-        classcard5.setOnClickListener(new Listener(0));
-
+        classcard5.setOnClickListener(new Listener(69)); // Don't judge
         classcard6 = (CardView) findViewById(R.id.cardclass6);
-        classcard6.setOnClickListener(new Listener(0));
+        classcard6.setOnClickListener(new Listener(69)); // I'm regretting this
 
         Toolbar class1Toolbar = (Toolbar) findViewById(R.id.class1_toolbar);
         Toolbar class2Toolbar = (Toolbar) findViewById(R.id.class2_toolbar);
@@ -231,13 +226,12 @@ public class MainActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        Log.d("DRAWER", "Clicked: " + position);
-                        switch (position) {
-                            // Home
-                            case 0:
+                        Log.d("DRAWER", "Clicked: " + drawerItem + " @pos " + position);
+                        switch (view.getId()) {
+                            case 0: // Always HOME
+                                switchActivities("MainActivity");
                                 break;
 
-                            // Settings
                             case 6:
                                 switchActivities("SettingsActivity");
                                 break;
