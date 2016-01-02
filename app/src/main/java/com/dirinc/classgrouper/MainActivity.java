@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switchActivities("CreateClass");
+                switchActivities("CreateClass", 0);
             }
         });
 
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            switchActivities("SettingsActivity");
+            switchActivities("SettingsActivity", 0);
             return true;
         }
 
@@ -169,38 +169,48 @@ public class MainActivity extends AppCompatActivity {
     public void setupDrawer() {
         PrimaryDrawerItem homeDrawer = new PrimaryDrawerItem()
                 .withName("Home")
+                .withIdentifier(0)
                 .withIcon(GoogleMaterial.Icon.gmd_home);
 
         PrimaryDrawerItem classesDrawer = new PrimaryDrawerItem()
                 .withName("All Classes")
+                .withSelectable(false)
+                .withEnabled(false)
                 .withTextColor(Color.parseColor("#9E9E9E"));
 
-        SecondaryDrawerItem class1Drawer = new SecondaryDrawerItem()
+        final SecondaryDrawerItem class1Drawer = new SecondaryDrawerItem()
                 .withName(getClassName(1))
+                .withIdentifier(1)
                 .withIcon(R.drawable.class_ic_png);
 
         SecondaryDrawerItem class2Drawer = new SecondaryDrawerItem()
                 .withName(getClassName(2))
+                .withIdentifier(2)
                 .withIcon(R.drawable.class_ic_png);
 
         SecondaryDrawerItem class3Drawer = new SecondaryDrawerItem()
                 .withName(getClassName(3))
+                .withIdentifier(3)
                 .withIcon(R.drawable.class_ic_png);
 
         SecondaryDrawerItem class4Drawer = new SecondaryDrawerItem()
                 .withName(getClassName(4))
+                .withIdentifier(4)
                 .withIcon(R.drawable.class_ic_png);
 
         SecondaryDrawerItem class5Drawer = new SecondaryDrawerItem()
                 .withName(getClassName(5))
+                .withIdentifier(5)
                 .withIcon(R.drawable.class_ic_png);
 
         SecondaryDrawerItem class6Drawer = new SecondaryDrawerItem()
                 .withName(getClassName(6))
+                .withIdentifier(6)
                 .withIcon(R.drawable.class_ic_png);
 
         PrimaryDrawerItem settingsDrawer = new PrimaryDrawerItem()
                 .withName("Settings")
+                .withIdentifier(10)
                 .withIcon(GoogleMaterial.Icon.gmd_settings);
 
         DividerDrawerItem dividerDrawer = new DividerDrawerItem();
@@ -226,14 +236,37 @@ public class MainActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        Log.d("DRAWER", "Clicked: " + drawerItem + " @pos " + position);
-                        switch (view.getId()) {
+                        switch (drawerItem.getIdentifier()) {
                             case 0: // Always HOME
-                                switchActivities("MainActivity");
+                                switchActivities("MainActivity", 0);
+                                break;
+
+                            case 1:
+                                switchActivities("ClassRoster", 1);
+                                break;
+
+                            case 2:
+                                switchActivities("ClassRoster", 2);
+                                break;
+
+                            case 3:
+                                switchActivities("ClassRoster", 3);
+                                break;
+
+                            case 4:
+                                switchActivities("ClassRoster", 4);
+                                break;
+
+                            case 5:
+                                switchActivities("ClassRoster", 5);
                                 break;
 
                             case 6:
-                                switchActivities("SettingsActivity");
+                                switchActivities("ClassRoster", 6);
+                                break;
+
+                            case 10:
+                                switchActivities("SettingsActivity", 0);
                                 break;
                         }
                         return false;
@@ -439,7 +472,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void switchActivities(String newActivity) {
+    public void switchActivities(String newActivity, int newClass) {
         Intent changeActivities;
 
         switch (newActivity) {
@@ -453,6 +486,16 @@ public class MainActivity extends AppCompatActivity {
             case "SettingsActivity":
                 changeActivities = new Intent(this, SettingsActivity.class);
                 Log.d("ActivitySwitch", "Switching to Settings Activity");
+                finish();
+                startActivity(changeActivities);
+                break;
+
+            case "ClassRoster":
+                changeActivities = new Intent(getApplicationContext(), ClassRoster.class);
+                Log.d("ActivitySwitch", "Switching to ClassRoster Activity");
+                Bundle bundle = new Bundle();
+                bundle.putInt("bzofghia", newClass);
+                changeActivities.putExtras(bundle);
                 finish();
                 startActivity(changeActivities);
                 break;
@@ -473,6 +516,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialoginterface, int i) {
                         deleteClass(nClass);
                         Snackbar.make(view, "Class " + nClass + " deleted", Snackbar.LENGTH_LONG)
+                                .setAction("Dandy!", null)
+                                .setActionTextColor(Color.parseColor("#FFFFC107"))
                                 .show();
                     }
                 }).show();
