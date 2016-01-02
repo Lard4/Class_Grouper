@@ -29,4 +29,5 @@ dependencies {
         transitive = true
     }
     compile 'com.mikepenz:google-material-typeface:2.2.0.1@aar'
+    compile 'com.github.clans:fab:1.6.2'
 }

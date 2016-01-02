@@ -23,13 +23,62 @@
 
     <include layout="@layout/content_class_roster" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.github.clans.fab.FloatingActionMenu
+        xmlns:fab="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/fab_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:tint="@android:color/white"
-        android:src="@drawable/ic_autorenew_black_24dp" />
+        fab:menu_fab_size="normal"
+        fab:menu_showShadow="true"
+        fab:menu_shadowColor="#66000000"
+        fab:menu_shadowRadius="2dp"
+        fab:menu_shadowXOffset="1dp"
+        fab:menu_shadowYOffset="3dp"
+        fab:menu_colorNormal="@color/colorAccent"
+        fab:menu_colorPressed="@color/colorAccent"
+        fab:menu_colorRipple="#99FFFFFF"
+        fab:menu_animationDelayPerItem="50"
+        fab:menu_icon="@drawable/ic_loop_white_24dp"
+        fab:menu_labels_paddingTop="4dp"
+        fab:menu_labels_paddingRight="8dp"
+        fab:menu_labels_paddingBottom="4dp"
+        fab:menu_labels_paddingLeft="8dp"
+        fab:menu_labels_padding="8dp"
+        fab:menu_labels_textColor="@android:color/white"
+        fab:menu_labels_textSize="14sp"
+        fab:menu_labels_cornerRadius="5dp"
+        fab:menu_labels_colorNormal="#FF212121"
+        fab:menu_labels_colorPressed="#FF212121"
+        fab:menu_labels_colorRipple="#66FFFFFF"
+        fab:menu_labels_ellipsize="none"
+        fab:menu_labels_maxLines="-1"
+        fab:menu_labels_position="left"
+        fab:menu_backgroundColor="#BBFFFFFF"
+        fab:menu_openDirection="up">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_autorenew_black_24dp"
+            fab:fab_colorNormal="@color/colorAccentComplement"
+            fab:fab_colorPressed="@color/colorAccentComplement"
+            fab:fab_colorRipple="#99FFFFFF"
+            fab:fab_size="mini"
+            fab:fab_label="Menu item 1" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_item2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_autorenew_black_24dp"
+            fab:fab_colorNormal="@color/colorAccentComplement"
+            fab:fab_colorPressed="@color/colorAccentComplement"
+            fab:fab_colorRipple="#99FFFFFF"
+            fab:fab_size="mini"
+            fab:fab_label="Menu item 2" />
+
+    </com.github.clans.fab.FloatingActionMenu>
 
 </android.support.design.widget.CoordinatorLayout>

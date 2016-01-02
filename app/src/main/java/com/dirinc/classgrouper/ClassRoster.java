@@ -15,15 +15,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.github.clans.fab.FloatingActionMenu;
+
 import java.util.HashMap;
 
 public class ClassRoster extends AppCompatActivity {
-
     private int classNumber;
+
+    private View view;
 
     private HashMap<Integer, String> class1 = new HashMap<>();
     private HashMap<Integer, String> class2 = new HashMap<>();
@@ -37,19 +41,17 @@ public class ClassRoster extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_roster);
 
+        view = findViewById(R.id.class_roster);
+
         Bundle bundle = getIntent().getExtras();
         classNumber = bundle.getInt("bzofghia");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Nothing to do!", Snackbar.LENGTH_LONG).show();
-            }
-        });
+        final FloatingActionMenu fam = (FloatingActionMenu) findViewById(R.id.fab_menu);
+        fam.setClosedOnTouchOutside(true);
+
         loadClasses();
         createRoster(1);
     }
@@ -91,15 +93,31 @@ public class ClassRoster extends AppCompatActivity {
     }
 
     public void createRoster(int id) {
+        RelativeLayout mainRelativeLayout = (RelativeLayout) findViewById(R.id.class_roster);
+
         for (int x = 0; x < getClassSize(); x++) {
-            CardView card = (CardView) findViewById(R.id.student_card);
+            final CardView card = (CardView) findViewById(R.id.student_card);
             TextView name = (TextView) findViewById(R.id.student_name);
-            name.setId(id + 10);
+            ImageView leftColor = (ImageView) findViewById(R.id.student_card_color_left);
+            ImageView rightColor = (ImageView) findViewById(R.id.student_card_color_right);
+            name.setVisibility(View.VISIBLE);
+            leftColor.setVisibility(View.VISIBLE);
+            rightColor.setVisibility(View.VISIBLE);
+            leftColor.setId(100 + x);
+            rightColor.setId(1000 + x);
+            name.setId(id + 10000);
             card.setId(id);
+
+            leftColor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    card.setBackgroundColor(Color.parseColor("#FF999999"));
+                }
+            });
             name.setText(getStudentName(x));
 
             RelativeLayout.LayoutParams EditLayoutParams = new RelativeLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, 250);
+                    ViewGroup.LayoutParams.MATCH_PARENT, 220);
 
             if (id != 1) {
                 EditLayoutParams.addRule(RelativeLayout.BELOW, (id - 1));
@@ -109,7 +127,6 @@ public class ClassRoster extends AppCompatActivity {
             card.setLayoutParams(EditLayoutParams);
 
             // Add it to the main RelativeLayout
-            RelativeLayout mainRelativeLayout = (RelativeLayout) findViewById(R.id.class_roster);
             CardView cardLayout = (CardView) View.inflate(this,
                     R.layout.student, null);
             mainRelativeLayout.addView(cardLayout);

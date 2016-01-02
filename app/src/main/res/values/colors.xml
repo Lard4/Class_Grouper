@@ -3,6 +3,7 @@
     <color name="colorPrimary">#FF3F51B5</color>
     <color name="colorPrimaryDark">#FF303F9F</color>
     <color name="colorAccent">#FFFF4081</color>
+    <color name="colorAccentComplement">#FFA784EC</color>
 
     <color name="darkBackground">#FF212121</color>
 
@@ -22,5 +23,4 @@
     <color name="d">#ff3366</color>
     <color name="e">#914d99</color>
     <color name="f">#00301C</color>
-
 </resources>
