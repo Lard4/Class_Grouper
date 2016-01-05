@@ -31,8 +31,8 @@
         android:layout_gravity="bottom|end"
         fab:menu_fab_size="normal"
         fab:menu_showShadow="true"
-        fab:menu_shadowColor="#66000000"
-        fab:menu_shadowRadius="2dp"
+        fab:menu_shadowColor="#20000000"
+        fab:menu_shadowRadius="1.5dp"
         fab:menu_shadowXOffset="1dp"
         fab:menu_shadowYOffset="3dp"
         fab:menu_colorNormal="@color/colorAccent"
@@ -57,27 +57,40 @@
         fab:menu_backgroundColor="#BBFFFFFF"
         fab:menu_openDirection="up">
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/menu_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_autorenew_black_24dp"
-            fab:fab_colorNormal="@color/colorAccentComplement"
-            fab:fab_colorPressed="@color/colorAccentComplement"
-            fab:fab_colorRipple="#99FFFFFF"
-            fab:fab_size="mini"
-            fab:fab_label="Menu item 1" />
+        <!-- Must go in reverse order :/ -->
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/menu_item2"
+            android:id="@+id/menu_four_groups"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_autorenew_black_24dp"
+            android:src="@drawable/ic_loop_white_24dp"
             fab:fab_colorNormal="@color/colorAccentComplement"
             fab:fab_colorPressed="@color/colorAccentComplement"
             fab:fab_colorRipple="#99FFFFFF"
             fab:fab_size="mini"
-            fab:fab_label="Menu item 2" />
+            fab:fab_label="Four Groups" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_three_groups"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_loop_white_24dp"
+            fab:fab_colorNormal="@color/colorAccentComplement"
+            fab:fab_colorPressed="@color/colorAccentComplement"
+            fab:fab_colorRipple="#99FFFFFF"
+            fab:fab_size="mini"
+            fab:fab_label="Three Groups" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_two_groups"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_loop_white_24dp"
+            fab:fab_colorNormal="@color/colorAccentComplement"
+            fab:fab_colorPressed="@color/colorAccentComplement"
+            fab:fab_colorRipple="#99FFFFFF"
+            fab:fab_size="mini"
+            fab:fab_label="Two Groups" />
 
     </com.github.clans.fab.FloatingActionMenu>
 

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/class_roster"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:text="How many groups?"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@android:color/primary_text_light"
+        />
+
+    <TextView
+        android:id="@+id/positive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        android:text="DANDY"
+        />
+
+    <TextView
+        android:id="@+id/negative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        android:text="CANCEL"
+        />
+
+    <NumberPicker
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/number_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="24dp"
+        android:scaleX="1.20"
+        android:scaleY="1.20"
+        android:layout_centerHorizontal="true"
+        />
+
+</RelativeLayout>
+
+

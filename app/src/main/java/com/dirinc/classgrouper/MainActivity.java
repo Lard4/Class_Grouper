@@ -516,7 +516,12 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialoginterface, int i) {
                         deleteClass(nClass);
                         Snackbar.make(view, "Class " + nClass + " deleted", Snackbar.LENGTH_LONG)
-                                .setAction("Dandy!", null)
+                                .setAction("Dandy!", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        // Nothing to do, but if this is null, it won't show :/
+                                    }
+                                })
                                 .setActionTextColor(Color.parseColor("#FFFFC107"))
                                 .show();
                     }
