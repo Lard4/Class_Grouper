@@ -29,8 +29,6 @@
 
         <include layout="@layout/student" />
 
-        <include layout="@layout/number_picker_layout" />
-
     </RelativeLayout>
 
 </ScrollView>

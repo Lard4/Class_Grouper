@@ -34,7 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         setActionBar(actionBar);
 
-        Switch highContrast = (Switch) findViewById(R.id.HCT);
+        Switch highContrast = (Switch) findViewById(R.id.HCT_switch);
         setSwitch(highContrast);
     }
 
@@ -87,7 +87,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void setActionBar(ActionBar actionBar) {
         if (actionBar != null) {
-            // Show the Up button in the action bar.
+            // Show the back button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }

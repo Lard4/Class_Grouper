@@ -12,37 +12,16 @@
     tools:context="com.dirinc.classgrouper.SettingsActivity"
     tools:showIn="@layout/activity_settings">
 
-    <Switch
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:text="High Contrast Text"
-        android:textSize="16sp"
-        android:textColor="@color/textColorPrimary"
-        android:textColorHint="@color/textColorSecondary"
-        android:id="@+id/HCT"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="(Experimental)"
-        android:textColor="@color/textColorSecondary"
-        android:id="@+id/HCThint"
-        android:layout_alignTop="@+id/HCT"
-        android:layout_marginTop="50dp"
-        android:layout_alignParentStart="true" />
-
-    <TextView
+    <TextView   android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Usability"
         android:textColor="@color/accent"
-        android:id="@+id/textView"
+        android:layout_marginBottom="10dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
+
+    <include layout="@layout/settings_switch" />
 
 </RelativeLayout>

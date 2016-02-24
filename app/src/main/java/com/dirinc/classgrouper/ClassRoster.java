@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -22,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,14 +35,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class ClassRoster extends AppCompatActivity {
     private int classNumber;
@@ -48,12 +47,7 @@ public class ClassRoster extends AppCompatActivity {
 
     private View view;
 
-    private HashMap<Integer, String> class1 = new HashMap<>();
-    private HashMap<Integer, String> class2 = new HashMap<>();
-    private HashMap<Integer, String> class3 = new HashMap<>();
-    private HashMap<Integer, String> class4 = new HashMap<>();
-    private HashMap<Integer, String> class5 = new HashMap<>();
-    private HashMap<Integer, String> class6 = new HashMap<>();
+    private HashMap<Integer, String> thisClass = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +61,9 @@ public class ClassRoster extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        loadClasses(); // Must go before FAM is clicked to update count
 
         final FloatingActionMenu fam = (FloatingActionMenu) findViewById(R.id.fab_menu);
         fam.setClosedOnTouchOutside(true);
@@ -76,49 +73,31 @@ public class ClassRoster extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (menuIsOpened) {
-                    promptGroupQuantity();
+
                 }
                 fam.toggle(true);
                 menuIsOpened = !menuIsOpened; // Flipperoo
             }
         });
 
-        loadClasses();
         createRoster(1);
     }
 
-    public void promptGroupQuantity() {
-        final Dialog d = new Dialog(ClassRoster.this);
-        d.setTitle("NumberPicker");
-        d.setContentView(R.layout.content_class_roster);
-        //Button b1 = (Button) d.findViewById(R.id.button1);
-        //Button b2 = (Button) d.findViewById(R.id.button2);
-        final NumberPicker np = (NumberPicker) d.findViewById(R.id.number_picker);
-        np.setVisibility(View.VISIBLE);
-        np.setMaxValue(getClassSize()); // max value 100
-        np.setMinValue(0);   // min value 0
-        np.setWrapSelectorWheel(false);
-        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                // HUE
-            }
-        });
-        /*
-        b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tv.setText(String.valueOf(np.getValue())); //set the value to textview
-                d.dismiss();
-            }
-        });
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                d.dismiss(); // dismiss the dialog
-            }
-        }); */
-        d.show();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                switchActivities("MainActivity");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    public void shuffleGroups(int nGroups) {
+
     }
 
     public void handleFam(final FloatingActionMenu fam) {
@@ -179,7 +158,8 @@ public class ClassRoster extends AppCompatActivity {
                 break;
         }
         if (pref != null) {
-            HashMap<String, Integer> map = (HashMap<String, Integer>) pref.getAll();
+            @SuppressWarnings("unchecked")
+            HashMap<String, Integer> map =  (HashMap<String, Integer>) pref.getAll();
             for (String s : map.keySet()) {
                 String value = String.valueOf(map.get(s));
                 addToMap(Integer.parseInt(s), value);
@@ -188,130 +168,119 @@ public class ClassRoster extends AppCompatActivity {
     }
 
     public void createRoster(int id) {
-        boolean isSquare = false;
         RelativeLayout mainRelativeLayout = (RelativeLayout) findViewById(R.id.class_roster);
 
         for (int x = 0; x < getClassSize(); x++) {
             final CardView card = (CardView) findViewById(R.id.student_card);
             TextView name = (TextView) findViewById(R.id.student_name);
-            final ImageView leftColor = (ImageView) findViewById(R.id.student_card_color_left);
-            final ImageView rightColor = (ImageView) findViewById(R.id.student_card_color_right);
+            final ImageView delete = (ImageView) findViewById(R.id.student_delete);
+            final ImageView absent = (ImageView) findViewById(R.id.student_absent);
             final ViewGroup indvCardLayout = (ViewGroup) findViewById(R.id.card_layout);
 
             card.setVisibility(View.VISIBLE);
-            name.setVisibility(View.VISIBLE);
-            leftColor.setVisibility(View.VISIBLE);
-            rightColor.setVisibility(View.VISIBLE);
 
-            leftColor.setId(100 + x);
-            rightColor.setId(1000 + x);
-            name.setId(id + 10000);
             card.setId(id);
-            indvCardLayout.setId(100000 + x);
-
-
-            leftColor.setOnClickListener(new Listener(isSquare, leftColor, indvCardLayout));
-            rightColor.setOnClickListener(new Listener(isSquare, rightColor, indvCardLayout));
-            isSquare = true;
-
-            name.setText(getStudentName(x));
-
-            TransitionManager.beginDelayedTransition(mainRelativeLayout);
+            name.setId(id + 1000); // Easy number over 100 in case of retard with > 100 students
+            indvCardLayout.setId(id + 10000);
+            delete.setId(id + 100000);
+            absent.setId(id + 1000000);
 
             RelativeLayout.LayoutParams EditLayoutParams = new RelativeLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, 220);
+                    (int) getResources().getDimension(R.dimen.student_card_width),
+                    (int) getResources().getDimension(R.dimen.student_card_height)
+            );
 
-            if (id != 1) {
-                EditLayoutParams.addRule(RelativeLayout.BELOW, (id - 1));
-                EditLayoutParams.setMargins(0, 20, 0, 0);
+            card.setRadius(getResources().getDimension(R.dimen.student_card_radius));
+            card.setUseCompatPadding(true);
+            card.setMaxCardElevation(getResources().getDimension(R.dimen.student_card_elevation));
+            card.setBackgroundColor(getResources().getColor(android.R.color.white));
+
+            if (id % 2 != 0) { // Odd, LEFT SIDE
+                if (id != 1) {
+                    int belowThis = (id - 2);
+                    EditLayoutParams.setMargins(0, 50, 0, 0);
+                    EditLayoutParams.addRule(RelativeLayout.BELOW, belowThis);
+                }
+            } else { // 0 is "even", RIGHT SIDE
+                int rightOfThis = (id - 1);
+                EditLayoutParams.setMargins(20, 0, 0, 0);
+                EditLayoutParams.addRule(RelativeLayout.RIGHT_OF, rightOfThis);
+
             }
 
             card.setLayoutParams(EditLayoutParams);
 
+            name.setText(getStudentInitials(x));
+
+            int color = Color.parseColor("#404040");
+            delete.setColorFilter(color);
+
+            final int finalId = id;
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    promptDelete(finalId);
+                }
+            });
+
+            Random rand = new Random();
+            int newColor = Color.argb(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+            indvCardLayout.setBackgroundColor(newColor);
+
             // Add it to the main RelativeLayout
             CardView cardLayout = (CardView) View.inflate(this,
                     R.layout.student, null);
+
             mainRelativeLayout.addView(cardLayout);
             id++;
         }
     }
 
-    public int getClassSize() {
-        switch (classNumber) {
-            case 1:
-                return class1.size();
+    public void promptDelete(int id) {
+        showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
+                "Are you sure you want to continue", "Delete", "Cancel", id);
+    }
 
-            case 2:
-                return class2.size();
+    public void showAlertDialog(String title, String message,
+                                String positiveButton, String negativeButton, final int id) {
+        android.support.v7.app.AlertDialog.Builder dialog =
+                new android.support.v7.app.AlertDialog.Builder(this);
+        dialog.setTitle(title)
+                .setMessage(message)
+                .setNegativeButton(negativeButton, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialoginterface, int i) {
+                        dialoginterface.cancel();
+                    }
+                })
+                .setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialoginterface, int i) {
+                        thisClass.remove(id - 1); // DELETE ONE LESS BECAUSE IDS MUST START AT 1!!
+                        createRoster(1);
+                    }
+                }).show();
+    }
 
-            case 3:
-                return class3.size();
+    public String getStudentInitials(int key) {
+        String name = getStudentName(key).replaceAll("[.,]", "");
+        String initials = "";
 
-            case 4:
-                return class4.size();
-
-            case 5:
-                return class5.size();
-
-            case 6:
-                return class6.size();
-
-            default:
-                return 0;
+        for(String s : name.split(" ")) {
+            initials += s.charAt(0);
         }
+
+        return initials;
+    }
+
+    public int getClassSize() {
+        return thisClass.size();
     }
 
     public String getStudentName(int key) {
-        switch (classNumber) {
-            case 1:
-                return class1.get(key);
-
-            case 2:
-                return class2.get(key);
-
-            case 3:
-                return class3.get(key);
-
-            case 4:
-                return class4.get(key);
-
-            case 5:
-                return class5.get(key);
-
-            case 6:
-                return class6.get(key);
-
-            default:
-                return null;
-        }
+        return thisClass.get(key);
     }
 
     public void addToMap(int key, String value) {
-        switch (classNumber) {
-            case 1:
-                class1.put(key, value);
-                break;
-
-            case 2:
-                class2.put(key, value);
-                break;
-
-            case 3:
-                class3.put(key, value);
-                break;
-
-            case 4:
-                class4.put(key, value);
-                break;
-
-            case 5:
-                class5.put(key, value);
-                break;
-
-            case 6:
-                class6.put(key, value);
-                break;
-        }
+        thisClass.put(key, value);
     }
 
     @Override
@@ -322,62 +291,15 @@ public class ClassRoster extends AppCompatActivity {
         startActivity(changeActivities);
     }
 
-    class Listener implements View.OnClickListener, View.OnTouchListener{
-        final boolean[] isSquare = new boolean[1];
-        final ImageView color;
-        final ViewGroup indvCardLayout;
-        final boolean wantsColor;
+    public void switchActivities(String newActivity) {
+        Intent changeActivities;
 
-        public Listener(boolean s, ImageView lc, ViewGroup cl) {
-            isSquare[0] = s;
-            color = lc;
-            indvCardLayout = cl;
-            wantsColor = true;
-        }
-
-        @Override
-        public boolean onTouch (View view, MotionEvent motionEvent) {
-
-            return false;
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (wantsColor) {
-                TransitionManager.beginDelayedTransition(indvCardLayout);
-
-                if (!isSquare[0]) {
-                    // Reposition it
-                    RelativeLayout.LayoutParams positionRules = new RelativeLayout.LayoutParams(
-                            RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT
-                    );
-                    positionRules.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-                    positionRules.addRule(RelativeLayout.ALIGN_LEFT, RelativeLayout.TRUE);
-                    positionRules.setMargins(0, 20, 0, 0);
-                    color.setLayoutParams(positionRules);
-
-                    // It's a square now
-                    isSquare[0] = false;
-                } else {
-                    // Reposition it
-                    RelativeLayout.LayoutParams positionRules = new RelativeLayout.LayoutParams(
-                            RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT
-                    );
-                    positionRules.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-                    positionRules.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
-                    positionRules.setMargins(0, 0, 20, 0);
-                    color.setLayoutParams(positionRules);
-
-                    // Change size
-                    ViewGroup.LayoutParams sizeRules = color.getLayoutParams();
-                    sizeRules.width = 85;
-                    sizeRules.height = 85;
-                    color.setLayoutParams(sizeRules);
-
-                    // It's a square now
-                    isSquare[0] = false;
-                }
-            }
+        switch (newActivity) {
+            case "MainActivity":
+                changeActivities = new Intent(this, MainActivity.class);
+                Log.d("ActivitySwitch", "Switching to Main Activity");
+                startActivity(changeActivities);
+                break;
         }
     }
 }
