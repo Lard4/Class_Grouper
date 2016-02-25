@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             class6Toolbar.inflateMenu(R.menu.menu_delete);
             class6Toolbar.setOnMenuItemClickListener(new Listener(6));
         }
-        getRoster(1); // Will update student count!
+        getRoster(1); // Will update student_card count!
         createCards();
     }
 
@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void createCards() {
         if (sharedPreferences.contains("class1")) {
-            getRoster(1); // effectively update student count
+            getRoster(1); // effectively update student_card count
             classTitle1.setText(
                     getClassName(1)
             );

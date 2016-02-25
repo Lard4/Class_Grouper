@@ -173,7 +173,7 @@ public class CreateClass extends AppCompatActivity {
 
         newStudent.setError(null);
 
-        // Get student name
+        // Get student_card name
         newStudent.addTextChangedListener(new TextWatcher() {
 
             @Override

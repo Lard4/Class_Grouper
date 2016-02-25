@@ -4,36 +4,22 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.TransitionManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.view.animation.OvershootInterpolator;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -46,6 +32,8 @@ public class ClassRoster extends AppCompatActivity {
     private boolean menuIsOpened = false;
 
     private HashMap<Integer, String> thisClass = new HashMap<>();
+    public RecyclerView mRecyclerView;
+    public RecyclerView.LayoutManager mLayoutManager;
 
     public static final int CARD_MARGINS_HORIZONTAL = 50;
     public static final int CARD_MARGINS_VERTICAL = 50;
@@ -61,6 +49,13 @@ public class ClassRoster extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         classNumber = bundle.getInt("bzofghia");
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.roster_recycler);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        RecyclerView.Adapter mAdapter;
+        mAdapter = new SimpleAdapter(thisClass);
+        mRecyclerView.setAdapter(mAdapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -171,9 +166,11 @@ public class ClassRoster extends AppCompatActivity {
     }
 
     public void createRoster(int id) {
+/*
+
         RelativeLayout mainRelativeLayout = (RelativeLayout) findViewById(R.id.class_roster);
 
-        // Needed for student deletion to work
+        // Needed for student_card deletion to work
         for ( int child = 0; child < mainRelativeLayout.getChildCount(); child++) {
             View view = mainRelativeLayout.getChildAt(child);
             view.setVisibility(View.GONE);
@@ -256,11 +253,13 @@ public class ClassRoster extends AppCompatActivity {
 
             // Add it to the main RelativeLayout
             CardView cardLayout = (CardView) View.inflate(this,
-                    R.layout.student, null);
+                    R.layout.student_card, null);
 
             mainRelativeLayout.addView(cardLayout);
             id++;
         }
+*/
+
     }
 
     public void promptDelete(int id) {
