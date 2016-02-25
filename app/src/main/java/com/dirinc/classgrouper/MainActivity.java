@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,7 +66,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        start();
+    }
+
+    public void start() {
         view = findViewById(R.id.main_layout);
 
         this.overridePendingTransition(
@@ -489,15 +498,15 @@ public class MainActivity extends AppCompatActivity {
             case "CreateClass":
                 changeActivities = new Intent(this, CreateClass.class);
                 Log.d("ActivitySwitch", "Switching to CreateClass Activity");
-                finish();
                 startActivity(changeActivities);
+                finish();
                 break;
 
             case "SettingsActivity":
                 changeActivities = new Intent(this, SettingsActivity.class);
                 Log.d("ActivitySwitch", "Switching to Settings Activity");
-                finish();
                 startActivity(changeActivities);
+                finish();
                 break;
 
             case "ClassRoster":
@@ -506,8 +515,8 @@ public class MainActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putInt("bzofghia", newClass);
                 changeActivities.putExtras(bundle);
-                finish();
                 startActivity(changeActivities);
+                finish();
                 break;
         }
     }
@@ -641,8 +650,8 @@ public class MainActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle.putInt("bzofghia", nClass);
                     changeActivities.putExtras(bundle);
-                    finish();
                     startActivity(changeActivities);
+                    finish();
                     break;
             }
         }

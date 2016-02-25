@@ -8,20 +8,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -42,6 +37,7 @@ public class ClassRoster extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_roster);
+        loadClasses(); // Must go before FAM is clicked to update count
 
         this.overridePendingTransition(
                 android.R.anim.slide_in_left,
@@ -50,18 +46,9 @@ public class ClassRoster extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         classNumber = bundle.getInt("bzofghia");
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.roster_recycler);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        RecyclerView.Adapter mAdapter;
-        mAdapter = new SimpleAdapter(thisClass);
-        mRecyclerView.setAdapter(mAdapter);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        loadClasses(); // Must go before FAM is clicked to update count
 
         final FloatingActionMenu fam = (FloatingActionMenu) findViewById(R.id.fab_menu);
         fam.setClosedOnTouchOutside(true);
@@ -71,14 +58,19 @@ public class ClassRoster extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (menuIsOpened) {
-
+                    //69
                 }
                 fam.toggle(true);
                 menuIsOpened = !menuIsOpened; // Flipperoo
             }
         });
 
-        createRoster(1);
+        //createRoster(1);
+        mRecyclerView = (RecyclerView) findViewById(R.id.roster_recycler);
+        mLayoutManager = new GridLayoutManager(this, 2);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        RecyclerView.Adapter mAdapter = new CardAdapter(thisClass);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
