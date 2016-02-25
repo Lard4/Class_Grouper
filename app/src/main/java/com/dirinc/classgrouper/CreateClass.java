@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
@@ -148,6 +149,8 @@ public class CreateClass extends AppCompatActivity {
         id++;
         RelativeLayout thisLayout = (RelativeLayout) findViewById(R.id.scrollView_layout);
         final EditText newStudent = new EditText((new ContextThemeWrapper(this, R.style.new_student)));
+        newStudent.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+                | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
 
         newStudent.setId(id);
         newStudent.setTextColor(Color.parseColor("#FFFFFF"));

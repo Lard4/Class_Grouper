@@ -1,7 +1,6 @@
 package com.dirinc.classgrouper;
 
 import android.graphics.Color;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,10 +41,17 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(ViewHolder viewHolder, final int i) {
         Student student = mItems.get(i);
         viewHolder.cardColor.setBackgroundColor(student.getColor());
         viewHolder.cardInitials.setText(student.getInitials());
+
+        viewHolder.cardDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notifyItemRemoved(i);
+            }
+        });
     }
 
     @Override

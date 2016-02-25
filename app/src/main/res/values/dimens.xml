@@ -14,8 +14,8 @@
     <dimen name="newStudentMarginLeft">28dp</dimen>
     <dimen name="newStudentWidth">200dp</dimen>
 
-    <dimen name="student_card_width">150dp</dimen>
-    <dimen name="student_card_height">200dp</dimen>
+    <dimen name="student_card_width">175dp</dimen>
+    <dimen name="student_card_height">210dp</dimen>
     <dimen name="student_card_radius">5dp</dimen>
     <dimen name="student_card_elevation">1dp</dimen>
 

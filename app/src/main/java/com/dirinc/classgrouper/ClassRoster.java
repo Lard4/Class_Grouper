@@ -30,21 +30,18 @@ public class ClassRoster extends AppCompatActivity {
     public RecyclerView mRecyclerView;
     public RecyclerView.LayoutManager mLayoutManager;
 
-    public static final int CARD_MARGINS_HORIZONTAL = 50;
-    public static final int CARD_MARGINS_VERTICAL = 50;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_roster);
+        Bundle bundle = getIntent().getExtras();
+        classNumber = bundle.getInt("bzofghia");
         loadClasses(); // Must go before FAM is clicked to update count
 
         this.overridePendingTransition(
                 android.R.anim.slide_in_left,
                 android.R.anim.slide_out_right);
 
-        Bundle bundle = getIntent().getExtras();
-        classNumber = bundle.getInt("bzofghia");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

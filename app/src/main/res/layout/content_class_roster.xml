@@ -11,11 +11,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.dirinc.classgrouper.ClassRoster"
-    tools:showIn="@layout/activity_class_roster">
+    tools:showIn="@layout/activity_class_roster"
+    android:orientation="horizontal"
+    android:gravity="center">
 
     <android.support.v7.widget.RecyclerView android:id="@+id/roster_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:gravity="center"/>
 
 </LinearLayout>
 
