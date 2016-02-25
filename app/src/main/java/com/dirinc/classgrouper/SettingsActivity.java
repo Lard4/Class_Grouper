@@ -26,6 +26,10 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        this.overridePendingTransition(
+                android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right);
+
         sharedPreferences = getSharedPreferences(SHARED_PREFS, 0);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -69,20 +73,6 @@ public class SettingsActivity extends AppCompatActivity {
                 prefsEdit.apply();
             }
         });
-
-        if (highContast.isChecked()){
-            /*
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_SHORT)
-                    .setAction("UNDO", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Snackbar.make(view,
-                                    "High Contrast Text Disabled!", Snackbar.LENGTH_SHORT)
-                            .show();
-                        }
-                    })
-                    .show();*/
-        }
     }
 
     public void setActionBar(ActionBar actionBar) {

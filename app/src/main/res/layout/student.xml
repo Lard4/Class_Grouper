@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:visibility="gone"
     android:id="@+id/student_card"
     android:layout_width="@dimen/student_card_width"
     android:layout_height="@dimen/student_card_height"
-    android:visibility="gone"
     card_view:cardUseCompatPadding="true"
+    card_view:cardPreventCornerOverlap="false"
     card_view:cardCornerRadius="@dimen/student_card_radius"
     card_view:cardElevation="@dimen/student_card_elevation"
     android:background="@android:color/white">

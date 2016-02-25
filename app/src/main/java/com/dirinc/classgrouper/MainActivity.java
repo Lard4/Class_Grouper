@@ -1,6 +1,7 @@
 package com.dirinc.classgrouper;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +17,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -61,7 +65,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         view = findViewById(R.id.main_layout);
+
+        this.overridePendingTransition(
+                android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right);
 
         sharedPreferences = getSharedPreferences(SHARED_PREFS, 0);
         sharedPreferencesClass1 = getSharedPreferences(SHARED_PREFS_CLASS1, 0);

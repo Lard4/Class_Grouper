@@ -45,23 +45,26 @@ public class ClassRoster extends AppCompatActivity {
     private int classNumber;
     private boolean menuIsOpened = false;
 
-    private View view;
-
     private HashMap<Integer, String> thisClass = new HashMap<>();
+
+    public static final int CARD_MARGINS_HORIZONTAL = 50;
+    public static final int CARD_MARGINS_VERTICAL = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_roster);
 
-        view = findViewById(R.id.class_roster);
+        this.overridePendingTransition(
+                android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right);
 
         Bundle bundle = getIntent().getExtras();
         classNumber = bundle.getInt("bzofghia");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         loadClasses(); // Must go before FAM is clicked to update count
 
@@ -170,12 +173,18 @@ public class ClassRoster extends AppCompatActivity {
     public void createRoster(int id) {
         RelativeLayout mainRelativeLayout = (RelativeLayout) findViewById(R.id.class_roster);
 
+        // Needed for student deletion to work
+        for ( int child = 0; child < mainRelativeLayout.getChildCount(); child++) {
+            View view = mainRelativeLayout.getChildAt(child);
+            view.setVisibility(View.GONE);
+        }
+
         for (int x = 0; x < getClassSize(); x++) {
             final CardView card = (CardView) findViewById(R.id.student_card);
             TextView name = (TextView) findViewById(R.id.student_name);
             final ImageView delete = (ImageView) findViewById(R.id.student_delete);
             final ImageView absent = (ImageView) findViewById(R.id.student_absent);
-            final ViewGroup indvCardLayout = (ViewGroup) findViewById(R.id.card_layout);
+            final RelativeLayout indvCardLayout = (RelativeLayout) findViewById(R.id.card_layout);
 
             card.setVisibility(View.VISIBLE);
 
@@ -190,30 +199,28 @@ public class ClassRoster extends AppCompatActivity {
                     (int) getResources().getDimension(R.dimen.student_card_height)
             );
 
-            card.setRadius(getResources().getDimension(R.dimen.student_card_radius));
-            card.setUseCompatPadding(true);
-            card.setMaxCardElevation(getResources().getDimension(R.dimen.student_card_elevation));
-            card.setBackgroundColor(getResources().getColor(android.R.color.white));
-
             if (id % 2 != 0) { // Odd, LEFT SIDE
                 if (id != 1) {
                     int belowThis = (id - 2);
-                    EditLayoutParams.setMargins(0, 50, 0, 0);
+                    EditLayoutParams.setMargins(0, CARD_MARGINS_HORIZONTAL, 0, 0);
                     EditLayoutParams.addRule(RelativeLayout.BELOW, belowThis);
                 }
             } else { // 0 is "even", RIGHT SIDE
                 int rightOfThis = (id - 1);
-                EditLayoutParams.setMargins(20, 0, 0, 0);
+                EditLayoutParams.setMargins(CARD_MARGINS_VERTICAL, 0, 0, 0);
                 EditLayoutParams.addRule(RelativeLayout.RIGHT_OF, rightOfThis);
-
             }
 
             card.setLayoutParams(EditLayoutParams);
+            card.setUseCompatPadding(true);
+            card.setPreventCornerOverlap(false);
+            card.setRadius(getResources().getDimension(R.dimen.student_card_radius));
+            card.setMaxCardElevation(getResources().getDimension(R.dimen.student_card_elevation));
+            card.setBackgroundColor(getResources().getColor(android.R.color.white));
 
             name.setText(getStudentInitials(x));
 
-            int color = Color.parseColor("#404040");
-            delete.setColorFilter(color);
+            delete.setColorFilter(Color.parseColor("#404040"));
 
             final int finalId = id;
             delete.setOnClickListener(new View.OnClickListener() {
@@ -223,8 +230,28 @@ public class ClassRoster extends AppCompatActivity {
                 }
             });
 
+            absent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    float semiTransparent = 0.5f;
+                    float opaque = 1.0f;
+
+                    if (card.getAlpha() == semiTransparent) {
+                        card.setAlpha(opaque);
+                        absent.setColorFilter(Color.parseColor("#404040"));
+                    } else {
+                        card.setAlpha(semiTransparent);
+                        absent.setColorFilter(Color.parseColor("#9E0010"));
+                    }
+                }
+            });
+
             Random rand = new Random();
-            int newColor = Color.argb(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+
+            int newColor = Color.argb(255,
+                    rand.nextInt(156) + 100,    //R
+                    rand.nextInt(156) + 100,    //G
+                    rand.nextInt(156) + 100);   //B
             indvCardLayout.setBackgroundColor(newColor);
 
             // Add it to the main RelativeLayout
@@ -255,6 +282,7 @@ public class ClassRoster extends AppCompatActivity {
                 .setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialoginterface, int i) {
                         thisClass.remove(id - 1); // DELETE ONE LESS BECAUSE IDS MUST START AT 1!!
+                        //SharedPreferences.Editor editor = getSharedPreferences(SHARED_PREFS_CLASS1, 0).edit();
                         createRoster(1);
                     }
                 }).show();

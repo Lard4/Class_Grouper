@@ -64,6 +64,10 @@ public class CreateClass extends AppCompatActivity {
 
         relativeLayout = new RelativeLayout(this);
 
+        this.overridePendingTransition(
+                android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right);
+
         sharedPreferences = getSharedPreferences(SHARED_PREFS, 0);
         sharedPreferencesclass1 = getSharedPreferences(SHARED_PREFS_CLASS1, 0);
         sharedPreferencesclass2 = getSharedPreferences(SHARED_PREFS_CLASS2, 0);
@@ -82,20 +86,15 @@ public class CreateClass extends AppCompatActivity {
 
         className = (EditText) findViewById(R.id.className);
         studentOneName = (EditText) findViewById(R.id.student_name);
-        createClass = (ImageButton) findViewById(R.id.createClass);ImageButton
+        createClass = (ImageButton) findViewById(R.id.createClass);
         addNewStudent = (FloatingActionButton) findViewById(R.id.prompt_student_name);
 
         studentOneName.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Auto-generated method stub
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-                // Auto-generated method stub
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void afterTextChanged(Editable s) {
