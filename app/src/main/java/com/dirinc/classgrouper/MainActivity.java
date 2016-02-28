@@ -241,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
 
         Drawer result = new DrawerBuilder()
                 .withActivity(this)
+                .withActivity(new SettingsActivity())
                 .withToolbar(toolbar)
                 .withActionBarDrawerToggle(true)
                 .withAccountHeader(headerResult)
@@ -499,14 +500,14 @@ public class MainActivity extends AppCompatActivity {
                 changeActivities = new Intent(this, CreateClass.class);
                 Log.d("ActivitySwitch", "Switching to CreateClass Activity");
                 startActivity(changeActivities);
-                finish();
+                //finish();
                 break;
 
             case "SettingsActivity":
                 changeActivities = new Intent(this, SettingsActivity.class);
                 Log.d("ActivitySwitch", "Switching to Settings Activity");
                 startActivity(changeActivities);
-                finish();
+                //finish();
                 break;
 
             case "ClassRoster":
@@ -516,7 +517,7 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putInt("bzofghia", newClass);
                 changeActivities.putExtras(bundle);
                 startActivity(changeActivities);
-                finish();
+                //finish();
                 break;
         }
     }
@@ -534,7 +535,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialoginterface, int i) {
                         deleteClass(nClass);
-                        Snackbar.make(view, "Class " + nClass + " deleted", Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, "ClassInfo " + nClass + " deleted", Snackbar.LENGTH_LONG)
                                 .setAction("Dandy!", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -555,7 +556,7 @@ public class MainActivity extends AppCompatActivity {
         HashMap <Integer, String> thisClass = new HashMap<>();
         boolean hasStudents = true;
         String name;
-        student = 1;
+        student = 0;
 
         // if class exists
         if (whichClass <= getNumberOfClasses()) {
@@ -627,10 +628,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
                 }
-
             }
         }
         return thisClass;
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.finishAffinity();
     }
 
     class Listener implements View.OnClickListener, Toolbar.OnMenuItemClickListener {
@@ -651,7 +656,7 @@ public class MainActivity extends AppCompatActivity {
                     bundle.putInt("bzofghia", nClass);
                     changeActivities.putExtras(bundle);
                     startActivity(changeActivities);
-                    finish();
+                    //finish();
                     break;
             }
         }

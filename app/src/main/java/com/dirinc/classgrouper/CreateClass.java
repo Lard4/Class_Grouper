@@ -1,10 +1,13 @@
 package com.dirinc.classgrouper;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
@@ -57,6 +60,7 @@ public class CreateClass extends AppCompatActivity {
 
     private int numberOfClasses = 0;
     private int id = 0;
+    private int studentCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,31 +103,7 @@ public class CreateClass extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                switch (getClassCount()) {
-                    case 0:
-                        class1.put(id, String.valueOf(studentOneName.getText()));
-                        break;
-
-                    case 1:
-                        class2.put(id, String.valueOf(studentOneName.getText()));
-                        break;
-
-                    case 2:
-                        class3.put(id, String.valueOf(studentOneName.getText()));
-                        break;
-
-                    case 3:
-                        class4.put(id, String.valueOf(studentOneName.getText()));
-                        break;
-
-                    case 4:
-                        class5.put(id, String.valueOf(studentOneName.getText()));
-                        break;
-
-                    case 5:
-                        class6.put(id, String.valueOf(studentOneName.getText()));
-                        break;
-                }
+                getCurrentClass().put(id, String.valueOf(studentOneName.getText()));
             }
         });
 
@@ -132,6 +112,7 @@ public class CreateClass extends AppCompatActivity {
             public void onClick(View v) {
                 v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 // TODO: Hide keyboard
+
                 addEditText();
             }
         });
@@ -140,9 +121,55 @@ public class CreateClass extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                establishClass();
+                if (checkAllStudentsValidity()) {
+                    establishClass();
+                } else {
+                    showAlertDialog("Oops!", "One of your students is nameless!", "OK");
+                }
             }
         });
+    }
+
+    public boolean checkAllStudentsValidity() {
+        for (int i = 1; i < getCurrentClass().size(); i++) {
+            if (getCurrentClass().get(i) == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public HashMap<Integer, String> getCurrentClass() {
+        switch (getClassCount()) {
+            case 0:
+                return class1;
+
+            case 1:
+                return class2;
+
+            case 2:
+                return class3;
+
+            case 3:
+                return class4;
+
+            case 4:
+                return class5;
+
+            case 5:
+                return class6;
+
+            default:
+                return null;
+        }
+    }
+
+    public void showAlertDialog(String title, String message, String positiveButton) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(positiveButton, null)
+                .show();
     }
 
     public void addEditText() {
@@ -178,45 +205,15 @@ public class CreateClass extends AppCompatActivity {
 
         // Get student_card name
         newStudent.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Auto-generated method stub
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-                // Auto-generated method stub
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void afterTextChanged(Editable s) {
-                switch (getClassCount()) {
-                    case 0:
-                        class1.put(id, String.valueOf(newStudent.getText()));
-                        break;
-
-                    case 1:
-                        class2.put(id, String.valueOf(newStudent.getText()));
-                        break;
-
-                    case 2:
-                        class3.put(id, String.valueOf(newStudent.getText()));
-                        break;
-
-                    case 3:
-                        class4.put(id, String.valueOf(newStudent.getText()));
-                        break;
-
-                    case 4:
-                        class5.put(id, String.valueOf(newStudent.getText()));
-                        break;
-
-                    case 5:
-                        class6.put(id, String.valueOf(newStudent.getText()));
-                        break;
-                }
+                getCurrentClass().put(id, String.valueOf(newStudent.getText()));
             }
         });
 

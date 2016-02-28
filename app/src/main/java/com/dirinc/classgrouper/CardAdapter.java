@@ -1,5 +1,6 @@
 package com.dirinc.classgrouper;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,19 +17,26 @@ import java.util.Random;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
-    List<Student> mItems;
-    HashMap<Integer, String> thisClass;
+    private List<Student> mItems;
+    private HashMap<Integer, String> thisClass;
+    private int nClass;
+    private final ClassInfo classEditor;
 
-    public CardAdapter(HashMap<Integer, String> thisClass) {
+    public CardAdapter(HashMap<Integer, String> thisClass, int nClass, Context context) {
         super();
         this.thisClass = thisClass;
+        this.nClass = nClass;
+        this.classEditor = new ClassInfo(nClass, context);
+
         mItems = new ArrayList<>();
 
         for (int i = 0; i < thisClass.size(); i++) {
             Student student = new Student();
-            student.setInitials(getInitials(i));
-            student.setColor(generateColor());
-            mItems.add(student);
+            if (getInitials(i) != null) {
+                student.setInitials(getInitials(i));
+                student.setColor(generateColor());
+                mItems.add(student);
+            }
         }
     }
 
@@ -49,7 +57,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         viewHolder.cardDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mItems.remove(i);
                 notifyItemRemoved(i);
+                notifyItemRangeChanged(i, mItems.size());
+                //classEditor.removeStudent(i);
             }
         });
     }
@@ -60,13 +71,17 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     }
 
     public String getInitials(int key) {
-        String name = thisClass.get(key).replaceAll("[.,]", "");
-        String initials = "";
+        if (thisClass.get(key) != null) {
+            String name = thisClass.get(key).replaceAll("[.,]", "");
+            String initials = "";
 
-        for(String s : name.split(" ")) {
-            initials += s.charAt(0);
+            for (String s : name.split(" ")) {
+                initials += s.charAt(0);
+            }
+            return initials;
+        } else {
+            return null;
         }
-        return initials;
     }
 
     public int generateColor() {

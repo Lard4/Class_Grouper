@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -66,7 +65,7 @@ public class ClassRoster extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.roster_recycler);
         mLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        RecyclerView.Adapter mAdapter = new CardAdapter(thisClass);
+        RecyclerView.Adapter mAdapter = new CardAdapter(thisClass, classNumber, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -152,139 +151,6 @@ public class ClassRoster extends AppCompatActivity {
                 addToMap(Integer.parseInt(s), value);
             }
         }
-    }
-
-    public void createRoster(int id) {
-/*
-
-        RelativeLayout mainRelativeLayout = (RelativeLayout) findViewById(R.id.class_roster);
-
-        // Needed for student_card deletion to work
-        for ( int child = 0; child < mainRelativeLayout.getChildCount(); child++) {
-            View view = mainRelativeLayout.getChildAt(child);
-            view.setVisibility(View.GONE);
-        }
-
-        for (int x = 0; x < getClassSize(); x++) {
-            final CardView card = (CardView) findViewById(R.id.student_card);
-            TextView name = (TextView) findViewById(R.id.student_name);
-            final ImageView delete = (ImageView) findViewById(R.id.student_delete);
-            final ImageView absent = (ImageView) findViewById(R.id.student_absent);
-            final RelativeLayout indvCardLayout = (RelativeLayout) findViewById(R.id.card_layout);
-
-            card.setVisibility(View.VISIBLE);
-
-            card.setId(id);
-            name.setId(id + 1000); // Easy number over 100 in case of retard with > 100 students
-            indvCardLayout.setId(id + 10000);
-            delete.setId(id + 100000);
-            absent.setId(id + 1000000);
-
-            RelativeLayout.LayoutParams EditLayoutParams = new RelativeLayout.LayoutParams(
-                    (int) getResources().getDimension(R.dimen.student_card_width),
-                    (int) getResources().getDimension(R.dimen.student_card_height)
-            );
-
-            if (id % 2 != 0) { // Odd, LEFT SIDE
-                if (id != 1) {
-                    int belowThis = (id - 2);
-                    EditLayoutParams.setMargins(0, CARD_MARGINS_HORIZONTAL, 0, 0);
-                    EditLayoutParams.addRule(RelativeLayout.BELOW, belowThis);
-                }
-            } else { // 0 is "even", RIGHT SIDE
-                int rightOfThis = (id - 1);
-                EditLayoutParams.setMargins(CARD_MARGINS_VERTICAL, 0, 0, 0);
-                EditLayoutParams.addRule(RelativeLayout.RIGHT_OF, rightOfThis);
-            }
-
-            card.setLayoutParams(EditLayoutParams);
-            card.setUseCompatPadding(true);
-            card.setPreventCornerOverlap(false);
-            card.setRadius(getResources().getDimension(R.dimen.student_card_radius));
-            card.setMaxCardElevation(getResources().getDimension(R.dimen.student_card_elevation));
-            card.setBackgroundColor(getResources().getColor(android.R.color.white));
-
-            name.setText(getStudentInitials(x));
-
-            delete.setColorFilter(Color.parseColor("#404040"));
-
-            final int finalId = id;
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    promptDelete(finalId);
-                }
-            });
-
-            absent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    float semiTransparent = 0.5f;
-                    float opaque = 1.0f;
-
-                    if (card.getAlpha() == semiTransparent) {
-                        card.setAlpha(opaque);
-                        absent.setColorFilter(Color.parseColor("#404040"));
-                    } else {
-                        card.setAlpha(semiTransparent);
-                        absent.setColorFilter(Color.parseColor("#9E0010"));
-                    }
-                }
-            });
-
-            Random rand = new Random();
-
-            int newColor = Color.argb(255,
-                    rand.nextInt(156) + 100,    //R
-                    rand.nextInt(156) + 100,    //G
-                    rand.nextInt(156) + 100);   //B
-            indvCardLayout.setBackgroundColor(newColor);
-
-            // Add it to the main RelativeLayout
-            CardView cardLayout = (CardView) View.inflate(this,
-                    R.layout.student_card, null);
-
-            mainRelativeLayout.addView(cardLayout);
-            id++;
-        }
-*/
-
-    }
-
-    public void promptDelete(int id) {
-        showAlertDialog("Warning!", "Deleting a class cannot be undone! " +
-                "Are you sure you want to continue", "Delete", "Cancel", id);
-    }
-
-    public void showAlertDialog(String title, String message,
-                                String positiveButton, String negativeButton, final int id) {
-        android.support.v7.app.AlertDialog.Builder dialog =
-                new android.support.v7.app.AlertDialog.Builder(this);
-        dialog.setTitle(title)
-                .setMessage(message)
-                .setNegativeButton(negativeButton, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialoginterface, int i) {
-                        dialoginterface.cancel();
-                    }
-                })
-                .setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialoginterface, int i) {
-                        thisClass.remove(id - 1); // DELETE ONE LESS BECAUSE IDS MUST START AT 1!!
-                        //SharedPreferences.Editor editor = getSharedPreferences(SHARED_PREFS_CLASS1, 0).edit();
-                        createRoster(1);
-                    }
-                }).show();
-    }
-
-    public String getStudentInitials(int key) {
-        String name = getStudentName(key).replaceAll("[.,]", "");
-        String initials = "";
-
-        for(String s : name.split(" ")) {
-            initials += s.charAt(0);
-        }
-
-        return initials;
     }
 
     public int getClassSize() {

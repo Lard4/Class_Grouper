@@ -45,10 +45,11 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
+            /*case android.R.id.home:
                 this.finish();
                 switchActivities("MainActivity");
                 return true;
+                */
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -78,7 +79,7 @@ public class SettingsActivity extends AppCompatActivity {
     public void setActionBar(ActionBar actionBar) {
         if (actionBar != null) {
             // Show the back button in the action bar.
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            //actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 
