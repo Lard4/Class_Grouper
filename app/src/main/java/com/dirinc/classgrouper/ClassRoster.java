@@ -41,7 +41,6 @@ public class ClassRoster extends AppCompatActivity {
                 android.R.anim.slide_in_left,
                 android.R.anim.slide_out_right);
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -65,7 +64,8 @@ public class ClassRoster extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.roster_recycler);
         mLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        RecyclerView.Adapter mAdapter = new CardAdapter(thisClass, classNumber, getApplicationContext());
+        RecyclerView.Adapter mAdapter = new CardAdapter(thisClass, classNumber,
+                getApplicationContext(), false, null);
         mRecyclerView.setAdapter(mAdapter);
     }
 
