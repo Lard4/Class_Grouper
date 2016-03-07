@@ -3,20 +3,16 @@ package com.dirinc.classgrouper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
-public class SettingsActivity extends AppCompatActivity implements NavigationDrawerCallbacks {
+public class ActivitySettings extends AppCompatActivity implements NavigationDrawerCallbacks {
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor prefsEdit;
@@ -79,7 +75,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationDra
         switch (item.getItemId()) {
             *//*case android.R.id.home:
                 this.finish();
-                switchActivities("MainActivity");
+                switchActivities("ActivityMain");
                 return true;
                 *//*
             default:
@@ -119,8 +115,8 @@ public class SettingsActivity extends AppCompatActivity implements NavigationDra
         Intent changeActivities;
 
         switch (newActivity) {
-            case "MainActivity":
-                changeActivities = new Intent(this, MainActivity.class);
+            case "ActivityMain":
+                changeActivities = new Intent(this, ActivityMain.class);
                 Log.d("ActivitySwitch", "Switching to Main Activity");
                 startActivity(changeActivities);
                 break;
@@ -134,7 +130,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationDra
         } else {
             super.onBackPressed();
             finish();
-            switchActivities("MainActivity");
+            switchActivities("ActivityMain");
         }
     }
 }

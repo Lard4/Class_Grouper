@@ -1,12 +1,10 @@
 package com.dirinc.classgrouper;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
@@ -25,7 +23,7 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
-public class CreateClass extends AppCompatActivity {
+public class ActivityCreateClass extends AppCompatActivity {
 
     private EditText className;
     private EditText studentOneName;
@@ -236,7 +234,7 @@ public class CreateClass extends AppCompatActivity {
             prefsEdit.apply();
 
             establishStudents();
-            switchActivities("MainActivity");
+            switchActivities("ActivityMain");
             finish();
         } else {
             Toast.makeText(getApplicationContext(), "Name your class!", Toast.LENGTH_SHORT)
@@ -305,20 +303,20 @@ public class CreateClass extends AppCompatActivity {
         Intent changeActivities;
 
         switch (newActivity) {
-            case "CreateClass":
-                changeActivities = new Intent(this, CreateClass.class);
-                Log.d("ActivitySwitch", "Switching to CreateClass Activity");
+            case "ActivityCreateClass":
+                changeActivities = new Intent(this, ActivityCreateClass.class);
+                Log.d("ActivitySwitch", "Switching to ActivityCreateClass Activity");
                 startActivity(changeActivities);
                 break;
 
-            case "SettingsActivity":
-                changeActivities = new Intent(this, SettingsActivity.class);
+            case "ActivitySettings":
+                changeActivities = new Intent(this, ActivitySettings.class);
                 Log.d("ActivitySwitch", "Switching to Settings Activity");
                 startActivity(changeActivities);
                 break;
 
-            case "MainActivity":
-                changeActivities = new Intent(this, MainActivity.class);
+            case "ActivityMain":
+                changeActivities = new Intent(this, ActivityMain.class);
                 Log.d("ActivitySwitch", "Switching to Main Activity");
                 startActivity(changeActivities);
                 break;
@@ -328,6 +326,6 @@ public class CreateClass extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
-        switchActivities("MainActivity");
+        switchActivities("ActivityMain");
     }
 }

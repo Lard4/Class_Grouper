@@ -9,7 +9,7 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".ActivityMain"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,20 +19,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ActivitySettings"
             android:label="@string/action_settings"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CreateClass"
+            android:name=".ActivityCreateClass"
             android:label="@string/action_create_class"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ClassRoster"
+            android:name=".ActivityClassRoster"
             android:label="@string/title_activity_class_roster"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.dirinc.classgrouper.MainActivity" />
+                android:value=".ActivityMain" />
         </activity>
     </application>
 

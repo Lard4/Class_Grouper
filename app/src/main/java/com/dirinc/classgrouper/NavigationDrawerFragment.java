@@ -40,9 +40,12 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
+    private NavigationDrawerAdapter adapter;
     private DrawerLayout drawerLayout;
     private RecyclerView drawerList;
     private View fragmentContainerView;
+
+    private List<NavigationItem> items = new ArrayList<>();
 
     private int currentSelectedPosition = 0;
     private boolean fromSavedInstanceState;
@@ -72,7 +75,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         drawerList.setHasFixedSize(true);
 
         final List<NavigationItem> navigationItems = getMenu();
-        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(navigationItems);
+        adapter = new NavigationDrawerAdapter(navigationItems);
         adapter.setNavigationDrawerCallbacks(this);
         drawerList.setAdapter(adapter);
         selectItem(currentSelectedPosition);
@@ -98,11 +101,12 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     public List<NavigationItem> getMenu() {
-        List<NavigationItem> items = new ArrayList<NavigationItem>();
-        items.add(new NavigationItem("item 1", getResources().getDrawable(R.drawable.class_ic_png)));
-        items.add(new NavigationItem("item 2", getResources().getDrawable(R.drawable.class_ic_png)));
-        items.add(new NavigationItem("item 3", getResources().getDrawable(R.drawable.class_ic_png)));
+        //items.add(new NavigationItem("item 1", getResources().getDrawable(R.drawable.ic_class)));
         return items;
+    }
+
+    public void addItem(String name, Drawable image) {
+        adapter.addItem(name, image);
     }
 
     public void setup(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar) {
@@ -117,6 +121,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                 toolbar,
                 R.string.drawer_open,
                 R.string.drawer_close) {
+
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);

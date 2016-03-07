@@ -1,5 +1,6 @@
 package com.dirinc.classgrouper;
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,12 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
     public void setNavigationDrawerCallbacks(NavigationDrawerCallbacks navigationDrawerCallbacks) {
         this.navigationDrawerCallbacks = navigationDrawerCallbacks;
+    }
+
+    public void addItem(String name, Drawable image) {
+        data.add(new NavigationItem(name, image));
+        notifyItemInserted(getItemCount() + 1);
+        notifyDataSetChanged();
     }
 
     @Override

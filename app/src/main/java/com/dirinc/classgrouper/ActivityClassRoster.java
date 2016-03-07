@@ -21,7 +21,7 @@ import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.*;
 
-public class ClassRoster extends AppCompatActivity {
+public class ActivityClassRoster extends AppCompatActivity {
     private int classNumber;
     private boolean menuIsOpened = false;
 
@@ -65,7 +65,7 @@ public class ClassRoster extends AppCompatActivity {
         mLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
         RecyclerView.Adapter mAdapter = new CardAdapter(thisClass, classNumber,
-                getApplicationContext(), false, null);
+                getApplicationContext(), false, null, null);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -74,7 +74,7 @@ public class ClassRoster extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
-                switchActivities("MainActivity");
+                switchActivities("ActivityMain");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -168,7 +168,7 @@ public class ClassRoster extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
-        Intent changeActivities = new Intent(this, MainActivity.class);
+        Intent changeActivities = new Intent(this, ActivityMain.class);
         Log.d("ActivitySwitch", "Switching to Main Activity");
         startActivity(changeActivities);
     }
@@ -177,8 +177,8 @@ public class ClassRoster extends AppCompatActivity {
         Intent changeActivities;
 
         switch (newActivity) {
-            case "MainActivity":
-                changeActivities = new Intent(this, MainActivity.class);
+            case "ActivityMain":
+                changeActivities = new Intent(this, ActivityMain.class);
                 Log.d("ActivitySwitch", "Switching to Main Activity");
                 startActivity(changeActivities);
                 break;

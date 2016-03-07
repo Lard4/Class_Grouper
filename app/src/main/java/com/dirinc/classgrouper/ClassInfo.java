@@ -53,24 +53,27 @@ public class ClassInfo {
         setMap(thisClass);
     }
 
-    public void setCardName(String cardName) {
+    public ClassInfo setCardName(String cardName) {
         this.cardName = cardName;
+        return this;
     }
 
     public String getCardName() {
         return cardName;
     }
 
-    public void setCardStudentCount(String cardStudentCount) {
+    public ClassInfo setCardStudentCount(String cardStudentCount) {
         this.cardStudentCount = cardStudentCount;
+        return this;
     }
 
     public String getCardStudentCount() {
         return cardStudentCount;
     }
 
-    public void setCardColor(int cardColor) {
+    public ClassInfo setCardColor(int cardColor) {
         this.cardColor = cardColor;
+        return this;
     }
 
     public int getCardColor() {

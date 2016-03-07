@@ -1,5 +1,6 @@
 package com.dirinc.classgrouper;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,11 +23,11 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements NavigationDrawerCallbacks {
+public class ActivityMain extends AppCompatActivity implements NavigationDrawerCallbacks {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
-    private NavigationDrawerFragment navigationDrawerFragment;
+    public static NavigationDrawerFragment navigationDrawerFragment;
 
     private View view;
     private Toolbar toolbar;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switchActivities("CreateClass", 0);
+                switchActivities("ActivityCreateClass", 0);
             }
         });
 
@@ -74,9 +75,14 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
         // Set up the drawer.
         navigationDrawerFragment.setup(R.id.fragment_drawer,
                 (DrawerLayout) findViewById(R.id.drawer), toolbar);
+        navigationDrawerFragment.addItem("Class One", getResources().getDrawable(R.drawable.ic_class));
         /* Populate the navigation drawer
         navigationDrawerFragment.setUserData("John Doe", "johndoe@doe.com",
                 BitmapFactory.decodeResource(getResources(), R.drawable.avatar)); */
+    }
+
+    public NavigationDrawerFragment getDrawer() {
+        return navigationDrawerFragment;
     }
 
     @Override
@@ -90,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
         RecyclerView.Adapter mAdapter = new CardAdapter(null, 0,
-                getApplicationContext(), true, getClassData());
+                getApplicationContext(), true, getClassData(), findViewById(R.id.main_layout));
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -112,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!navigationDrawerFragment.isDrawerOpen()) {
+        if (/*!navigationDrawerFragment.isDrawerOpen()*/ true) {
             /* Only show items in the action bar relevant to this screen
              * if the drawer is not showing. Otherwise, let the drawer
              * decide what to show in the action bar.
@@ -128,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            switchActivities("SettingsActivity", 0);
+            switchActivities("ActivitySettings", 0);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -158,23 +164,23 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
         Intent changeActivities;
 
         switch (newActivity) {
-            case "CreateClass":
-                changeActivities = new Intent(this, CreateClass.class);
-                Log.d("ActivitySwitch", "Switching to CreateClass Activity");
+            case "ActivityCreateClass":
+                changeActivities = new Intent(this, ActivityCreateClass.class);
+                Log.d("ActivitySwitch", "Switching to ActivityCreateClass Activity");
                 startActivity(changeActivities);
                 //finish();
                 break;
 
-            case "SettingsActivity":
-                changeActivities = new Intent(this, SettingsActivity.class);
+            case "ActivitySettings":
+                changeActivities = new Intent(this, ActivitySettings.class);
                 Log.d("ActivitySwitch", "Switching to Settings Activity");
                 startActivity(changeActivities);
                 //finish();
                 break;
 
-            case "ClassRoster":
-                changeActivities = new Intent(getApplicationContext(), ClassRoster.class);
-                Log.d("ActivitySwitch", "Switching to ClassRoster Activity");
+            case "ActivityClassRoster":
+                changeActivities = new Intent(getApplicationContext(), ActivityClassRoster.class);
+                Log.d("ActivitySwitch", "Switching to ActivityClassRoster Activity");
                 Bundle bundle = new Bundle();
                 bundle.putInt("bzofghia", newClass);
                 changeActivities.putExtras(bundle);
@@ -222,5 +228,14 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
             super.onBackPressed();
             this.finishAffinity();
         }
+    }
+
+    public void goToRoster(int classNumber) {
+        Intent intent = new Intent(getApplicationContext(), ActivityClassRoster.class);
+        Log.d("ActivitySwitch", "Switching to ActivityClassRoster Activity");
+        Bundle bundle = new Bundle();
+        bundle.putInt("bzofghia", classNumber);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }
