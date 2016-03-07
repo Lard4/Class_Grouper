@@ -21,7 +21,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     private List<ClassInfo> mClasses;
     private HashMap<Integer, String> thisClass;
 
-    private String[][] classData = new String[2][100];
+    private String[][] classData = new String[100][2];
 
     private int nClass;
     private boolean isMain;

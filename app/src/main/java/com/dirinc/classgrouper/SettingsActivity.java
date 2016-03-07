@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,11 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements NavigationDrawerCallbacks {
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor prefsEdit;
+
+    private NavigationDrawerFragment navigationDrawerFragment;
 
     private static final String SHARED_PREFS = "shared_preferences";
 
@@ -40,20 +44,48 @@ public class SettingsActivity extends AppCompatActivity {
 
         Switch highContrast = (Switch) findViewById(R.id.HCT_switch);
         setSwitch(highContrast);
+
+        createDrawer(toolbar);
+    }
+
+    public void createDrawer(Toolbar toolbar) {
+        navigationDrawerFragment = (NavigationDrawerFragment)
+                getFragmentManager().findFragmentById(R.id.fragment_drawer);
+        // Set up the drawer.
+        navigationDrawerFragment.setup(R.id.fragment_drawer,
+                (DrawerLayout) findViewById(R.id.drawer), toolbar);
+        /* Populate the navigation drawer
+        navigationDrawerFragment.setUserData("John Doe", "johndoe@doe.com",
+                BitmapFactory.decodeResource(getResources(), R.drawable.avatar)); */
     }
 
     @Override
+    public void onNavigationDrawerItemSelected(int position) {
+        // Update the main content by replacing fragments
+        Toast.makeText(this, "Menu item selected -> " + position, Toast.LENGTH_SHORT).show();
+    }
+
+/*    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (!navigationDrawerFragment.isDrawerOpen()) {
+            *//* Only show items in the action bar relevant to this screen
+             * if the drawer is not showing. Otherwise, let the drawer
+             * decide what to show in the action bar.
+             *//*
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+            return true;
+        }
+
         switch (item.getItemId()) {
-            /*case android.R.id.home:
+            *//*case android.R.id.home:
                 this.finish();
                 switchActivities("MainActivity");
                 return true;
-                */
+                *//*
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
+    }*/
 
     public void setSwitch(Switch highContast) {
         boolean HCTchecked = sharedPreferences.getBoolean("HCTchecked", false);
@@ -97,7 +129,12 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
-        switchActivities("MainActivity");
+        if (navigationDrawerFragment.isDrawerOpen()) {
+            navigationDrawerFragment.closeDrawer();
+        } else {
+            super.onBackPressed();
+            finish();
+            switchActivities("MainActivity");
+        }
     }
 }

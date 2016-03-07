@@ -1,7 +1,5 @@
 package com.dirinc.classgrouper;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,41 +7,26 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.adapter.BaseDrawerAdapter;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import android.widget.Toast;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements NavigationDrawerCallbacks {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+
+    private NavigationDrawerFragment navigationDrawerFragment;
 
     private View view;
     private Toolbar toolbar;
@@ -54,15 +37,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        start();
-    }
-
-    public void start() {
         view = findViewById(R.id.main_layout);
 
         this.overridePendingTransition(
@@ -70,15 +47,6 @@ public class MainActivity extends AppCompatActivity {
                 android.R.anim.slide_out_right);
 
         sharedPreferences = getSharedPreferences(SHARED_PREFS, 0);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        new DrawerBuilder()
-                .withActivity(this)
-                .withActionBarDrawerToggle(true)
-                .build();
-        setupDrawer();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -88,13 +56,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        createDrawer();
+        createCards();
+    }
+
+    public void start() {
         /*
         Toolbar class1Toolbar = (Toolbar) findViewById(R.id.class1_toolbar);
         class1Toolbar.inflateMenu(R.menu.menu_delete);
         class1Toolbar.setOnMenuItemClickListener(new Listener(1));
         */
+    }
 
-        createCards();
+    public void createDrawer() {
+        navigationDrawerFragment = (NavigationDrawerFragment)
+                getFragmentManager().findFragmentById(R.id.fragment_drawer);
+        // Set up the drawer.
+        navigationDrawerFragment.setup(R.id.fragment_drawer,
+                (DrawerLayout) findViewById(R.id.drawer), toolbar);
+        /* Populate the navigation drawer
+        navigationDrawerFragment.setUserData("John Doe", "johndoe@doe.com",
+                BitmapFactory.decodeResource(getResources(), R.drawable.avatar)); */
+    }
+
+    @Override
+    public void onNavigationDrawerItemSelected(int position) {
+        // Update the main content by replacing fragments
+        Toast.makeText(this, "Menu item selected -> " + position, Toast.LENGTH_SHORT).show();
     }
 
     public void createCards() {
@@ -107,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String[][] getClassData() {
-        String[][] classData = new String[2][100];
+        String[][] classData = new String[100][2];
 
         for (int i = 0; i < classData.length; i++) {
             for (int ii = 0; ii < classData[i].length; ii++) {
@@ -115,91 +103,35 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        classData[0][0] = "Tester One";
-        classData[0][1] = "2 STUDENTS";
-
+        for (int i = 0; i < 20; i++) {
+            classData[i][0] = "Class " + i;
+            classData[i][1] = new Random().nextInt(50) + " STUDENTS";
+        }
         return classData;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        if (!navigationDrawerFragment.isDrawerOpen()) {
+            /* Only show items in the action bar relevant to this screen
+             * if the drawer is not showing. Otherwise, let the drawer
+             * decide what to show in the action bar.
+             */
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+            return true;
+        }
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
         if (id == R.id.action_settings) {
             switchActivities("SettingsActivity", 0);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
-    }
-
-    public void setupDrawer() {
-        PrimaryDrawerItem homeDrawer = new PrimaryDrawerItem()
-                .withName("Home")
-                .withIdentifier(0)
-                .withIcon(GoogleMaterial.Icon.gmd_home);
-
-        PrimaryDrawerItem classesDrawer = new PrimaryDrawerItem()
-                .withName("All Classes")
-                .withSelectable(false)
-                .withEnabled(false)
-                .withTextColor(Color.parseColor("#9E9E9E"));
-
-        final SecondaryDrawerItem class0 = new SecondaryDrawerItem()
-                .withName(getClassName(1))
-                .withIdentifier(1)
-                .withIcon(R.drawable.class_ic_png);
-
-        PrimaryDrawerItem settingsDrawer = new PrimaryDrawerItem()
-                .withName("Settings")
-                .withIdentifier(10)
-                .withIcon(GoogleMaterial.Icon.gmd_settings);
-
-        DividerDrawerItem dividerDrawer = new DividerDrawerItem();
-
-        AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.drawable.classroom)
-                .build();
-
-        Drawer result = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(toolbar)
-                .withActionBarDrawerToggle(true)
-                .withAccountHeader(headerResult)
-                .addDrawerItems(
-                        homeDrawer,
-                        dividerDrawer,
-                        classesDrawer,
-                        class0,
-                        dividerDrawer,
-                        settingsDrawer
-                )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        switch (drawerItem.getIdentifier()) {
-                            case 0: // Always HOME
-                                switchActivities("MainActivity", 0);
-                                break;
-
-                            case 10:
-                                switchActivities("SettingsActivity", 0);
-                                break;
-
-                            default:
-                                switchActivities("ClassRoster", drawerItem.getIdentifier());
-                                break;
-                        }
-                        return false;
-                    }
-                })
-                .build();
     }
 
     public void deleteClass(int whichClass) {
@@ -284,6 +216,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        this.finishAffinity();
+        if (navigationDrawerFragment.isDrawerOpen()) {
+            navigationDrawerFragment.closeDrawer();
+        } else {
+            super.onBackPressed();
+            this.finishAffinity();
+        }
     }
 }

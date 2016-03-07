@@ -21,6 +21,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="ToolbarTheme" parent="Theme.AppCompat">
+
+    </style>
+
     <style name="roster_card">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
