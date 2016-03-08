@@ -74,7 +74,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
                 getFragmentManager().findFragmentById(R.id.fragment_drawer);
         // Set up the drawer.
         navigationDrawerFragment.setup(R.id.fragment_drawer,
-                (DrawerLayout) findViewById(R.id.drawer), toolbar);
+                (DrawerLayout) findViewById(R.id.drawer), toolbar, true);
         navigationDrawerFragment.addItem("Class One", getResources().getDrawable(R.drawable.ic_class));
         /* Populate the navigation drawer
         navigationDrawerFragment.setUserData("John Doe", "johndoe@doe.com",
@@ -237,14 +237,5 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
             super.onBackPressed();
             this.finishAffinity();
         }
-    }
-
-    public void goToRoster(int classNumber) {
-        Intent intent = new Intent(getApplicationContext(), ActivityClassRoster.class);
-        Log.d("ActivitySwitch", "Switching to ActivityClassRoster Activity");
-        Bundle bundle = new Bundle();
-        bundle.putInt("bzofghia", classNumber);
-        intent.putExtras(bundle);
-        startActivity(intent);
     }
 }

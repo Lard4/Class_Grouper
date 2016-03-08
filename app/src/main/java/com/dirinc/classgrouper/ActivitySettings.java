@@ -41,15 +41,15 @@ public class ActivitySettings extends AppCompatActivity implements NavigationDra
         Switch highContrast = (Switch) findViewById(R.id.HCT_switch);
         setSwitch(highContrast);
 
-        createDrawer(toolbar);
+        createDrawer(toolbar, actionBar);
     }
 
-    public void createDrawer(Toolbar toolbar) {
+    public void createDrawer(Toolbar toolbar, ActionBar actionBar) {
         navigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_drawer);
         // Set up the drawer.
         navigationDrawerFragment.setup(R.id.fragment_drawer,
-                (DrawerLayout) findViewById(R.id.drawer), toolbar);
+                (DrawerLayout) findViewById(R.id.drawer), toolbar, false);
         /* Populate the navigation drawer
         navigationDrawerFragment.setUserData("John Doe", "johndoe@doe.com",
                 BitmapFactory.decodeResource(getResources(), R.drawable.avatar)); */

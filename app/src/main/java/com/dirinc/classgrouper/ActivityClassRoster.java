@@ -117,6 +117,14 @@ public class ActivityClassRoster extends AppCompatActivity {
     }
 
     public void loadClasses() {
+        String alph = "QWERTYUIOPASDFGHJKLZXCVBNM";
+        for (int i = 0; i < 20; i++) {
+            addToMap(i, "" + alph.charAt(new Random().nextInt(alph.length())) + " " +
+                    alph.charAt(new Random().nextInt(alph.length())));
+        }
+    }
+
+    public void loadClasse() {
         SharedPreferences pref = null;
         switch (classNumber) {
             case 1:

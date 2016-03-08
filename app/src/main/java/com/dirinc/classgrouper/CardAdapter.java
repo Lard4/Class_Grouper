@@ -2,7 +2,9 @@ package com.dirinc.classgrouper;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -34,6 +36,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     private boolean isMain;
     private ClassInfo classEditor;
     private View layout;
+    public Context context;
 
     public CardAdapter(HashMap<Integer, String> thisClass, int nClass, Context context,
                        boolean isMain, String classData[][], View layout) {
@@ -92,13 +95,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             viewHolder.classCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new ActivityMain().goToRoster(mClasses.get(i).nClass);
+                    final Intent intent = new Intent(context, ActivityClassRoster.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("bzofghia", i);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
                 }
             });
             viewHolder.classCardTitle.setText(classInfo.getCardName());
             viewHolder.classCardStudentCount.setText(classInfo.getCardStudentCount());
             viewHolder.classCardColor.setBackgroundColor(classInfo.getCardColor());
-            viewHolder.classCardToolbar.inflateMenu(R.menu.menu_delete);
             viewHolder.classCardToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
@@ -117,7 +123,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                                     Snackbar.make(layout, "Class x deleted", Snackbar.LENGTH_LONG)
                                             .setAction("Dandy!", new View.OnClickListener() {
                                                 @Override
-                                                public void onClick(View v) { }
+                                                public void onClick(View v) {
+                                                }
                                             })
                                             .setActionTextColor(Color.parseColor("#FFFFC107"))
                                             .show();
@@ -189,10 +196,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
             if (isMain) {
                 this.classCard = (CardView) itemView.findViewById(R.id.class_card);
+                context = this.classCard.getContext();
                 this.classCardTitle = (TextView) itemView.findViewById(R.id.class_card_title);
                 this.classCardStudentCount = (TextView) itemView.findViewById(R.id.class_card_student_count);
                 this.classCardColor = (ImageView) itemView.findViewById(R.id.class_card_color);
                 this.classCardToolbar = (Toolbar) itemView.findViewById(R.id.class_card_toolbar);
+                this.classCardToolbar.inflateMenu(R.menu.menu_delete);
             } else {
                 this.studentCardColor = (RelativeLayout) itemView.findViewById(R.id.card_layout);
                 this.studentCardInitials = (TextView) itemView.findViewById(R.id.student_name);

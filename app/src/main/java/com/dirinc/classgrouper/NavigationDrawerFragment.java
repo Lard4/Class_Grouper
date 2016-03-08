@@ -2,6 +2,7 @@ package com.dirinc.classgrouper;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -109,40 +110,83 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         adapter.addItem(name, image);
     }
 
-    public void setup(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar) {
+    public void setup(int fragmentId, final DrawerLayout drawerLayout, final Toolbar toolbar, boolean toggle) {
         fragmentContainerView = getActivity().findViewById(fragmentId);
         this.drawerLayout = drawerLayout;
 
         this.drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.primary_dark));
 
-        actionBarDrawerToggle = new ActionBarDrawerToggle(
-                getActivity(),
-                NavigationDrawerFragment.this.drawerLayout,
-                toolbar,
-                R.string.drawer_open,
-                R.string.drawer_close) {
+        if (toggle) {
+            actionBarDrawerToggle = new ActionBarDrawerToggle(
+                    getActivity(),
+                    NavigationDrawerFragment.this.drawerLayout,
+                    toolbar,
+                    R.string.drawer_open,
+                    R.string.drawer_close) {
 
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                if (!isAdded()) return;
-
-                getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                if (!isAdded()) return;
-                if (!userLearnedDrawer) {
-                    userLearnedDrawer = true;
-                    SharedPreferences sp = PreferenceManager
-                            .getDefaultSharedPreferences(getActivity());
-                    sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
+                @Override
+                public void onDrawerClosed(View drawerView) {
+                    super.onDrawerClosed(drawerView);
+                    if (!isAdded()) return;
+                    getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
                 }
-                getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-            }
-        };
+
+                @Override
+                public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                    if (!isAdded()) return;
+                    if (!userLearnedDrawer) {
+                        userLearnedDrawer = true;
+                        SharedPreferences sp = PreferenceManager
+                                .getDefaultSharedPreferences(getActivity());
+                        sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
+                    }
+                    getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+                }
+            };
+        } else  {
+            actionBarDrawerToggle = new ActionBarDrawerToggle(
+                    getActivity(),
+                    NavigationDrawerFragment.this.drawerLayout,
+                    R.string.drawer_open,
+                    R.string.drawer_close) {
+
+                @Override
+                public void onDrawerClosed(View drawerView) {
+                    super.onDrawerClosed(drawerView);
+                    if (!isAdded()) return;
+                    getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+                }
+
+                @Override
+                public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                    if (!isAdded()) return;
+                    if (!userLearnedDrawer) {
+                        userLearnedDrawer = true;
+                        SharedPreferences sp = PreferenceManager
+                                .getDefaultSharedPreferences(getActivity());
+                        sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
+                    }
+                    getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+                }
+            };
+            actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+            toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                        intent = new Intent(getContext(), ActivityMain.class);
+                    } else {
+                        // LMFAO BEST HACK AROUND EVER
+                        intent = new Intent(toolbar.getContext(), ActivityMain.class);
+                    }
+                    startActivity(intent);
+                }
+            });
+        }
 
         if (!userLearnedDrawer && !fromSavedInstanceState) {
             this.drawerLayout.openDrawer(fragmentContainerView);
