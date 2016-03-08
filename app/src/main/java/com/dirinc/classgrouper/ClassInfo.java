@@ -20,14 +20,14 @@ public class ClassInfo {
     public ClassInfo(int nClass, Context context) {
         this.nClass = nClass;
         sharedPreferences = context.getSharedPreferences("class" + nClass, 0);
-
+        /*
         @SuppressWarnings("unchecked")
-        //Dont panic, <String, Integer> is only temporary...
+        // Dont panic, <String, Integer> is only temporary...
         HashMap<String, Integer> map = (HashMap<String, Integer>) sharedPreferences.getAll();
         for (String s : map.keySet()) {
             String value = String.valueOf(map.get(s));
             thisClass.put(Integer.parseInt(s), value);
-        }
+        } */
     }
 
     public HashMap<Integer, String> getMap() {
@@ -38,8 +38,12 @@ public class ClassInfo {
         this.thisClass = newMap;
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        String classTitle = sharedPreferences.getString("title", null); // Save me from the monster!
 
         editor.clear(); //Flush
+        editor.apply();
+
+        editor.putString("title", classTitle);
         editor.apply();
 
         for (int x = 0; x <= newMap.size(); x++) {

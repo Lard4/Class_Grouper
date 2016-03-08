@@ -3,6 +3,7 @@ package com.dirinc.classgrouper;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +82,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int i) {
         if (isMain) {
-            ClassInfo classInfo = classData.get(i);
+            final ClassInfo classInfo = classData.get(i);
             viewHolder.classCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -107,13 +109,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                                 }
                             })
                             .setPositiveButton("OK, M8!", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialoginterface, int i) {
-                                    //TODO deleteClass(nClass);
-                                    Snackbar.make(layout, "Class x deleted", Snackbar.LENGTH_LONG)
+                                public void onClick(DialogInterface dialoginterface, int idk) {
+                                    removeClass(i);
+                                    Snackbar.make(layout, "Class '" + classInfo.getCardName() + "' deleted", Snackbar.LENGTH_LONG)
                                             .setAction("Dandy!", new View.OnClickListener() {
                                                 @Override
-                                                public void onClick(View v) {
-                                                }
+                                                public void onClick(View v) { /*69*/ }
                                             })
                                             .setActionTextColor(Color.parseColor("#FFFFC107"))
                                             .show();
@@ -146,6 +147,44 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             return classData.size();
         } else {
             return students.size();
+        }
+    }
+
+    public void removeClass(int whichClass) {
+        classData.remove(whichClass);
+        notifyItemRemoved(whichClass);
+
+        File dir = new File(context.getFilesDir().getParent() + "/shared_prefs/");
+
+        SharedPreferences prefs = context.getSharedPreferences("shared_preferences", 0);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        int numberOfClasses = prefs.getInt("numberOfClasses", 0);
+
+        editor.remove("numberOfClasses");
+        editor.putInt("numberOfClasses", numberOfClasses - 1);
+        editor.commit();
+
+        new File(dir, "class" + whichClass + ".xml").delete(); // Is this _perjury_? /s
+
+        while (true) {
+            if (new File(dir, "class" + (whichClass + 1) + ".xml").exists()) {
+                new File(dir, "class" + (whichClass + 1) + ".xml").renameTo(
+                        new File(dir, "class" + (whichClass) + ".xml"));
+                whichClass++;
+            } else {
+                break;
+            }
+        }
+
+        if (getItemCount() == 0) {
+            ClassInfo emptyClass = new ClassInfo(-1, context);
+            emptyClass.setCardName("No Classes!")
+                    .setCardStudentCount("CREATE A CLASS TO GET STARTED")
+                    .setCardColor(generateColor());
+
+            classData.add(emptyClass);
+            notifyItemInserted(0);
         }
     }
 

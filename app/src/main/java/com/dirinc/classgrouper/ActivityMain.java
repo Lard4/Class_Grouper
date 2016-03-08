@@ -20,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -141,7 +140,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
                 }
             }
             newClass.setMap(roster);
-            newClass.setCardName(prefs.getString("class" + i, null))
+            newClass.setCardName(classPrefs.getString("title", null))
                     .setCardStudentCount(roster.size() + " STUDENTS")
                     .setCardColor(ActivityMain.generateColor());
 
@@ -182,17 +181,6 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
         return super.onOptionsItemSelected(item);
     }
 
-    public void deleteClass(int whichClass) {
-        File dir = new File(getApplicationContext().getFilesDir().getParent() + "/shared_prefs/");
-
-        int newNumberOfClasses = (getNumberOfClasses() - 1);
-        editor.remove("numberOfClasses");
-        editor.putInt("numberOfClasses", newNumberOfClasses);
-        editor.commit();
-
-        new File(dir, "class" + whichClass + ".xml").delete();
-    }
-
     public String getClassName(int whichClass) {
         if (sharedPreferences.contains("class" + whichClass)) {
             return sharedPreferences.getString("class" + whichClass, "");
@@ -230,32 +218,6 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
                 //finish();
                 break;
         }
-    }
-
-    public void showAlertDialog(String title, String message,
-                                String positiveButton, String negativeButton, final int nClass) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(title)
-                .setMessage(message)
-                .setNegativeButton(negativeButton, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialoginterface, int i) {
-                        dialoginterface.cancel();
-                    }
-                })
-                .setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialoginterface, int i) {
-                        deleteClass(nClass);
-                        Snackbar.make(view, "ClassInfo " + nClass + " deleted", Snackbar.LENGTH_LONG)
-                                .setAction("Dandy!", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        // Nothing to do, but if this is null, it won't show :/
-                                    }
-                                })
-                                .setActionTextColor(Color.parseColor("#FFFFC107"))
-                                .show();
-                    }
-                }).show();
     }
 
     public int getNumberOfClasses() {

@@ -228,8 +228,12 @@ public class ActivityCreateClass extends AppCompatActivity {
 
         if (!className.getText().toString().equals("")) {
             Log.d("SHARED_PREFS", "Putting " + newClass);
+            SharedPreferences classPrefs = getSharedPreferences("class" + (numberOfClasses - 1), 0);
+            SharedPreferences.Editor classPrefsEdit = classPrefs.edit();
+            classPrefsEdit.putString("title", newClass);
+            classPrefsEdit.apply();
+
             prefsEdit = sharedPreferences.edit();
-            prefsEdit.putString(("class" + (numberOfClasses - 1)), newClass);
             prefsEdit.putInt("numberOfClasses", numberOfClasses);
             prefsEdit.apply();
 
