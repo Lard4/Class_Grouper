@@ -13,7 +13,7 @@
         card_view:cardUseCompatPadding="true"
         card_view:cardPreventCornerOverlap="false"
         card_view:cardCornerRadius="1dp"
-        card_view:cardElevation="@dimen/student_card_elevation"
+        card_view:cardElevation="@dimen/class_card_elevation"
         android:background="@android:color/white">
 
         <TextView android:id="@+id/class_card_title"

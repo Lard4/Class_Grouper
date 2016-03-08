@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/menu_top"
+        android:checkableBehavior="single">
+
+        <item android:id="@+id/drawer_item_timeline"
+            android:checked="true"
+            android:icon="@drawable/ic_home_black"
+            android:title="Home"/>
+
+    </group>
+
+    <group android:id="@+id/menu_bottom"
+        android:checkableBehavior="none">
+
+        <item android:id="@+id/drawer_item_settings"
+            android:icon="@drawable/ic_class"
+            android:title="Class One"/>
+
+    </group>
+
+    <item android:title="Sub items">
+        <menu>
+            <item
+                android:icon="@drawable/fab_add"
+                android:title="Sub item 1" />
+            <item
+                android:icon="@drawable/fab_add"
+                android:title="Sub item 2" />
+        </menu>
+    </item>
+
+</menu>

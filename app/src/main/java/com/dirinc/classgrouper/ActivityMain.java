@@ -75,7 +75,6 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
         // Set up the drawer.
         navigationDrawerFragment.setup(R.id.fragment_drawer,
                 (DrawerLayout) findViewById(R.id.drawer), toolbar, true);
-        navigationDrawerFragment.addItem("Class One", getResources().getDrawable(R.drawable.ic_class));
         /* Populate the navigation drawer
         navigationDrawerFragment.setUserData("John Doe", "johndoe@doe.com",
                 BitmapFactory.decodeResource(getResources(), R.drawable.avatar)); */

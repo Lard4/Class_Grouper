@@ -12,6 +12,7 @@
         android:id="@+id/student_card"
         android:layout_width="@dimen/student_card_width"
         android:layout_height="@dimen/student_card_height"
+        android:layout_marginBottom="5dp"
         card_view:cardUseCompatPadding="true"
         card_view:cardPreventCornerOverlap="false"
         card_view:cardCornerRadius="@dimen/student_card_radius"

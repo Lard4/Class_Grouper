@@ -16,8 +16,10 @@
 
     <dimen name="student_card_width">175dp</dimen>
     <dimen name="student_card_height">210dp</dimen>
-    <dimen name="student_card_radius">5dp</dimen>
-    <dimen name="student_card_elevation">1dp</dimen>
+    <dimen name="student_card_radius">2dp</dimen>
+    <dimen name="student_card_elevation">2dp</dimen>
+
+    <dimen name="class_card_elevation">2dp</dimen>
 
     <dimen name="newClassWidthHeight">188dp</dimen>
 

@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -38,6 +40,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     public NavigationDrawerAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.drawer_row, viewGroup, false);
         final ViewHolder viewHolder = new ViewHolder(v);
+
         viewHolder.itemView.setClickable(true);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,20 +53,31 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
                 v.setSelected(true);
                 selectedView = v;
 
-                if (navigationDrawerCallbacks != null)
+                if (navigationDrawerCallbacks != null) {
                     navigationDrawerCallbacks.onNavigationDrawerItemSelected(viewHolder.getAdapterPosition());
                 }
             }
-        );
+        });
         viewHolder.itemView.setBackgroundResource(R.drawable.row_selector);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(NavigationDrawerAdapter.ViewHolder viewHolder, int i) {
+        if (data.get(i).isDivider()) {
+            viewHolder.divider.setVisibility(View.VISIBLE);
+            viewHolder.textView.setVisibility(View.GONE);
+            viewHolder.imageView.setVisibility(View.GONE);
+            RelativeLayout.LayoutParams EditLayoutParams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            EditLayoutParams.setMargins(0, 36, 0, 36);
+            viewHolder.container.setLayoutParams(EditLayoutParams);
+            return;
+        }
+
         viewHolder.textView.setText(data.get(i).getText());
-        viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(
-                data.get(i).getDrawable(), null, null, null);
+        viewHolder.imageView.setImageDrawable(data.get(i).getDrawable());
+        viewHolder.imageView.setImageAlpha(150);
 
         if (selectedPosition == i) {
             if (selectedView != null) {
@@ -92,10 +106,16 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
+        public ImageView imageView;
+        public ImageView divider;
+        public RelativeLayout container;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.item_name);
+            this.textView = (TextView) itemView.findViewById(R.id.item_name);
+            this.imageView = (ImageView) itemView.findViewById(R.id.item_image);
+            this.divider = (ImageView) itemView.findViewById(R.id.item_divider);
+            this.container = (RelativeLayout) itemView.findViewById(R.id.item_container);
         }
     }
 }
