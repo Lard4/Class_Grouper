@@ -82,12 +82,22 @@
 
     </ScrollView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/prompt_student_name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/fab_add" />
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <Button android:id="@+id/cancel_create"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:text="Quit" />
+
+        <Button android:id="@+id/add_student_create"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:text="Add Student" />
+
+    </LinearLayout>
 
 </RelativeLayout>

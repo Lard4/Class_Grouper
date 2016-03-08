@@ -36,7 +36,6 @@ public class ActivityClassRoster extends AppCompatActivity {
         setContentView(R.layout.activity_class_roster);
         Bundle bundle = getIntent().getExtras();
         classNumber = bundle.getInt("bzofghia");
-        loadClasses(); // Must go before FAM is clicked to update count
 
         this.overridePendingTransition(
                 android.R.anim.slide_in_left,
@@ -65,8 +64,7 @@ public class ActivityClassRoster extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.roster_recycler);
         mLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        RecyclerView.Adapter mAdapter = new CardAdapter(thisClass, classNumber,
-                getApplicationContext(), false, null, null);
+        RecyclerView.Adapter mAdapter = new CardAdapter(loadClasses(), classNumber, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -117,49 +115,8 @@ public class ActivityClassRoster extends AppCompatActivity {
         fam.setIconToggleAnimatorSet(set);
     }
 
-    public void loadClasses() {
-        String alph = "QWERTYUIOPASDFGHJKLZXCVBNM";
-        for (int i = 0; i < 20; i++) {
-            addToMap(i, "" + alph.charAt(new Random().nextInt(alph.length())) + " " +
-                    alph.charAt(new Random().nextInt(alph.length())));
-        }
-    }
-
-    public void loadClasse() {
-        SharedPreferences pref = null;
-        switch (classNumber) {
-            case 1:
-                pref = getApplicationContext().getSharedPreferences("class1", Context.MODE_PRIVATE);
-                break;
-
-            case 2:
-                pref = getApplicationContext().getSharedPreferences("class2", Context.MODE_PRIVATE);
-                break;
-
-            case 3:
-                pref = getApplicationContext().getSharedPreferences("class3", Context.MODE_PRIVATE);
-                break;
-
-            case 4:
-                pref = getApplicationContext().getSharedPreferences("class4", Context.MODE_PRIVATE);
-                break;
-
-            case 5:
-                pref = getApplicationContext().getSharedPreferences("class5", Context.MODE_PRIVATE);
-                break;
-
-            case 6:
-                pref = getApplicationContext().getSharedPreferences("class6", Context.MODE_PRIVATE);
-                break;
-        }
-        if (pref != null) {
-            @SuppressWarnings("unchecked")
-            HashMap<String, Integer> map =  (HashMap<String, Integer>) pref.getAll();
-            for (String s : map.keySet()) {
-                String value = String.valueOf(map.get(s));
-                addToMap(Integer.parseInt(s), value);
-            }
-        }
+    public ArrayList<ClassInfo> loadClasses() {
+        return (new ActivityMain().getClassData(this));
     }
 
     public int getClassSize() {

@@ -3,7 +3,6 @@ package com.dirinc.classgrouper;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -16,7 +15,6 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,8 +33,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
 
-    private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
-
     private NavigationDrawerCallbacks callbacks;
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -50,14 +46,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     private int currentSelectedPosition = 0;
     private boolean fromSavedInstanceState;
-    private boolean userLearnedDrawer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        userLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
         if (savedInstanceState != null) {
             currentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
@@ -137,12 +129,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                 public void onDrawerOpened(View drawerView) {
                     super.onDrawerOpened(drawerView);
                     if (!isAdded()) return;
-                    if (!userLearnedDrawer) {
-                        userLearnedDrawer = true;
-                        SharedPreferences sp = PreferenceManager
-                                .getDefaultSharedPreferences(getActivity());
-                        sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
-                    }
                     getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
                 }
             };
@@ -164,12 +150,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                 public void onDrawerOpened(View drawerView) {
                     super.onDrawerOpened(drawerView);
                     if (!isAdded()) return;
-                    if (!userLearnedDrawer) {
-                        userLearnedDrawer = true;
-                        SharedPreferences sp = PreferenceManager
-                                .getDefaultSharedPreferences(getActivity());
-                        sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
-                    }
                     getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
                 }
             };
@@ -188,10 +168,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                     startActivity(intent);
                 }
             });
-        }
-
-        if (!userLearnedDrawer && !fromSavedInstanceState) {
-            this.drawerLayout.openDrawer(fragmentContainerView);
         }
 
         this.drawerLayout.post(new Runnable() {

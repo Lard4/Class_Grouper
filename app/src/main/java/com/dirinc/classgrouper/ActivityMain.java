@@ -1,5 +1,6 @@
 package com.dirinc.classgrouper;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class ActivityMain extends AppCompatActivity implements NavigationDrawerCallbacks {
@@ -94,8 +97,8 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.class_recycler);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        RecyclerView.Adapter mAdapter = new CardAdapter(null, 0,
-                getApplicationContext(), true, getClassData(), findViewById(R.id.main_layout));
+        RecyclerView.Adapter mAdapter = new CardAdapter(getClassData(this),
+                findViewById(R.id.main_layout), this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -108,20 +111,51 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
         });
     }
 
-    public String[][] getClassData() {
-        String[][] classData = new String[100][2];
+    public ArrayList<ClassInfo> getClassData(Context context) {
+        ArrayList<ClassInfo> classes = new ArrayList<>();
+        SharedPreferences prefs = context.getSharedPreferences("shared_preferences", 0);
+        int nClasses = prefs.getInt("numberOfClasses", 0);
 
-        for (int i = 0; i < classData.length; i++) {
-            for (int ii = 0; ii < classData[i].length; ii++) {
-                classData[i][ii] = "";
+        if (nClasses == 0) {
+            ClassInfo newClass = new ClassInfo(-1, context);
+            newClass.setCardName("No Classes!")
+                    .setCardStudentCount("CREATE A CLASS TO GET STARTED")
+                    .setCardColor(generateColor());
+
+            classes.add(newClass);
+            return classes;
+        }
+
+        for (int i = 0; i < nClasses; i++) {
+            ClassInfo newClass = new ClassInfo(i, context);
+            HashMap<Integer, String> roster = new HashMap<>();
+            SharedPreferences classPrefs = context.getSharedPreferences("class" + i, 0);
+            int student = 0;
+
+            while (true) {
+                if (classPrefs.contains(String.valueOf(student))) {
+                    roster.put(student, classPrefs.getString(String.valueOf(student), null));
+                    student++;
+                } else {
+                    break;
+                }
             }
-        }
+            newClass.setMap(roster);
+            newClass.setCardName(prefs.getString("class" + i, null))
+                    .setCardStudentCount(roster.size() + " STUDENTS")
+                    .setCardColor(ActivityMain.generateColor());
 
-        for (int i = 0; i < 20; i++) {
-            classData[i][0] = "Class " + i;
-            classData[i][1] = new Random().nextInt(50) + " STUDENTS";
+            classes.add(newClass);
         }
-        return classData;
+        return classes;
+    }
+
+    public static int generateColor() {
+        Random rand = new Random();
+        return Color.argb(255,              //Opacity
+                rand.nextInt(156) + 100,    //R
+                rand.nextInt(156) + 100,    //G
+                rand.nextInt(156) + 100);   //B
     }
 
     @Override

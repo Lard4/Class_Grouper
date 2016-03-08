@@ -25,12 +25,9 @@ import java.util.Random;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
-    private List<Student> mStudents;
-    private List<ClassInfo> mClasses;
+    private List<Student> students;
+    private List<ClassInfo> classData;
     private HashMap<Integer, String> thisClass;
-
-    private String[][] classData = new String[100][2];
-    private static final int TOOLBAR_ID_CONSTANT = 100;
 
     private int nClass;
     private boolean isMain;
@@ -38,41 +35,33 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     private View layout;
     public Context context;
 
-    public CardAdapter(HashMap<Integer, String> thisClass, int nClass, Context context,
-                       boolean isMain, String classData[][], View layout) {
+    /** Roster Activity **/
+    public CardAdapter(ArrayList<ClassInfo> classData, int nClass, Context context) {
         super();
-        this.isMain = isMain;
-        this.layout = layout;
+        this.isMain = false;
+        this.context = context;
+        this.classData = classData;
+        this.nClass = nClass;
+        this.classEditor = new ClassInfo(nClass, context);
+        this.students = new ArrayList<>();
+        this.thisClass = classData.get(nClass).getMap();
 
-        if (isMain) {
-            this.classData = classData;
-            mClasses = new ArrayList<>();
-
-            for (int i = 0; i < classData.length; i++) {
-                ClassInfo newClass = new ClassInfo(i, context);
-
-                if (classData[i][0].equals("")) break; //Exit for loop once we hit bottom
-
-                newClass.setCardName(classData[i][0])
-                        .setCardStudentCount(classData[i][1])
-                        .setCardColor(generateColor());
-                mClasses.add(newClass);
-            }
-        } else {
-            this.thisClass = thisClass;
-            this.nClass = nClass;
-            this.classEditor = new ClassInfo(nClass, context);
-
-            mStudents = new ArrayList<>();
-
-            for (int i = 0; i < thisClass.size(); i++) {
-                Student student = new Student();
-                if (getInitials(i) != null) {
-                    student.setInitials(getInitials(i)).setColor(generateColor());
-                    mStudents.add(student);
-                }
+        for (int i = 0; i < thisClass.size(); i++) {
+            Student student = new Student();
+            if (getInitials(i) != null) {
+                student.setInitials(getInitials(i)).setColor(generateColor());
+                students.add(student);
             }
         }
+    }
+
+    /** Main Activity **/
+    public CardAdapter(ArrayList<ClassInfo> classData, View layout, Context context) {
+        super();
+        this.isMain = true;
+        this.layout = layout;
+        this.classData = classData;
+        this.context = context;
     }
 
     @Override
@@ -91,7 +80,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int i) {
         if (isMain) {
-            ClassInfo classInfo = mClasses.get(i);
+            ClassInfo classInfo = classData.get(i);
             viewHolder.classCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -134,28 +123,29 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 }
             });
         } else {
-            Student student = mStudents.get(i);
+            Student student = students.get(i);
             viewHolder.studentCardColor.setBackgroundColor(student.getColor());
             viewHolder.studentCardInitials.setText(student.getInitials());
-
+            /*
             viewHolder.studentCardDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mStudents.remove(i);
+                    students.remove(i);
                     notifyItemRemoved(i);
-                    notifyItemRangeChanged(i, mStudents.size());
+                    notifyItemRangeChanged(i, students.size());
                     classEditor.removeStudent(i);
                 }
             });
+            */
         }
     }
 
     @Override
     public int getItemCount() {
         if (isMain) {
-            return mClasses.size();
+            return classData.size();
         } else {
-            return mStudents.size();
+            return students.size();
         }
     }
 

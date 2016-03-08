@@ -15,6 +15,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -28,7 +29,7 @@ public class ActivityCreateClass extends AppCompatActivity {
     private EditText className;
     private EditText studentOneName;
     private ImageButton createClass;
-    private FloatingActionButton addNewStudent;
+    private Button addNewStudent;
     private RelativeLayout relativeLayout;
 
     private SharedPreferences sharedPreferences;
@@ -41,12 +42,12 @@ public class ActivityCreateClass extends AppCompatActivity {
     private SharedPreferences.Editor prefsEdit;
 
     private static final String SHARED_PREFS = "shared_preferences";
-    private static final String SHARED_PREFS_CLASS1 = "class1";
-    private static final String SHARED_PREFS_CLASS2 = "class2";
-    private static final String SHARED_PREFS_CLASS3 = "class3";
-    private static final String SHARED_PREFS_CLASS4 = "class4";
-    private static final String SHARED_PREFS_CLASS5 = "class5";
-    private static final String SHARED_PREFS_CLASS6 = "class6";
+    private static final String SHARED_PREFS_CLASS1 = "class0";
+    private static final String SHARED_PREFS_CLASS2 = "class1";
+    private static final String SHARED_PREFS_CLASS3 = "class2";
+    private static final String SHARED_PREFS_CLASS4 = "class3";
+    private static final String SHARED_PREFS_CLASS5 = "class4";
+    private static final String SHARED_PREFS_CLASS6 = "class5";
 
 
     private HashMap <Integer, String> class1 = new HashMap<>();
@@ -58,7 +59,6 @@ public class ActivityCreateClass extends AppCompatActivity {
 
     private int numberOfClasses = 0;
     private int id = 0;
-    private int studentCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +90,7 @@ public class ActivityCreateClass extends AppCompatActivity {
         className = (EditText) findViewById(R.id.className);
         studentOneName = (EditText) findViewById(R.id.student_name);
         createClass = (ImageButton) findViewById(R.id.createClass);
-        addNewStudent = (FloatingActionButton) findViewById(R.id.prompt_student_name);
+        addNewStudent = (Button) findViewById(R.id.add_student_create);
 
         studentOneName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -229,7 +229,7 @@ public class ActivityCreateClass extends AppCompatActivity {
         if (!className.getText().toString().equals("")) {
             Log.d("SHARED_PREFS", "Putting " + newClass);
             prefsEdit = sharedPreferences.edit();
-            prefsEdit.putString(("class" + numberOfClasses), newClass);
+            prefsEdit.putString(("class" + (numberOfClasses - 1)), newClass);
             prefsEdit.putInt("numberOfClasses", numberOfClasses);
             prefsEdit.apply();
 

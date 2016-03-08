@@ -2,6 +2,8 @@ package com.dirinc.classgrouper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.util.HashMap;
