@@ -55,6 +55,7 @@
         fab:menu_labels_maxLines="-1"
         fab:menu_labels_position="left"
         fab:menu_backgroundColor="#BBFFFFFF"
+
         fab:menu_openDirection="up">
 
         <!-- Must go in reverse order :/ -->

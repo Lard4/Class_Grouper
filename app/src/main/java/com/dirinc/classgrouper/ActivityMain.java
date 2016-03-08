@@ -1,6 +1,5 @@
 package com.dirinc.classgrouper;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,6 +30,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
 
     private View view;
     private Toolbar toolbar;
+    private FloatingActionButton fab;
 
     private static final String SHARED_PREFS = "shared_preferences";
 
@@ -49,7 +49,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
 
         sharedPreferences = getSharedPreferences(SHARED_PREFS, 0);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,6 +98,15 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
         RecyclerView.Adapter mAdapter = new CardAdapter(null, 0,
                 getApplicationContext(), true, getClassData(), findViewById(R.id.main_layout));
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dX, int dY) {
+                if (dY > 0 && fab.isShown())
+                    fab.hide();
+                else if (dY < 0 && !fab.isShown())
+                    fab.show();
+            }
+        });
     }
 
     public String[][] getClassData() {
