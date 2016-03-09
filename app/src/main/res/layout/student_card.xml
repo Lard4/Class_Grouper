@@ -17,7 +17,8 @@
         card_view:cardPreventCornerOverlap="false"
         card_view:cardCornerRadius="@dimen/student_card_radius"
         card_view:cardElevation="@dimen/student_card_elevation"
-        android:background="@android:color/white">
+        android:clickable="true"
+        android:foreground="@drawable/custom_bg">
 
         <RelativeLayout android:id="@+id/card_layout"
             android:background="@color/a"

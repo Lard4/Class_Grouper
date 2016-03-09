@@ -1,5 +1,6 @@
 package com.dirinc.classgrouper;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.ViewHolder> {
@@ -17,6 +20,11 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     private NavigationDrawerCallbacks navigationDrawerCallbacks;
     private View selectedView;
     private int selectedPosition;
+
+    // Store IDs for each drawer item
+    public HashMap<Integer, String> idMap = new HashMap<>();
+
+    private static final int DRAWER_ITEM_ID_CONSTANT = 1000;
 
     public NavigationDrawerAdapter(List<NavigationItem> data) {
         this.data = data;
@@ -38,15 +46,27 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
     @Override
     public NavigationDrawerAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.drawer_row, viewGroup, false);
-        final ViewHolder viewHolder = new ViewHolder(v);
+        final View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.drawer_row, viewGroup, false);
+        final ViewHolder viewHolder = new ViewHolder(view);
 
-        viewHolder.itemView.setClickable(true);
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.container.setClickable(true);
+        viewHolder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (selectedView != null) {
                     selectedView.setSelected(false);
+                }
+
+                Intent intent;
+                switch (idMap.get(viewHolder.container.getId())) {
+                    case "Home":
+                        intent = new Intent(view.getContext(), ActivityMain.class);
+                        view.getContext().startActivity(intent);
+                        break;
+                    case "Settings":
+                        intent = new Intent(view.getContext(), ActivitySettings.class);
+                        view.getContext().startActivity(intent);
+                        break;
                 }
 
                 selectedPosition = viewHolder.getAdapterPosition();
@@ -58,7 +78,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
                 }
             }
         });
-        viewHolder.itemView.setBackgroundResource(R.drawable.row_selector);
+        viewHolder.container.setBackgroundResource(R.drawable.row_selector);
         return viewHolder;
     }
 
@@ -78,13 +98,15 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         viewHolder.textView.setText(data.get(i).getText());
         viewHolder.imageView.setImageDrawable(data.get(i).getDrawable());
         viewHolder.imageView.setImageAlpha(150);
+        viewHolder.container.setId(DRAWER_ITEM_ID_CONSTANT + i);
+        this.idMap.put(DRAWER_ITEM_ID_CONSTANT + i, viewHolder.textView.getText().toString());
 
         if (selectedPosition == i) {
             if (selectedView != null) {
                 selectedView.setSelected(false);
             }
             selectedPosition = i;
-            selectedView = viewHolder.itemView;
+            selectedView = viewHolder.container;
             selectedView.setSelected(true);
         } else {
             if (selectedView != null) {
@@ -92,7 +114,6 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
             }
         }
     }
-
 
     public void selectPosition(int position) {
         selectedPosition = position;

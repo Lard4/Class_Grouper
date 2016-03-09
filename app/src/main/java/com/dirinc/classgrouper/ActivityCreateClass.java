@@ -28,34 +28,13 @@ public class ActivityCreateClass extends AppCompatActivity {
 
     private EditText className;
     private EditText studentOneName;
-    private ImageButton createClass;
-    private Button addNewStudent;
-    private RelativeLayout relativeLayout;
 
     private SharedPreferences sharedPreferences;
-    private SharedPreferences sharedPreferencesclass1;
-    private SharedPreferences sharedPreferencesclass2;
-    private SharedPreferences sharedPreferencesclass3;
-    private SharedPreferences sharedPreferencesclass4;
-    private SharedPreferences sharedPreferencesclass5;
-    private SharedPreferences sharedPreferencesclass6;
-    private SharedPreferences.Editor prefsEdit;
+    private SharedPreferences classPrefs;
 
     private static final String SHARED_PREFS = "shared_preferences";
-    private static final String SHARED_PREFS_CLASS1 = "class0";
-    private static final String SHARED_PREFS_CLASS2 = "class1";
-    private static final String SHARED_PREFS_CLASS3 = "class2";
-    private static final String SHARED_PREFS_CLASS4 = "class3";
-    private static final String SHARED_PREFS_CLASS5 = "class4";
-    private static final String SHARED_PREFS_CLASS6 = "class5";
 
-
-    private HashMap <Integer, String> class1 = new HashMap<>();
-    private HashMap <Integer, String> class2 = new HashMap<>();
-    private HashMap <Integer, String> class3 = new HashMap<>();
-    private HashMap <Integer, String> class4 = new HashMap<>();
-    private HashMap <Integer, String> class5 = new HashMap<>();
-    private HashMap <Integer, String> class6 = new HashMap<>();
+    private HashMap<Integer, String> classMap = new HashMap<>();
 
     private int numberOfClasses = 0;
     private int id = 0;
@@ -64,33 +43,20 @@ public class ActivityCreateClass extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_class);
-
-        relativeLayout = new RelativeLayout(this);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         this.overridePendingTransition(
                 android.R.anim.slide_in_left,
                 android.R.anim.slide_out_right);
 
         sharedPreferences = getSharedPreferences(SHARED_PREFS, 0);
-        sharedPreferencesclass1 = getSharedPreferences(SHARED_PREFS_CLASS1, 0);
-        sharedPreferencesclass2 = getSharedPreferences(SHARED_PREFS_CLASS2, 0);
-        sharedPreferencesclass3 = getSharedPreferences(SHARED_PREFS_CLASS3, 0);
-        sharedPreferencesclass4 = getSharedPreferences(SHARED_PREFS_CLASS4, 0);
-        sharedPreferencesclass5 = getSharedPreferences(SHARED_PREFS_CLASS5, 0);
-        sharedPreferencesclass6 = getSharedPreferences(SHARED_PREFS_CLASS6, 0);
-
-
-        if (sharedPreferences.contains("numberOfClasses")) {
-            numberOfClasses = sharedPreferences.getInt("numberOfClasses", 0);
-        }
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        classPrefs = getSharedPreferences("class" + classNumber(), 0);
 
         className = (EditText) findViewById(R.id.className);
         studentOneName = (EditText) findViewById(R.id.student_name);
-        createClass = (ImageButton) findViewById(R.id.createClass);
-        addNewStudent = (Button) findViewById(R.id.add_student_create);
+        ImageButton createClass = (ImageButton) findViewById(R.id.createClass);
+        Button addNewStudent = (Button) findViewById(R.id.add_student_create);
 
         studentOneName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -101,7 +67,7 @@ public class ActivityCreateClass extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                getCurrentClass().put(id, String.valueOf(studentOneName.getText()));
+                classMap.put(id, String.valueOf(studentOneName.getText()));
             }
         });
 
@@ -110,7 +76,6 @@ public class ActivityCreateClass extends AppCompatActivity {
             public void onClick(View v) {
                 v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 // TODO: Hide keyboard
-
                 addEditText();
             }
         });
@@ -119,7 +84,7 @@ public class ActivityCreateClass extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                if (checkAllStudentsValidity()) {
+                if (/*checkAllStudentsValidity()*/ true) {
                     establishClass();
                 } else {
                     showAlertDialog("Oops!", "One of your students is nameless!", "OK");
@@ -128,38 +93,8 @@ public class ActivityCreateClass extends AppCompatActivity {
         });
     }
 
-    public boolean checkAllStudentsValidity() {
-        for (int i = 1; i < getCurrentClass().size(); i++) {
-            if (getCurrentClass().get(i) == null) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public HashMap<Integer, String> getCurrentClass() {
-        switch (getClassCount()) {
-            case 0:
-                return class1;
-
-            case 1:
-                return class2;
-
-            case 2:
-                return class3;
-
-            case 3:
-                return class4;
-
-            case 4:
-                return class5;
-
-            case 5:
-                return class6;
-
-            default:
-                return null;
-        }
+    public int classNumber() {
+        return (sharedPreferences.getInt("numberOfClasses", 0));
     }
 
     public void showAlertDialog(String title, String message, String positiveButton) {
@@ -211,7 +146,7 @@ public class ActivityCreateClass extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                getCurrentClass().put(id, String.valueOf(newStudent.getText()));
+                classMap.put(id, String.valueOf(newStudent.getText()));
             }
         });
 
@@ -233,9 +168,9 @@ public class ActivityCreateClass extends AppCompatActivity {
             classPrefsEdit.putString("title", newClass);
             classPrefsEdit.apply();
 
-            prefsEdit = sharedPreferences.edit();
-            prefsEdit.putInt("numberOfClasses", numberOfClasses);
-            prefsEdit.apply();
+            SharedPreferences.Editor genPrefsEdit = sharedPreferences.edit();
+            genPrefsEdit.putInt("numberOfClasses", numberOfClasses);
+            genPrefsEdit.apply();
 
             establishStudents();
             switchActivities("ActivityMain");
@@ -246,61 +181,12 @@ public class ActivityCreateClass extends AppCompatActivity {
         }
     }
 
-    public int getClassCount() {
-        return sharedPreferences.getInt("numberOfClasses", 0);
-    }
-    
     public void establishStudents() {
-        SharedPreferences.Editor editor;
-        switch (getClassCount()) {
-            case 1:
-                editor = sharedPreferencesclass1.edit();
-                for (int x = 0; x <= class1.size(); x++) {
-                    editor.putString(String.valueOf(x), class1.get(x));
-                }
-                editor.apply();
-                break;
-
-            case 2:
-                editor = sharedPreferencesclass2.edit();
-                for (int x = 0; x <= class2.size(); x++) {
-                    editor.putString(String.valueOf(x), class2.get(x));
-                }
-                editor.apply();
-                break;
-
-            case 3:
-                editor = sharedPreferencesclass3.edit();
-                for (int x = 0; x <= class3.size(); x++) {
-                    editor.putString(String.valueOf(x), class3.get(x));
-                }
-                editor.apply();
-                break;
-
-            case 4:
-                editor = sharedPreferencesclass4.edit();
-                for (int x = 0; x <= class4.size(); x++) {
-                    editor.putString(String.valueOf(x), class4.get(x));
-                }
-                editor.apply();
-                break;
-
-            case 5:
-                editor = sharedPreferencesclass5.edit();
-                for (int x = 0; x <= class5.size(); x++) {
-                    editor.putString(String.valueOf(x), class5.get(x));
-                }
-                editor.apply();
-                break;
-
-            case 6:
-                editor = sharedPreferencesclass6.edit();
-                for (int x = 0; x <= class6.size(); x++) {
-                    editor.putString(String.valueOf(x), class6.get(x));
-                }
-                editor.apply();
-                break;
+        SharedPreferences.Editor editor = classPrefs.edit();
+        for (int x = 0; x <= classMap.size(); x++) {
+            editor.putString(String.valueOf(x), classMap.get(x));
         }
+        editor.apply();
     }
 
     public void switchActivities(String newActivity) {
@@ -309,19 +195,16 @@ public class ActivityCreateClass extends AppCompatActivity {
         switch (newActivity) {
             case "ActivityCreateClass":
                 changeActivities = new Intent(this, ActivityCreateClass.class);
-                Log.d("ActivitySwitch", "Switching to ActivityCreateClass Activity");
                 startActivity(changeActivities);
                 break;
 
             case "ActivitySettings":
                 changeActivities = new Intent(this, ActivitySettings.class);
-                Log.d("ActivitySwitch", "Switching to Settings Activity");
                 startActivity(changeActivities);
                 break;
 
             case "ActivityMain":
                 changeActivities = new Intent(this, ActivityMain.class);
-                Log.d("ActivitySwitch", "Switching to Main Activity");
                 startActivity(changeActivities);
                 break;
         }

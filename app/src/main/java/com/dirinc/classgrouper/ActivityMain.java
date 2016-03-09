@@ -89,7 +89,6 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // Update the main content by replacing fragments
-        Toast.makeText(this, "Menu item selected -> " + position, Toast.LENGTH_SHORT).show();
     }
 
     public void createCards() {

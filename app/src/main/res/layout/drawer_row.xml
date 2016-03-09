@@ -1,5 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_container"
+    android:clickable="true"
+    android:foreground="@drawable/custom_bg"
     android:layout_width="match_parent"
     android:layout_height="48dp">
 
@@ -16,7 +18,6 @@
     <TextView android:id="@+id/item_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?android:attr/selectableItemBackground"
         android:text="Home"
         android:gravity="center_vertical"
         android:textColor="@color/textColorPrimary"
@@ -24,6 +25,7 @@
         android:textSize="14sp" />
 
     <ImageView android:id="@+id/item_divider"
+        android:clickable="false"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="1.5dp"

@@ -58,30 +58,7 @@ public class ActivitySettings extends AppCompatActivity implements NavigationDra
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // Update the main content by replacing fragments
-        Toast.makeText(this, "Menu item selected -> " + position, Toast.LENGTH_SHORT).show();
     }
-
-/*    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (!navigationDrawerFragment.isDrawerOpen()) {
-            *//* Only show items in the action bar relevant to this screen
-             * if the drawer is not showing. Otherwise, let the drawer
-             * decide what to show in the action bar.
-             *//*
-            getMenuInflater().inflate(R.menu.menu_main, menu);
-            return true;
-        }
-
-        switch (item.getItemId()) {
-            *//*case android.R.id.home:
-                this.finish();
-                switchActivities("ActivityMain");
-                return true;
-                *//*
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
 
     public void setSwitch(Switch highContast) {
         boolean HCTchecked = sharedPreferences.getBoolean("HCTchecked", false);
