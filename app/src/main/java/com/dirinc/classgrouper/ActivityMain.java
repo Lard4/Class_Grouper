@@ -1,15 +1,12 @@
 package com.dirinc.classgrouper;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,19 +15,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 public class ActivityMain extends AppCompatActivity implements NavigationDrawerCallbacks {
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
 
     public static NavigationDrawerFragment navigationDrawerFragment;
 
-    private View view;
     private Toolbar toolbar;
     private FloatingActionButton fab;
 
@@ -44,13 +37,9 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
         setSupportActionBar(toolbar);
         toolbar.setPadding(0, getStatusBarHeight(), 0, 0);
 
-        view = findViewById(R.id.main_layout);
-
         this.overridePendingTransition(
                 android.R.anim.slide_in_left,
                 android.R.anim.slide_out_right);
-
-        sharedPreferences = getSharedPreferences(SHARED_PREFS, 0);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -76,16 +65,9 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
     public void createDrawer() {
         navigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_drawer);
-        // Set up the drawer.
+
         navigationDrawerFragment.setup(R.id.fragment_drawer,
                 (DrawerLayout) findViewById(R.id.drawer), toolbar, true);
-        /* Populate the navigation drawer
-        navigationDrawerFragment.setUserData("John Doe", "johndoe@doe.com",
-                BitmapFactory.decodeResource(getResources(), R.drawable.avatar)); */
-    }
-
-    public NavigationDrawerFragment getDrawer() {
-        return navigationDrawerFragment;
     }
 
     @Override
@@ -160,14 +142,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (/*!navigationDrawerFragment.isDrawerOpen()*/ true) {
-            /* Only show items in the action bar relevant to this screen
-             * if the drawer is not showing. Otherwise, let the drawer
-             * decide what to show in the action bar.
-             */
-            getMenuInflater().inflate(R.menu.menu_main, menu);
-            return true;
-        }
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -180,15 +155,6 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public String getClassName(int whichClass) {
-        if (sharedPreferences.contains("class" + whichClass)) {
-            return sharedPreferences.getString("class" + whichClass, "");
-        }
-        else {
-            return "No Classes!";
-        }
     }
 
     public void switchActivities(String newActivity, int newClass) {
@@ -219,10 +185,6 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
                 //finish();
                 break;
         }
-    }
-
-    public int getNumberOfClasses() {
-        return sharedPreferences.getInt("numberOfClasses", 0);
     }
 
     @Override

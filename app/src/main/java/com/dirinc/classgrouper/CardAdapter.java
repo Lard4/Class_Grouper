@@ -82,7 +82,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         final int position = viewHolder.getAdapterPosition();
 
         if (isMain) {
@@ -147,22 +147,30 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                     CardView card = (CardView) v.getParent().getParent();
 
                     if (card.getAlpha() != .2f) {
-                        makeAbsent(true, position);
+                        makeAbsent(true, position, viewHolder);
                     } else {
-                        makeAbsent(false, position);
+                        makeAbsent(false, position, viewHolder);
                     }
                 }
             });
             if (students.get(position).getAbsent()) {
-                makeAbsent(true, i);
-            } else {
-                makeAbsent(false, i);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        makeAbsent(true, i, viewHolder);
+
+                        handler.postDelayed(this, 20);
+                        handler.removeCallbacks(this);
+                    }
+                }, 20);
             }
         }
     }
 
-    public void makeAbsent(boolean isAbsent, final int position) {
+    public void makeAbsent(boolean isAbsent, final int position, final ViewHolder viewHolder) {
         if (isAbsent) {
+            /*
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -174,11 +182,22 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                     students.add(tempStud);
                     notifyItemInserted(students.size());
 
-                    handler.postDelayed(this, 1000);
+                    handler.postDelayed(this, 0);
+
+                    viewHolder.studentCard.setAlpha(.2f);
+                    //students.get(i).setAbsent(true);
+                    viewHolder.studentCardDelete.setClickable(false);
+
+                    handler.removeCallbacks(this);
                 }
-            }, 1000);
+            }, 250);
+            */
+            viewHolder.studentCard.setAlpha(.2f);
+            students.get(position).setAbsent(true);
+            viewHolder.studentCardDelete.setClickable(false);
 
         } else {
+            /*
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -190,19 +209,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                     students.add(0, tempStud);
                     notifyItemInserted(0);
 
-                    handler.postDelayed(this, 1000);
+                    handler.postDelayed(this, 0);
                 }
-            }, 1000);
-
+            }, 250);
+            */
+            viewHolder.studentCard.setAlpha(1f);
+            students.get(position).setAbsent(false);
+            viewHolder.studentCardDelete.setClickable(true);
         }
-
-        //viewHolder.studentCard.setAlpha(.2f);
-        //students.get(i).setAbsent(true);
-        //viewHolder.studentCardDelete.setClickable(false);
-
-        //viewHolder.studentCard.setAlpha(1f);
-        //students.get(i).setAbsent(false);
-        //viewHolder.studentCardDelete.setClickable(true);
     }
 
     @Override

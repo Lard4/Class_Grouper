@@ -4,14 +4,11 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -60,7 +57,6 @@ public class ActivityClassRoster extends AppCompatActivity {
             }
         });
 
-        //createRoster(1);
         mRecyclerView = (RecyclerView) findViewById(R.id.roster_recycler);
         mLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -78,11 +74,6 @@ public class ActivityClassRoster extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-
-    public void shuffleGroups(int nGroups) {
-
     }
 
     public void handleFam(final FloatingActionMenu fam) {
@@ -117,18 +108,6 @@ public class ActivityClassRoster extends AppCompatActivity {
 
     public ArrayList<ClassInfo> loadClasses() {
         return (new ActivityMain().getClassData(this));
-    }
-
-    public int getClassSize() {
-        return thisClass.size();
-    }
-
-    public String getStudentName(int key) {
-        return thisClass.get(key);
-    }
-
-    public void addToMap(int key, String value) {
-        thisClass.put(key, value);
     }
 
     @Override
