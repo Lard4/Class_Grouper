@@ -8,9 +8,7 @@
         android:id="@+id/navigationHeader"
         android:layout_width="match_parent"
         android:layout_height="168dp"
-        android:background="@drawable/classroom"
-        android:paddingTop="24dp">
-        <!-- 50dp accommodates for the action bar -->
+        android:background="@drawable/classroom">
 
         <ImageView
             android:id="@+id/imgAvatar"

@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
@@ -108,7 +109,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         fragmentContainerView = getActivity().findViewById(fragmentId);
         this.drawerLayout = drawerLayout;
 
-        this.drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.primary_dark));
+        this.drawerLayout.setScrimColor(Color.parseColor("#30000000"));
 
         if (toggle) {
             actionBarDrawerToggle = new ActionBarDrawerToggle(

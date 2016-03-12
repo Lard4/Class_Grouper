@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:clickable="true"
+    android:foreground="@drawable/custom_bg">
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/student_card"
@@ -16,9 +18,7 @@
         card_view:cardUseCompatPadding="true"
         card_view:cardPreventCornerOverlap="false"
         card_view:cardCornerRadius="@dimen/student_card_radius"
-        card_view:cardElevation="@dimen/student_card_elevation"
-        android:clickable="true"
-        android:foreground="@drawable/custom_bg">
+        card_view:cardElevation="@dimen/student_card_elevation">
 
         <RelativeLayout android:id="@+id/card_layout"
             android:background="@color/a"
@@ -48,14 +48,18 @@
                 android:layout_gravity="bottom|end"
                 android:layout_marginBottom="25dp"
                 android:layout_marginEnd="5dp"
-                android:src="@drawable/ic_delete_black_24dp" />
+                android:src="@drawable/ic_delete_black_24dp"
+                android:clickable="true"
+                android:foreground="@drawable/custom_bg"/>
 
             <ImageView android:id="@+id/student_absent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|start"
                 android:layout_marginBottom="25dp"
-                android:src="@drawable/ic_change_history_black_24dp" />
+                android:src="@drawable/ic_change_history_black_24dp"
+                android:clickable="true"
+                android:foreground="@drawable/custom_bg"/>
 
         </android.support.v7.widget.Toolbar>
 

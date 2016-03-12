@@ -42,6 +42,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setPadding(0, getStatusBarHeight(), 0, 0);
 
         view = findViewById(R.id.main_layout);
 
@@ -63,12 +64,13 @@ public class ActivityMain extends AppCompatActivity implements NavigationDrawerC
         createCards();
     }
 
-    public void start() {
-        /*
-        Toolbar class1Toolbar = (Toolbar) findViewById(R.id.class1_toolbar);
-        class1Toolbar.inflateMenu(R.menu.menu_delete);
-        class1Toolbar.setOnMenuItemClickListener(new Listener(1));
-        */
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     public void createDrawer() {

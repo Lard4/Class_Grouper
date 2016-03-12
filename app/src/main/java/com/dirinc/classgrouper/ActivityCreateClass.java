@@ -36,7 +36,6 @@ public class ActivityCreateClass extends AppCompatActivity {
 
     private HashMap<Integer, String> classMap = new HashMap<>();
 
-    private int numberOfClasses = 0;
     private int id = 0;
 
     @Override
@@ -84,7 +83,7 @@ public class ActivityCreateClass extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                if (/*checkAllStudentsValidity()*/ true) {
+                if (/*TODO checkAllStudentsValidity()*/ true) {
                     establishClass();
                 } else {
                     showAlertDialog("Oops!", "One of your students is nameless!", "OK");
@@ -157,19 +156,18 @@ public class ActivityCreateClass extends AppCompatActivity {
 
     public void establishClass() {
         className.setError(null);
-        numberOfClasses++;
 
         String newClass = className.getText().toString();
 
         if (!className.getText().toString().equals("")) {
             Log.d("SHARED_PREFS", "Putting " + newClass);
-            SharedPreferences classPrefs = getSharedPreferences("class" + (numberOfClasses - 1), 0);
+            SharedPreferences classPrefs = getSharedPreferences("class" + classNumber(), 0);
             SharedPreferences.Editor classPrefsEdit = classPrefs.edit();
             classPrefsEdit.putString("title", newClass);
             classPrefsEdit.apply();
 
             SharedPreferences.Editor genPrefsEdit = sharedPreferences.edit();
-            genPrefsEdit.putInt("numberOfClasses", numberOfClasses);
+            genPrefsEdit.putInt("numberOfClasses", classNumber() + 1);
             genPrefsEdit.apply();
 
             establishStudents();

@@ -3,6 +3,7 @@ package com.dirinc.classgrouper;
 public class Student {
     private String initials;
     private int color;
+    private boolean isAbsent;
 
     /*
      * Set methods shall return 'this' because
@@ -24,6 +25,15 @@ public class Student {
 
     public Student setColor(int color) {
         this.color = color;
+        return this;
+    }
+
+    public boolean getAbsent() {
+        return isAbsent;
+    }
+
+    public Student setAbsent(boolean isAbsent) {
+        this.isAbsent = isAbsent;
         return this;
     }
 }

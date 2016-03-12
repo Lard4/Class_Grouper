@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -80,15 +82,17 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(final ViewHolder viewHolder, int i) {
+        final int position = viewHolder.getAdapterPosition();
+
         if (isMain) {
-            final ClassInfo classInfo = classData.get(i);
+            final ClassInfo classInfo = classData.get(position);
             viewHolder.classCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     final Intent intent = new Intent(context, ActivityClassRoster.class);
                     Bundle bundle = new Bundle();
-                    bundle.putInt("bzofghia", i);
+                    bundle.putInt("bzofghia", position);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
                 }
@@ -110,7 +114,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                             })
                             .setPositiveButton("OK, M8!", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialoginterface, int idk) {
-                                    removeClass(i);
+                                    removeClass(position);
                                     Snackbar.make(layout, "Class '" + classInfo.getCardName() + "' deleted", Snackbar.LENGTH_LONG)
                                             .setAction("Dandy!", new View.OnClickListener() {
                                                 @Override
@@ -124,21 +128,81 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 }
             });
         } else {
-            Student student = students.get(i);
+            final Student student = students.get(position);
             viewHolder.studentCardColor.setBackgroundColor(student.getColor());
             viewHolder.studentCardInitials.setText(student.getInitials());
-            /*
             viewHolder.studentCardDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    students.remove(i);
-                    notifyItemRemoved(i);
-                    notifyItemRangeChanged(i, students.size());
-                    classEditor.removeStudent(i);
+                    //TODO: Actually work.
+                    students.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, students.size());
                 }
             });
-            */
+            viewHolder.studentCardAbsent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //May someday break something... Oh whale.
+                    CardView card = (CardView) v.getParent().getParent();
+
+                    if (card.getAlpha() != .2f) {
+                        makeAbsent(true, position);
+                    } else {
+                        makeAbsent(false, position);
+                    }
+                }
+            });
+            if (students.get(position).getAbsent()) {
+                makeAbsent(true, i);
+            } else {
+                makeAbsent(false, i);
+            }
         }
+    }
+
+    public void makeAbsent(boolean isAbsent, final int position) {
+        if (isAbsent) {
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Student tempStud = students.get(position);
+                    students.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, classData.size());
+                    students.add(tempStud);
+                    notifyItemInserted(students.size());
+
+                    handler.postDelayed(this, 1000);
+                }
+            }, 1000);
+
+        } else {
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Student tempStud = students.get(position);
+                    students.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, classData.size());
+                    students.add(0, tempStud);
+                    notifyItemInserted(0);
+
+                    handler.postDelayed(this, 1000);
+                }
+            }, 1000);
+
+        }
+
+        //viewHolder.studentCard.setAlpha(.2f);
+        //students.get(i).setAbsent(true);
+        //viewHolder.studentCardDelete.setClickable(false);
+
+        //viewHolder.studentCard.setAlpha(1f);
+        //students.get(i).setAbsent(false);
+        //viewHolder.studentCardDelete.setClickable(true);
     }
 
     @Override
@@ -153,6 +217,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     public void removeClass(int whichClass) {
         classData.remove(whichClass);
         notifyItemRemoved(whichClass);
+        notifyItemRangeChanged(whichClass, classData.size());
 
         File dir = new File(context.getFilesDir().getParent() + "/shared_prefs/");
 
@@ -163,7 +228,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
         editor.remove("numberOfClasses");
         editor.putInt("numberOfClasses", numberOfClasses - 1);
-        editor.commit();
+        editor.apply();
 
         new File(dir, "class" + whichClass + ".xml").delete(); // Is this _perjury_? /s
 
@@ -210,7 +275,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 rand.nextInt(156) + 100);   //B
     }
 
+    public void generateGroups() {
+
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
+        public CardView studentCard;
         public RelativeLayout studentCardColor;
         public TextView studentCardInitials;
         public ImageView studentCardDelete, studentCardAbsent;
@@ -236,6 +306,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 this.studentCardInitials = (TextView) itemView.findViewById(R.id.student_name);
                 this.studentCardDelete = (ImageView) itemView.findViewById(R.id.student_delete);
                 this.studentCardAbsent = (ImageView) itemView.findViewById(R.id.student_absent);
+                this.studentCard = (CardView) itemView.findViewById(R.id.student_card);
             }
         }
     }
