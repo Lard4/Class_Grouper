@@ -1,4 +1,4 @@
-package com.dirinc.classgrouper;
+package com.dirinc.classgrouper.Acitivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +11,9 @@ import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
+
+import com.dirinc.classgrouper.Fragment.*;
+import com.dirinc.classgrouper.R;
 
 public class ActivitySettings extends AppCompatActivity implements NavigationDrawerCallbacks {
 

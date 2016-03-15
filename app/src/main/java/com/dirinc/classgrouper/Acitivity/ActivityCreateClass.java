@@ -1,4 +1,4 @@
-package com.dirinc.classgrouper;
+package com.dirinc.classgrouper.Acitivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +21,8 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
+
+import com.dirinc.classgrouper.R;
 
 import java.util.HashMap;
 
@@ -104,7 +106,7 @@ public class ActivityCreateClass extends AppCompatActivity {
                 .show();
     }
 
-    public void addEditText() {
+    public void addEditText() { //TODO: RecyclerView pt 3... Suicide is a viable option instead jklol
         id++;
         RelativeLayout thisLayout = (RelativeLayout) findViewById(R.id.scrollView_layout);
         final EditText newStudent = new EditText((new ContextThemeWrapper(this, R.style.new_student)));

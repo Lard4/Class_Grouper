@@ -1,4 +1,4 @@
-package com.dirinc.classgrouper;
+package com.dirinc.classgrouper.Info;
 
 import android.graphics.drawable.Drawable;
 

@@ -1,4 +1,4 @@
-package com.dirinc.classgrouper;
+package com.dirinc.classgrouper.Acitivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.dirinc.classgrouper.Adapter.*;
+import com.dirinc.classgrouper.Fragment.*;
+import com.dirinc.classgrouper.Info.*;
+import com.dirinc.classgrouper.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.dirinc.classgrouper;
+package com.dirinc.classgrouper.Adapter;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -10,6 +10,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dirinc.classgrouper.Acitivity.*;
+import com.dirinc.classgrouper.Fragment.*;
+import com.dirinc.classgrouper.Info.*;
+import com.dirinc.classgrouper.R;
 
 import java.util.HashMap;
 import java.util.List;

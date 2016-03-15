@@ -1,4 +1,4 @@
-package com.dirinc.classgrouper;
+package com.dirinc.classgrouper.Fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -27,6 +27,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dirinc.classgrouper.Acitivity.ActivityMain;
+import com.dirinc.classgrouper.Adapter.NavigationDrawerAdapter;
+import com.dirinc.classgrouper.Info.NavigationItem;
+import com.dirinc.classgrouper.R;
 
 import java.util.ArrayList;
 import java.util.List;

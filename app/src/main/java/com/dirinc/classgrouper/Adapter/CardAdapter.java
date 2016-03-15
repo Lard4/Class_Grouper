@@ -1,4 +1,4 @@
-package com.dirinc.classgrouper;
+package com.dirinc.classgrouper.Adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,6 +20,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.dirinc.classgrouper.Acitivity.*;
+import com.dirinc.classgrouper.Info.*;
+import com.dirinc.classgrouper.R;
 
 import java.io.File;
 import java.util.ArrayList;

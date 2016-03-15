@@ -1,4 +1,4 @@
-package com.dirinc.classgrouper;
+package com.dirinc.classgrouper.Acitivity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -14,6 +14,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
+
+import com.dirinc.classgrouper.Adapter.*;
+import com.dirinc.classgrouper.Info.*;
+import com.dirinc.classgrouper.R;
 
 import com.github.clans.fab.FloatingActionMenu;
 
