@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.dirinc.classgrouper.Acitivity.*;
+import com.dirinc.classgrouper.Activity.*;
 import com.dirinc.classgrouper.Fragment.*;
 import com.dirinc.classgrouper.Info.*;
 import com.dirinc.classgrouper.R;
+
+import com.mikepenz.google_material_typeface_library.*;
+import com.mikepenz.material_design_iconic_typeface_library.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -65,11 +67,11 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
                 Intent intent;
                 switch (idMap.get(viewHolder.container.getId())) {
                     case "Home":
-                        intent = new Intent(view.getContext(), ActivityMain.class);
+                        intent = new Intent(view.getContext(), Main.class);
                         view.getContext().startActivity(intent);
                         break;
                     case "Settings":
-                        intent = new Intent(view.getContext(), ActivitySettings.class);
+                        intent = new Intent(view.getContext(), Settings.class);
                         view.getContext().startActivity(intent);
                         break;
                 }

@@ -26,9 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.dirinc.classgrouper.Acitivity.ActivityMain;
+import com.dirinc.classgrouper.Activity.Main;
 import com.dirinc.classgrouper.Adapter.NavigationDrawerAdapter;
 import com.dirinc.classgrouper.Info.NavigationItem;
 import com.dirinc.classgrouper.R;
@@ -166,10 +165,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                 public void onClick(View v) {
                     Intent intent;
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                        intent = new Intent(getContext(), ActivityMain.class);
+                        intent = new Intent(getContext(), Main.class);
                     } else {
                         // LMFAO BEST HACK AROUND EVER
-                        intent = new Intent(toolbar.getContext(), ActivityMain.class);
+                        intent = new Intent(toolbar.getContext(), Main.class);
                     }
                     startActivity(intent);
                 }

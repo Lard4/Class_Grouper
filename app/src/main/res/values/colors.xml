@@ -13,6 +13,7 @@
     <color name="darkTextColorSecondary">#B3FFFFFF</color>
 
     <color name="textColorPrimary">#FF212121</color>
+    <color name="textColorPrimarySemitransparent">#9F212121</color>
     <color name="textColorSecondary">#FF727272</color>
 
     <color name="divider">#FFB6B6B6</color>

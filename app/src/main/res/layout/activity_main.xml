@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:id="@+id/main_layout"
     android:layout_height="match_parent"
-    tools:context=".ActivityMain">
+    tools:context=".Activity.Main">
 
     <android.support.v4.widget.DrawerLayout android:id="@+id/drawer"
         android:layout_width="match_parent"
@@ -45,7 +45,7 @@
 
         <!-- android:layout_marginTop="?android:attr/actionBarSize"-->
         <fragment android:id="@+id/fragment_drawer"
-            android:name="com.dirinc.classgrouper.NavigationDrawerFragment"
+            android:name="com.dirinc.classgrouper.Fragment.NavigationDrawerFragment"
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"

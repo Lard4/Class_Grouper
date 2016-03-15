@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -21,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dirinc.classgrouper.Acitivity.*;
+import com.dirinc.classgrouper.Activity.*;
 import com.dirinc.classgrouper.Info.*;
 import com.dirinc.classgrouper.R;
 
@@ -94,7 +93,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             viewHolder.classCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final Intent intent = new Intent(context, ActivityClassRoster.class);
+                    final Intent intent = new Intent(context, ClassRoster.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt("bzofghia", position);
                     intent.putExtras(bundle);

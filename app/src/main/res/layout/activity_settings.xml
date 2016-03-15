@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ActivitySettings">
+    tools:context=".Activity.Settings">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
         </FrameLayout>
         <fragment
             android:id="@+id/fragment_drawer"
-            android:name="com.dirinc.classgrouper.NavigationDrawerFragment"
+            android:name="com.dirinc.classgrouper.Fragment.NavigationDrawerFragment"
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"

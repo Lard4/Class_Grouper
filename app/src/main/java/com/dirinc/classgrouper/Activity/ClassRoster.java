@@ -1,4 +1,4 @@
-package com.dirinc.classgrouper.Acitivity;
+package com.dirinc.classgrouper.Activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -23,7 +23,7 @@ import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.*;
 
-public class ActivityClassRoster extends AppCompatActivity {
+public class ClassRoster extends AppCompatActivity {
     private int classNumber;
     private boolean menuIsOpened = false;
 
@@ -73,7 +73,7 @@ public class ActivityClassRoster extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
-                switchActivities("ActivityMain");
+                switchActivities("Main");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -111,13 +111,13 @@ public class ActivityClassRoster extends AppCompatActivity {
     }
 
     public ArrayList<ClassInfo> loadClasses() {
-        return (new ActivityMain().getClassData(this));
+        return (new Main().getClassData(this));
     }
 
     @Override
     public void onBackPressed() {
         finish();
-        Intent changeActivities = new Intent(this, ActivityMain.class);
+        Intent changeActivities = new Intent(this, Main.class);
         Log.d("ActivitySwitch", "Switching to Main Activity");
         startActivity(changeActivities);
     }
@@ -126,8 +126,8 @@ public class ActivityClassRoster extends AppCompatActivity {
         Intent changeActivities;
 
         switch (newActivity) {
-            case "ActivityMain":
-                changeActivities = new Intent(this, ActivityMain.class);
+            case "Main":
+                changeActivities = new Intent(this, Main.class);
                 Log.d("ActivitySwitch", "Switching to Main Activity");
                 startActivity(changeActivities);
                 break;
