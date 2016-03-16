@@ -161,12 +161,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        makeAbsent(true, i, viewHolder);
+                        makeAbsent(true, position, viewHolder);
 
                         handler.postDelayed(this, 20);
                         handler.removeCallbacks(this);
                     }
-                }, 20);
+                }, 20); //Hold up 20ms to finish drawing
             }
         }
     }

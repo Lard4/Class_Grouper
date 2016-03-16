@@ -7,7 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Activity.Main"
     tools:showIn="@layout/activity_main"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:gravity="center">
 
     <android.support.v7.widget.RecyclerView android:id="@+id/class_recycler"

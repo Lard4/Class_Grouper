@@ -6,10 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.dirinc.classgrouper.Info.Student;
 import com.dirinc.classgrouper.R;
@@ -20,37 +23,89 @@ import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
-    private String[] mDataset;
+    private List<String> mDataset = new ArrayList<>();
+    private SharedPreferences prefs;
 
-    public ListAdapter(String[] myDataset) {
+    public ListAdapter(List<String> myDataset, SharedPreferences prefs) {
         mDataset = myDataset;
+        this.prefs = prefs;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.student_text, parent, false);
-        // pass MyCustomEditTextListener to viewholder in onCreateViewHolder
-        // so that we don't have to do this expensive allocation in onBindViewHolder
-        ViewHolder vh = new ViewHolder(v, new EditTextListener());
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.student_text, parent, false);
 
-        return vh;
+        return new ViewHolder(view, new EditTextListener());
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-        // update MyCustomEditTextListener every time we bind a new item
-        // so that it knows what item in mDataset to update
+    public void onBindViewHolder(final ViewHolder holder, final int i) {
+        final int position = holder.getAdapterPosition();
+
         holder.editTextListener.updatePosition(position);
-        holder.studentText.setText(mDataset[position]);
+        holder.studentText.setHint(mDataset.get(position));
+        holder.studentNumber.setText(position + 1 + ".");
+
+        if (position != 0) {
+            holder.studentText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        holder.studentText.setHint(v.getContext().getResources()
+                                .getString(R.string.prompt_student_name));
+                        setDeleteListener(holder.studentDelete, position);
+                        holder.studentText.setOnFocusChangeListener(null);
+
+                        mDataset.add(v.getContext().getResources()
+                                .getString(R.string.prompt_new_student_name));
+                        notifyItemInserted(position + 1);
+                    }
+                }
+            });
+        }
+
+        //Check to make sure they're not deleting their only way of adding a new EditText
+        if (!holder.studentText.getHint().equals(holder.studentText.getContext().getResources()
+                .getString(R.string.prompt_new_student_name))) {
+            setDeleteListener(holder.studentDelete, position);
+        }
+    }
+
+    private void setDeleteListener(ImageView button, final int position) {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editPrefs = prefs.edit();
+                editPrefs.remove(String.valueOf(position));
+                editPrefs.apply();
+
+                mDataset.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, mDataset.size());
+            }
+        });
+    }
+
+    private void updatePrefs() {
+        SharedPreferences.Editor editPrefs =  prefs.edit();
+
+        for (int i = 0; i < mDataset.size(); i++) {
+            editPrefs.putString(String.valueOf(i), mDataset.get(i));
+        }
+
+        editPrefs.apply();
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public EditText studentText;
+        public ImageView studentDelete;
+        public TextView studentNumber;
         public LinearLayout studentTextWhole;
         public EditTextListener editTextListener;
 
@@ -58,15 +113,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             super(itemView);
 
             this.studentText = (EditText) itemView.findViewById(R.id.student_name);
+            this.studentDelete = (ImageView) itemView.findViewById(R.id.student_clear);
+            this.studentNumber = (TextView) itemView.findViewById(R.id.student_number);
             this.studentTextWhole = (LinearLayout) itemView.findViewById(R.id.student_name_whole);
             this.editTextListener = editTextListener;
             this.studentText.addTextChangedListener(editTextListener);
         }
     }
 
-    // we make TextWatcher to be aware of the position it currently works with
-    // this way, once a new item is attached in onBindViewHolder, it will
-    // update current position MyCustomEditTextListener, reference to which is kept by ViewHolder
     private class EditTextListener implements TextWatcher {
         private int position;
 
@@ -75,18 +129,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         }
 
         @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            // no op
-        }
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) { }
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            mDataset[position] = charSequence.toString();
+            mDataset.set(position, charSequence.toString());
+            updatePrefs();
         }
 
         @Override
-        public void afterTextChanged(Editable editable) {
-            // no op
-        }
+        public void afterTextChanged(Editable editable) { }
     }
 }

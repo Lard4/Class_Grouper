@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -29,7 +30,9 @@ import com.dirinc.classgrouper.Adapter.CardAdapter;
 import com.dirinc.classgrouper.Adapter.ListAdapter;
 import com.dirinc.classgrouper.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CreateClass extends AppCompatActivity {
 
@@ -41,7 +44,7 @@ public class CreateClass extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
     ListAdapter mAdapter;
-    String[] mDataSet = new String[20];
+    List<String> mDataSet = new ArrayList<>();
 
     private static final String SHARED_PREFS = "shared_preferences";
 
@@ -82,12 +85,11 @@ public class CreateClass extends AppCompatActivity {
     }
 
     public void initRecycler() {
-        for (int i = 0; i <= 19; i++) {
-            mDataSet[i] = "EditText n: " + i;
-        }
+        mDataSet.add(0, getResources().getString(R.string.prompt_student_name));
+        mDataSet.add(1, getResources().getString(R.string.prompt_new_student_name));
 
         mRecyclerView = (RecyclerView) findViewById(R.id.create_class_recycler);
-        mAdapter = new ListAdapter(mDataSet);
+        mAdapter = new ListAdapter(mDataSet, classPrefs);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);
@@ -123,21 +125,12 @@ public class CreateClass extends AppCompatActivity {
             genPrefsEdit.putInt("numberOfClasses", classNumber() + 1);
             genPrefsEdit.apply();
 
-            establishStudents();
             switchActivities("Main");
             finish();
         } else {
             Toast.makeText(getApplicationContext(), "Name your class!", Toast.LENGTH_SHORT)
                     .show();
         }
-    }
-
-    public void establishStudents() {
-        SharedPreferences.Editor editor = classPrefs.edit();
-        for (int x = 0; x <= classMap.size(); x++) {
-            editor.putString(String.valueOf(x), classMap.get(x));
-        }
-        editor.apply();
     }
 
     public void switchActivities(String newActivity) {
