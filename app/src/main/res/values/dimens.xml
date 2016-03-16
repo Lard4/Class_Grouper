@@ -18,12 +18,16 @@
     <dimen name="student_card_height">210dp</dimen>
     <dimen name="student_card_radius">2dp</dimen>
     <dimen name="student_card_elevation">2dp</dimen>
+    <dimen name="student_card_text_size">42sp</dimen>
+    <dimen name="student_card_text_size_name">11sp</dimen>
+    <dimen name="student_card_text_width_name">100dp</dimen>
 
     <dimen name="class_card_elevation">2dp</dimen>
 
     <dimen name="newClassWidthHeight">188dp</dimen>
 
     <dimen name="two_line_switch_height">70dp</dimen>
+    <dimen name="three_line_switch_height">82dp</dimen>
     <dimen name="settings_space_between_switch_lines">1dp</dimen>
 
     <dimen name="navigation_drawer_width">320dp</dimen>

@@ -24,11 +24,13 @@ import java.util.List;
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     private List<String> mDataset = new ArrayList<>();
+    private List<String> studentNames = new ArrayList<>();
     private SharedPreferences prefs;
 
     public ListAdapter(List<String> myDataset, SharedPreferences prefs) {
-        mDataset = myDataset;
+        this.mDataset = myDataset;
         this.prefs = prefs;
+        this.studentNames.add(0, "");
     }
 
     @Override
@@ -42,6 +44,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int i) {
         final int position = holder.getAdapterPosition();
+
+        updatePrefs();
 
         holder.editTextListener.updatePosition(position);
         holder.studentText.setHint(mDataset.get(position));
@@ -72,6 +76,17 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         }
     }
 
+    private void updatePrefs() {
+        SharedPreferences.Editor editPrefs = prefs.edit();
+
+        for (int i = 0; i < studentNames.size(); i++) {
+            editPrefs.putString(String.valueOf(i), studentNames.get(i));
+        }
+
+        editPrefs.apply();
+
+    }
+
     private void setDeleteListener(ImageView button, final int position) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,16 +100,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                 notifyItemRangeChanged(position, mDataset.size());
             }
         });
-    }
-
-    private void updatePrefs() {
-        SharedPreferences.Editor editPrefs =  prefs.edit();
-
-        for (int i = 0; i < mDataset.size(); i++) {
-            editPrefs.putString(String.valueOf(i), mDataset.get(i));
-        }
-
-        editPrefs.apply();
     }
 
     @Override
@@ -133,7 +138,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            mDataset.set(position, charSequence.toString());
+            try {
+                studentNames.set(position, charSequence.toString());
+            } catch (IndexOutOfBoundsException e) {
+                studentNames.add(position, charSequence.toString());
+            }
             updatePrefs();
         }
 

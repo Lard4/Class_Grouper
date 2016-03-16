@@ -51,6 +51,7 @@
 
     <style name="SwitchLineOne" parent="AppTheme">
         <item name="android:textSize">@dimen/textSizeSwitch</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
     <style name="SwitchLineTwo" parent="AppTheme">

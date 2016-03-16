@@ -2,6 +2,7 @@ package com.dirinc.classgrouper.Info;
 
 public class Student {
     private String initials;
+    private String name;
     private int color;
     private boolean isAbsent;
 
@@ -16,6 +17,15 @@ public class Student {
 
     public Student setInitials(String initials) {
         this.initials = initials;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Student setName(String name) {
+        this.name = name;
         return this;
     }
 

@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,8 @@ import android.widget.TextView;
 import com.dirinc.classgrouper.Activity.*;
 import com.dirinc.classgrouper.Info.*;
 import com.dirinc.classgrouper.R;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -56,7 +59,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         for (int i = 0; i < thisClass.size(); i++) {
             Student student = new Student();
             if (getInitials(i) != null) {
-                student.setInitials(getInitials(i)).setColor(generateColor());
+                student.setInitials(getInitials(i))
+                        .setColor(generateColor())
+                        .setName(getName(i));
                 studentData.add(student);
             }
         }
@@ -90,16 +95,19 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
         if (isMain) {
             final ClassInfo classInfo = classData.get(position);
-            viewHolder.classCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final Intent intent = new Intent(context, ClassRoster.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("bzofghia", position);
-                    intent.putExtras(bundle);
-                    context.startActivity(intent);
-                }
-            });
+
+            if (!viewHolder.classCardTitle.getText().equals("No Classes!")) {
+                viewHolder.classCard.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Intent intent = new Intent(context, ClassRoster.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("bzofghia", position);
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+                    }
+                });
+            }
             viewHolder.classCardTitle.setText(classInfo.getCardName());
             viewHolder.classCardStudentCount.setText(classInfo.getCardStudentCount());
             viewHolder.classCardColor.setBackgroundColor(classInfo.getCardColor());
@@ -133,7 +141,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         } else {
             final Student student = studentData.get(position);
             viewHolder.studentCardColor.setBackgroundColor(student.getColor());
-            viewHolder.studentCardInitials.setText(student.getInitials());
+            setStudentName(viewHolder.studentCardInitials, student);
             viewHolder.studentCardDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -168,6 +176,19 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                     }
                 }, 20); //Hold up 20ms to finish drawing
             }
+        }
+    }
+
+    public void setStudentName(TextView name, Student student) {
+        SharedPreferences prefs = context.getSharedPreferences("shared_preferences", 0);
+        boolean fullName = prefs.getBoolean(new Settings().FN, false);
+
+        if (fullName) {
+            name.setTextSize(name.getResources().getDimension(R.dimen.student_card_text_size_name));
+            name.setMaxLines(3);
+            name.setText(Html.fromHtml(student.getName()));
+        } else {
+            name.setText(student.getInitials());
         }
     }
 
@@ -279,6 +300,27 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 initials += s.charAt(0);
             }
             return initials;
+        } else {
+            return null;
+        }
+    }
+
+    public String getName(int key) {
+        if (thisClass.get(key) != null) {
+            String name = thisClass.get(key);
+            String formattedName = "";
+
+            for (String s : name.split(" ")) {
+                formattedName += s.charAt(0);
+
+                for (int i = 1; i < s.length(); i++) {
+                    formattedName += "<small>" + s.charAt(i) + "</small>";
+                }
+
+                formattedName += " ";
+            }
+
+            return formattedName;
         } else {
             return null;
         }

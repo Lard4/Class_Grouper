@@ -70,6 +70,8 @@ public class CreateClass extends AppCompatActivity {
 
         initRecycler();
 
+        className = (EditText) findViewById(R.id.className);
+
         createClass = (ImageButton) findViewById(R.id.createClass);
         createClass.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -36,8 +36,6 @@ public class Main extends AppCompatActivity implements NavigationDrawerCallbacks
     private Toolbar toolbar;
     private FloatingActionButton fab;
 
-    private static final String SHARED_PREFS = "shared_preferences";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -8,20 +8,67 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 
 import com.dirinc.classgrouper.Fragment.*;
 import com.dirinc.classgrouper.R;
 
-public class Settings extends AppCompatActivity implements NavigationDrawerCallbacks {
+public class Settings extends AppCompatActivity implements NavigationDrawerCallbacks,
+        CompoundButton.OnCheckedChangeListener, View.OnClickListener{
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor prefsEdit;
 
     private NavigationDrawerFragment navigationDrawerFragment;
+    private Switch highContrast;
+    private RelativeLayout highContrastLayout;
+    private Switch fullNames;
+    private RelativeLayout fullNamesLayout;
 
     private static final String SHARED_PREFS = "shared_preferences";
+    public static final String HCT = "high_contrast_text_enabled";
+    public static final String FN = "full_names_enabled";
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId()) {
+            case R.id.settings_high_contrast_text_switch:
+                prefsEdit = sharedPreferences.edit();
+                prefsEdit.putBoolean(HCT, isChecked);
+                prefsEdit.apply();
+                break;
+
+            case R.id.settings_full_names_switch:
+                prefsEdit = sharedPreferences.edit();
+                prefsEdit.putBoolean(FN, isChecked);
+                prefsEdit.apply();
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.settings_high_contrast_text:
+                if (highContrast.isChecked()) {
+                    setSwitch(highContrast, 0, HCT);
+                } else {
+                    setSwitch(highContrast, 1, HCT);
+                }
+                break;
+
+            case R.id.settings_full_names:
+                if (fullNames.isChecked()) {
+                    setSwitch(fullNames, 0, FN);
+                } else {
+                    setSwitch(fullNames, 1, FN);
+                }
+                break;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +87,17 @@ public class Settings extends AppCompatActivity implements NavigationDrawerCallb
         ActionBar actionBar = getSupportActionBar();
         setActionBar(actionBar);
 
-        Switch highContrast = (Switch) findViewById(R.id.HCT_switch);
-        setSwitch(highContrast);
+        highContrast = (Switch) findViewById(R.id.settings_high_contrast_text_switch);
+        highContrast.setOnCheckedChangeListener(this);
+        highContrastLayout = (RelativeLayout) findViewById(R.id.settings_high_contrast_text);
+        highContrastLayout.setOnClickListener(this);
+        setSwitch(highContrast, 3, HCT);
+
+        fullNames = (Switch) findViewById(R.id.settings_full_names_switch);
+        fullNames.setOnCheckedChangeListener(this);
+        fullNamesLayout = (RelativeLayout) findViewById(R.id.settings_full_names);
+        fullNamesLayout.setOnClickListener(this);
+        setSwitch(fullNames, 3, FN);
 
         createDrawer(toolbar, actionBar);
     }
@@ -62,25 +118,24 @@ public class Settings extends AppCompatActivity implements NavigationDrawerCallb
         // Update the main content by replacing fragments
     }
 
-    public void setSwitch(Switch highContast) {
-        boolean HCTchecked = sharedPreferences.getBoolean("HCTchecked", false);
-        highContast.setChecked(HCTchecked);
+    public void setSwitch(Switch mSwitch, int key, String name) {
+        boolean checked;
 
-        // Attach a listener to check for changes in state
-        highContast.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-                if (isChecked) {
-                    prefsEdit = sharedPreferences.edit();
-                    prefsEdit.putBoolean("HCTchecked", true);
-                } else {
-                    prefsEdit = sharedPreferences.edit();
-                    prefsEdit.putBoolean("HCTchecked", false);
-                }
-                prefsEdit.apply();
-            }
-        });
+        if (key == 0) { //Override to off
+            checked = false;
+            prefsEdit = sharedPreferences.edit();
+            prefsEdit.putBoolean(name, false);
+            prefsEdit.apply();
+        } else if (key == 1) { //Override to on
+            checked = true;
+            prefsEdit = sharedPreferences.edit();
+            prefsEdit.putBoolean(name, true);
+            prefsEdit.apply();
+        } else { //Differ to shared prefs
+            checked = sharedPreferences.getBoolean(name, false);
+        }
+
+        mSwitch.setChecked(checked);
     }
 
     public void setActionBar(ActionBar actionBar) {
