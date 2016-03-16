@@ -32,7 +32,7 @@ import java.util.Random;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
-    private List<Student> students;
+    private List<Student> studentData;
     private List<ClassInfo> classData;
     private HashMap<Integer, String> thisClass;
 
@@ -50,14 +50,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         this.classData = classData;
         this.nClass = nClass;
         this.classEditor = new ClassInfo(nClass, context);
-        this.students = new ArrayList<>();
+        this.studentData = new ArrayList<>();
         this.thisClass = classData.get(nClass).getMap();
 
         for (int i = 0; i < thisClass.size(); i++) {
             Student student = new Student();
             if (getInitials(i) != null) {
                 student.setInitials(getInitials(i)).setColor(generateColor());
-                students.add(student);
+                studentData.add(student);
             }
         }
     }
@@ -131,16 +131,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 }
             });
         } else {
-            final Student student = students.get(position);
+            final Student student = studentData.get(position);
             viewHolder.studentCardColor.setBackgroundColor(student.getColor());
             viewHolder.studentCardInitials.setText(student.getInitials());
             viewHolder.studentCardDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //TODO: Actually work.
-                    students.remove(position);
+                    studentData.remove(position);
                     notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, students.size());
+                    notifyItemRangeChanged(position, studentData.size());
                 }
             });
             viewHolder.studentCardAbsent.setOnClickListener(new View.OnClickListener() {
@@ -156,7 +156,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                     }
                 }
             });
-            if (students.get(position).getAbsent()) {
+            if (studentData.get(position).getAbsent()) {
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -178,17 +178,17 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Student tempStud = students.get(position);
-                    students.remove(position);
+                    Student tempStud = studentData.get(position);
+                    studentData.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, classData.size());
-                    students.add(tempStud);
-                    notifyItemInserted(students.size());
+                    studentData.add(tempStud);
+                    notifyItemInserted(studentData.size());
 
                     handler.postDelayed(this, 0);
 
                     viewHolder.studentCard.setAlpha(.2f);
-                    //students.get(i).setAbsent(true);
+                    //studentData.get(i).setAbsent(true);
                     viewHolder.studentCardDelete.setClickable(false);
 
                     handler.removeCallbacks(this);
@@ -196,7 +196,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             }, 250);
             */
             viewHolder.studentCard.setAlpha(.2f);
-            students.get(position).setAbsent(true);
+            studentData.get(position).setAbsent(true);
             viewHolder.studentCardDelete.setClickable(false);
 
         } else {
@@ -205,11 +205,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Student tempStud = students.get(position);
-                    students.remove(position);
+                    Student tempStud = studentData.get(position);
+                    studentData.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, classData.size());
-                    students.add(0, tempStud);
+                    studentData.add(0, tempStud);
                     notifyItemInserted(0);
 
                     handler.postDelayed(this, 0);
@@ -217,7 +217,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             }, 250);
             */
             viewHolder.studentCard.setAlpha(1f);
-            students.get(position).setAbsent(false);
+            studentData.get(position).setAbsent(false);
             viewHolder.studentCardDelete.setClickable(true);
         }
     }
@@ -227,7 +227,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         if (isMain) {
             return classData.size();
         } else {
-            return students.size();
+            return studentData.size();
         }
     }
 

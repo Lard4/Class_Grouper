@@ -113,7 +113,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         fragmentContainerView = getActivity().findViewById(fragmentId);
         this.drawerLayout = drawerLayout;
 
-        this.drawerLayout.setScrimColor(Color.parseColor("#30000000"));
+        this.drawerLayout.setScrimColor(Color.parseColor("#BBFFFFFF"));
 
         if (toggle) {
             actionBarDrawerToggle = new ActionBarDrawerToggle(

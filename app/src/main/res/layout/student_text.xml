@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/student_name_whole"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <EditText android:id="@+id/student_name"
+        android:textSize="15sp"
+        android:textColorHint="@android:color/tertiary_text_dark"
+        android:textColor="@android:color/white"
+        android:layout_width="@dimen/newStudentWidth"
+        android:layout_height="wrap_content"
+        android:hint="@string/prompt_student_name"
+        android:imeActionId="@+id/login"
+        android:imeOptions="actionUnspecified"
+        android:inputType="textAutoCorrect|textPersonName|textCapWords"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:layout_marginTop="20dp" />
+
+</LinearLayout>

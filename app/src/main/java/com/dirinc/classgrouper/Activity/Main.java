@@ -1,8 +1,10 @@
 package com.dirinc.classgrouper.Activity;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +17,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewTreeObserver;
+import android.view.Window;
 
 import com.dirinc.classgrouper.Adapter.*;
 import com.dirinc.classgrouper.Fragment.*;
@@ -38,9 +42,7 @@ public class Main extends AppCompatActivity implements NavigationDrawerCallbacks
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setPadding(0, getStatusBarHeight(), 0, 0);
+        initToolbar();
 
         this.overridePendingTransition(
                 android.R.anim.slide_in_left,
@@ -56,6 +58,12 @@ public class Main extends AppCompatActivity implements NavigationDrawerCallbacks
 
         createDrawer();
         createCards();
+    }
+
+    public void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setPadding(0, getStatusBarHeight(), 0, 0);
     }
 
     public int getStatusBarHeight() {

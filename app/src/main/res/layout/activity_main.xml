@@ -43,7 +43,6 @@
 
         </FrameLayout>
 
-        <!-- android:layout_marginTop="?android:attr/actionBarSize"-->
         <fragment android:id="@+id/fragment_drawer"
             android:name="com.dirinc.classgrouper.Fragment.NavigationDrawerFragment"
             android:layout_width="@dimen/navigation_drawer_width"

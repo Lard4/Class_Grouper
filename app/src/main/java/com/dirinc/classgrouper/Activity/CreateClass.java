@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
@@ -21,6 +25,8 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.dirinc.classgrouper.Adapter.CardAdapter;
+import com.dirinc.classgrouper.Adapter.ListAdapter;
 import com.dirinc.classgrouper.R;
 
 import java.util.HashMap;
@@ -33,9 +39,15 @@ public class CreateClass extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private SharedPreferences classPrefs;
 
+    RecyclerView mRecyclerView;
+    ListAdapter mAdapter;
+    String[] mDataSet = new String[20];
+
     private static final String SHARED_PREFS = "shared_preferences";
 
     private HashMap<Integer, String> classMap = new HashMap<>();
+
+    private ImageButton createClass;
 
     private int id = 0;
 
@@ -53,33 +65,9 @@ public class CreateClass extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(SHARED_PREFS, 0);
         classPrefs = getSharedPreferences("class" + classNumber(), 0);
 
-        className = (EditText) findViewById(R.id.className);
-        studentOneName = (EditText) findViewById(R.id.student_name);
-        ImageButton createClass = (ImageButton) findViewById(R.id.createClass);
-        Button addNewStudent = (Button) findViewById(R.id.add_student_create);
+        initRecycler();
 
-        studentOneName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                classMap.put(id, String.valueOf(studentOneName.getText()));
-            }
-        });
-
-        addNewStudent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                // TODO: Hide keyboard
-                addEditText();
-            }
-        });
-
+        createClass = (ImageButton) findViewById(R.id.createClass);
         createClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +81,20 @@ public class CreateClass extends AppCompatActivity {
         });
     }
 
+    public void initRecycler() {
+        for (int i = 0; i <= 19; i++) {
+            mDataSet[i] = "EditText n: " + i;
+        }
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.create_class_recycler);
+        mAdapter = new ListAdapter(mDataSet);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setHasFixedSize(true);
+
+    }
+
     public int classNumber() {
         return (sharedPreferences.getInt("numberOfClasses", 0));
     }
@@ -103,56 +105,6 @@ public class CreateClass extends AppCompatActivity {
                 .setMessage(message)
                 .setPositiveButton(positiveButton, null)
                 .show();
-    }
-
-    public void addEditText() { //TODO: RecyclerView pt 3... Suicide is a viable option instead jklol
-        id++;
-        RelativeLayout thisLayout = (RelativeLayout) findViewById(R.id.scrollView_layout);
-        final EditText newStudent = new EditText((new ContextThemeWrapper(this, R.style.new_student)));
-        newStudent.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME
-                | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-
-        newStudent.setId(id);
-        newStudent.setTextColor(Color.parseColor("#FFFFFF"));
-        newStudent.setWidth(
-                (int) getResources().getDimension(R.dimen.newStudentWidth)
-        );
-
-        RelativeLayout.LayoutParams EditLayoutParams = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-        EditLayoutParams.setMargins(
-                (int) getResources().getDimension(R.dimen.newStudentMarginLeft), 0, 0, 0
-        );
-
-        if (id == 1) {
-            EditLayoutParams.addRule(RelativeLayout.BELOW, R.id.student_name);
-        } else {
-            EditLayoutParams.addRule(RelativeLayout.BELOW, (id - 1));
-        }
-
-        newStudent.setLayoutParams(EditLayoutParams);
-        (thisLayout).addView(newStudent);
-
-        newStudent.setError(null);
-
-        // Get student_card name
-        newStudent.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                classMap.put(id, String.valueOf(newStudent.getText()));
-            }
-        });
-
-        ScrollView sv = (ScrollView) findViewById(R.id.scrollView);
-        sv.scrollTo(0, sv.getBottom());
-        newStudent.requestFocus();
     }
 
     public void establishClass() {
