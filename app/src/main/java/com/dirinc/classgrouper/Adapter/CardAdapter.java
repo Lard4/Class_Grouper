@@ -141,6 +141,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             });
         } else {
             final Student student = studentData.get(position);
+
             viewHolder.studentCardColor.setBackgroundColor(student.getColor());
             setStudentName(viewHolder.studentCardInitials, student);
             viewHolder.studentCardDelete.setOnClickListener(new View.OnClickListener() {

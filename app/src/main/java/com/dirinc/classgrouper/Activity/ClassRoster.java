@@ -4,7 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.dirinc.classgrouper.Adapter.*;
 import com.dirinc.classgrouper.Info.*;
 import com.dirinc.classgrouper.R;
@@ -22,6 +26,8 @@ import com.dirinc.classgrouper.R;
 import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.*;
+
+import biz.kasual.materialnumberpicker.MaterialNumberPicker;
 
 public class ClassRoster extends AppCompatActivity {
     private int classNumber;
@@ -46,26 +52,44 @@ public class ClassRoster extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mRecyclerView = (RecyclerView) findViewById(R.id.roster_recycler);
+        mLayoutManager = new GridLayoutManager(this, 2);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        final RecyclerView.Adapter mAdapter = new CardAdapter(loadClasses(), classNumber, this);
+        mRecyclerView.setAdapter(mAdapter);
+
+
+        final MaterialDialog dialoger = new MaterialDialog.Builder(this)
+                .title("Custom Groups")
+                .customView(R.layout.custom_group, true)
+                .positiveText("OK")
+                .negativeText("CANCEL")
+                .build();
+
+        final View view = dialoger.getCustomView();
+
+        if (view != null) {
+            final MaterialNumberPicker numberPicker =
+                    (MaterialNumberPicker) view.findViewById(R.id.number_picker);
+            numberPicker.setMaxValue(mAdapter.getItemCount() - 1);
+        }
+
         final FloatingActionMenu fam = (FloatingActionMenu) findViewById(R.id.fab_menu);
-        fam.setClosedOnTouchOutside(true);
+        assert fam != null;
         handleFam(fam);
+        fam.setClosedOnTouchOutside(true);
 
         fam.setOnMenuButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (menuIsOpened) {
-                    //69
+                    dialoger.show();
+                } else {
+                    fam.toggle(true);
+                    menuIsOpened = !menuIsOpened; // Flipperoo
                 }
-                fam.toggle(true);
-                menuIsOpened = !menuIsOpened; // Flipperoo
             }
         });
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.roster_recycler);
-        mLayoutManager = new GridLayoutManager(this, 2);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        RecyclerView.Adapter mAdapter = new CardAdapter(loadClasses(), classNumber, this);
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override

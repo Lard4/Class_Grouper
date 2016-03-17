@@ -6,6 +6,7 @@
 
     <color name="colorAccent">#f44336</color>
     <color name="colorAccentComplement">#ff9800</color>
+    <color name="colorAccentSemiTransparent">#80f44336</color>
 
     <color name="darkBackground">#FF212121</color>
 
