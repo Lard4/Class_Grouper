@@ -96,7 +96,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         if (isMain) {
             final ClassInfo classInfo = classData.get(position);
 
+            viewHolder.classCardTitle.setText(classInfo.getCardName());
             if (!viewHolder.classCardTitle.getText().equals("No Classes!")) {
+                viewHolder.classCardToolbar.inflateMenu(R.menu.menu_delete);
                 viewHolder.classCard.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -108,7 +110,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                     }
                 });
             }
-            viewHolder.classCardTitle.setText(classInfo.getCardName());
             viewHolder.classCardStudentCount.setText(classInfo.getCardStudentCount());
             viewHolder.classCardColor.setBackgroundColor(classInfo.getCardColor());
             viewHolder.classCardToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -181,7 +182,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
     public void setStudentName(TextView name, Student student) {
         SharedPreferences prefs = context.getSharedPreferences("shared_preferences", 0);
-        boolean fullName = prefs.getBoolean(new Settings().FN, false);
+        boolean fullName = prefs.getBoolean(Settings.FN, false);
 
         if (fullName) {
             name.setTextSize(name.getResources().getDimension(R.dimen.student_card_text_size_name));
@@ -359,7 +360,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 this.classCardStudentCount = (TextView) itemView.findViewById(R.id.class_card_student_count);
                 this.classCardColor = (ImageView) itemView.findViewById(R.id.class_card_color);
                 this.classCardToolbar = (Toolbar) itemView.findViewById(R.id.class_card_toolbar);
-                this.classCardToolbar.inflateMenu(R.menu.menu_delete);
             } else {
                 this.studentCardColor = (RelativeLayout) itemView.findViewById(R.id.card_layout);
                 this.studentCardInitials = (TextView) itemView.findViewById(R.id.student_name);
