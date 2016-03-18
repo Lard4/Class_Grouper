@@ -1,6 +1,7 @@
 package com.dirinc.classgrouper.Activity;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -66,7 +67,7 @@ public class Main extends AppCompatActivity {
             }
         });
 
-        createDrawer();
+        createDrawer(this, toolbar);
         createCards();
     }
 
@@ -75,8 +76,8 @@ public class Main extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
-    public void createDrawer() {
-        navigationDrawer = new NavigationDrawer(this, toolbar);
+    public void createDrawer(AppCompatActivity activity, Toolbar tb) {
+        navigationDrawer = new NavigationDrawer(activity, tb);
         navigationDrawer.initialize()
                 .addFooter("Settings", GoogleMaterial.Icon.gmd_settings, new View.OnClickListener() {
                     @Override
@@ -100,7 +101,7 @@ public class Main extends AppCompatActivity {
                     }
                 }, 1)
                 .addItem("PrimaryDrawerItem", "No Classes!",
-                        ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_class),
+                        ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.ic_class),
                         3, new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
@@ -108,6 +109,11 @@ public class Main extends AppCompatActivity {
                         return false;
                     }
                 });
+    }
+
+    public NavigationDrawer getDrawer(AppCompatActivity activity, Toolbar tb) {
+        createDrawer(activity, toolbar);
+        return navigationDrawer;
     }
 
     public void createCards() {

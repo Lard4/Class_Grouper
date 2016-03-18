@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.dirinc.classgrouper.Activity.Settings;
 import com.dirinc.classgrouper.R;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.typeface.IIcon;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -173,14 +174,23 @@ public class NavigationDrawer {
         return this;
     }
 
+    public void removeHamburgerAnimation() {
+        activity.getSupportActionBar().setHomeAsUpIndicator(new IconicsDrawable(activity.getApplicationContext())
+                .icon(GoogleMaterial.Icon.gmd_arrow_back).color(Color.WHITE).sizeDp(16));
+    }
+
     private void addHamburgerAnimation() {
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
-                activity,  drawerLayout, toolbar,
+                activity, drawerLayout, toolbar,
                 R.string.drawer_open, R.string.drawer_close
         );
         drawerLayout.addDrawerListener(drawerToggle);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         drawerToggle.syncState();
+    }
+
+    public Drawer getDrawer() {
+        return drawer;
     }
 }

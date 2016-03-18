@@ -23,12 +23,10 @@ public class Settings extends AppCompatActivity implements CompoundButton.OnChec
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor prefsEdit;
 
-    private NavigationDrawerFragment navigationDrawerFragment;
-    private NavigationDrawer navigationDrawer;
     private Switch highContrast;
-    private RelativeLayout highContrastLayout;
     private Switch fullNames;
-    private RelativeLayout fullNamesLayout;
+
+    private NavigationDrawer drawer;
 
     private static final String SHARED_PREFS = "shared_preferences";
     public static final String HCT = "high_contrast_text_enabled";
@@ -93,15 +91,19 @@ public class Settings extends AppCompatActivity implements CompoundButton.OnChec
 
         highContrast = (Switch) findViewById(R.id.settings_high_contrast_text_switch);
         highContrast.setOnCheckedChangeListener(this);
-        highContrastLayout = (RelativeLayout) findViewById(R.id.settings_high_contrast_text);
+        RelativeLayout highContrastLayout = (RelativeLayout) findViewById(R.id.settings_high_contrast_text);
         highContrastLayout.setOnClickListener(this);
         setSwitch(highContrast, 3, HCT);
 
         fullNames = (Switch) findViewById(R.id.settings_full_names_switch);
         fullNames.setOnCheckedChangeListener(this);
-        fullNamesLayout = (RelativeLayout) findViewById(R.id.settings_full_names);
+        RelativeLayout fullNamesLayout = (RelativeLayout) findViewById(R.id.settings_full_names);
         fullNamesLayout.setOnClickListener(this);
         setSwitch(fullNames, 3, FN);
+
+        Main main = new Main();
+        drawer = main.getDrawer(this, toolbar);
+        //drawer.removeHamburgerAnimation();
     }
 
     public void setSwitch(Switch mSwitch, int key, String name) {
