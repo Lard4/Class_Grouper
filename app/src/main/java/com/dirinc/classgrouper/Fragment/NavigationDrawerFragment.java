@@ -35,11 +35,11 @@ import com.dirinc.classgrouper.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NavigationDrawerFragment extends Fragment implements NavigationDrawerCallbacks {
+public class NavigationDrawerFragment extends Fragment {
 
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
 
-    private NavigationDrawerCallbacks callbacks;
+    //private NavigationDrawerCallbacks callbacks;
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
@@ -75,7 +75,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
         final List<NavigationItem> navigationItems = getMenu();
         adapter = new NavigationDrawerAdapter(navigationItems);
-        adapter.setNavigationDrawerCallbacks(this);
         drawerList.setAdapter(adapter);
 
         return view;
@@ -91,11 +90,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     public DrawerLayout getDrawerLayout() {
         return drawerLayout;
-    }
-
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        selectItem(position);
     }
 
     public List<NavigationItem> getMenu() {
@@ -190,9 +184,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         if (drawerLayout != null) {
             drawerLayout.closeDrawer(fragmentContainerView);
         }
-        if (callbacks != null) {
-            callbacks.onNavigationDrawerItemSelected(position);
-        }
+        //if (callbacks != null) {
+        //    callbacks.onNavigationDrawerItemSelected(position);
+        //}
         ((NavigationDrawerAdapter) drawerList.getAdapter()).selectPosition(position);
     }
 
@@ -207,17 +201,17 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            callbacks = (NavigationDrawerCallbacks) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
-        }
+        //try {
+        //    callbacks = (NavigationDrawerCallbacks) activity;
+        //} catch (ClassCastException e) {
+        //    throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
+        //}
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        callbacks = null;
+        //callbacks = null;
     }
 
     @Override

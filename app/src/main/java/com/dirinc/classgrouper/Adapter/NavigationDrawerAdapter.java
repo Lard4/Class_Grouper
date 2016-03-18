@@ -24,7 +24,6 @@ import java.util.List;
 public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.ViewHolder> {
 
     private List<NavigationItem> data;
-    private NavigationDrawerCallbacks navigationDrawerCallbacks;
     private View selectedView;
     private int selectedPosition;
 
@@ -35,14 +34,6 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
     public NavigationDrawerAdapter(List<NavigationItem> data) {
         this.data = data;
-    }
-
-    public NavigationDrawerCallbacks getNavigationDrawerCallbacks() {
-        return navigationDrawerCallbacks;
-    }
-
-    public void setNavigationDrawerCallbacks(NavigationDrawerCallbacks navigationDrawerCallbacks) {
-        this.navigationDrawerCallbacks = navigationDrawerCallbacks;
     }
 
     public void addItem(String name, Drawable image) {
@@ -79,10 +70,6 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
                 selectedPosition = viewHolder.getAdapterPosition();
                 v.setSelected(true);
                 selectedView = v;
-
-                if (navigationDrawerCallbacks != null) {
-                    navigationDrawerCallbacks.onNavigationDrawerItemSelected(viewHolder.getAdapterPosition());
-                }
             }
         });
         viewHolder.container.setBackgroundResource(R.drawable.row_selector);

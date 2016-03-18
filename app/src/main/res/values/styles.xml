@@ -7,7 +7,6 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
-        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="AppTheme.Dialog.Dark" parent="AlertDialog.AppCompat">
@@ -17,17 +16,9 @@
         <item name="android:windowBackground">@color/darkBackground</item>
     </style>
 
-    <style name="AppTheme.TranslucentStatus" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="ToolbarTheme" parent="Theme.AppCompat">
-
     </style>
 
     <style name="roster_card">

@@ -14,15 +14,17 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 
 import com.dirinc.classgrouper.Fragment.*;
+import com.dirinc.classgrouper.Info.NavigationDrawer;
 import com.dirinc.classgrouper.R;
 
-public class Settings extends AppCompatActivity implements NavigationDrawerCallbacks,
-        CompoundButton.OnCheckedChangeListener, View.OnClickListener{
+public class Settings extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener,
+        View.OnClickListener{
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor prefsEdit;
 
     private NavigationDrawerFragment navigationDrawerFragment;
+    private NavigationDrawer navigationDrawer;
     private Switch highContrast;
     private RelativeLayout highContrastLayout;
     private Switch fullNames;
@@ -75,6 +77,8 @@ public class Settings extends AppCompatActivity implements NavigationDrawerCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        //TODO: Get navigation drawer
+
         this.overridePendingTransition(
                 android.R.anim.slide_in_left,
                 android.R.anim.slide_out_right);
@@ -98,24 +102,6 @@ public class Settings extends AppCompatActivity implements NavigationDrawerCallb
         fullNamesLayout = (RelativeLayout) findViewById(R.id.settings_full_names);
         fullNamesLayout.setOnClickListener(this);
         setSwitch(fullNames, 3, FN);
-
-        createDrawer(toolbar, actionBar);
-    }
-
-    public void createDrawer(Toolbar toolbar, ActionBar actionBar) {
-        navigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.fragment_drawer);
-        // Set up the drawer.
-        navigationDrawerFragment.setup(R.id.fragment_drawer,
-                (DrawerLayout) findViewById(R.id.drawer), toolbar, false);
-        /* Populate the navigation drawer
-        navigationDrawerFragment.setUserData("John Doe", "johndoe@doe.com",
-                BitmapFactory.decodeResource(getResources(), R.drawable.avatar)); */
-    }
-
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        // Update the main content by replacing fragments
     }
 
     public void setSwitch(Switch mSwitch, int key, String name) {
@@ -159,12 +145,8 @@ public class Settings extends AppCompatActivity implements NavigationDrawerCallb
 
     @Override
     public void onBackPressed() {
-        if (navigationDrawerFragment.isDrawerOpen()) {
-            navigationDrawerFragment.closeDrawer();
-        } else {
-            super.onBackPressed();
-            finish();
-            switchActivities("Main");
-        }
+        super.onBackPressed();
+        finish();
+        switchActivities("Main");
     }
 }

@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,23 +27,32 @@ import com.dirinc.classgrouper.Adapter.*;
 import com.dirinc.classgrouper.Fragment.*;
 import com.dirinc.classgrouper.Info.*;
 import com.dirinc.classgrouper.R;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-public class Main extends AppCompatActivity implements NavigationDrawerCallbacks {
+public class Main extends AppCompatActivity {
 
     public static NavigationDrawerFragment navigationDrawerFragment;
 
     private Toolbar toolbar;
     private FloatingActionButton fab;
+    private NavigationDrawer navigationDrawer;
+
+    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initToolbar();
+
+        this.view = findViewById(R.id.main_layout);
 
         this.overridePendingTransition(
                 android.R.anim.slide_in_left,
@@ -61,34 +73,47 @@ public class Main extends AppCompatActivity implements NavigationDrawerCallbacks
     public void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setPadding(0, getStatusBarHeight(), 0, 0);
-    }
-
-    public int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
     }
 
     public void createDrawer() {
-        navigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.fragment_drawer);
-
-        navigationDrawerFragment.setup(R.id.fragment_drawer,
-                (DrawerLayout) findViewById(R.id.drawer), toolbar, true);
-    }
-
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        // Update the main content by replacing fragments
+        navigationDrawer = new NavigationDrawer(this, toolbar);
+        navigationDrawer.initialize()
+                .addFooter("Settings", GoogleMaterial.Icon.gmd_settings, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getApplicationContext(), Settings.class));
+                    }
+                }, 0)
+                .addFooter("Send Feedback", GoogleMaterial.Icon.gmd_feedback, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.setType("message/rfc822");
+                        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"kdixson538@gmail.com"});
+                        i.putExtra(Intent.EXTRA_SUBJECT, "Feedback for Class Grouper");
+                        i.putExtra(Intent.EXTRA_TEXT   , "Love the app!");
+                        try {
+                            startActivity(Intent.createChooser(i, "Send mail..."));
+                        } catch (android.content.ActivityNotFoundException ex) {
+                            Snackbar.make(view, "There are no email clients installed", Snackbar.LENGTH_SHORT);
+                        }
+                    }
+                }, 1)
+                .addItem("PrimaryDrawerItem", "No Classes!",
+                        ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_class),
+                        3, new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        switchActivities("ClassRoster", 0);
+                        return false;
+                    }
+                });
     }
 
     public void createCards() {
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.class_recycler);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        assert mRecyclerView != null;
         mRecyclerView.setLayoutManager(mLayoutManager);
         RecyclerView.Adapter mAdapter = new CardAdapter(getClassData(this),
                 findViewById(R.id.main_layout), this);
@@ -176,14 +201,12 @@ public class Main extends AppCompatActivity implements NavigationDrawerCallbacks
                 changeActivities = new Intent(this, CreateClass.class);
                 Log.d("ActivitySwitch", "Switching to CreateClass Activity");
                 startActivity(changeActivities);
-                //finish();
                 break;
 
             case "Settings":
                 changeActivities = new Intent(this, Settings.class);
                 Log.d("ActivitySwitch", "Switching to Settings Activity");
                 startActivity(changeActivities);
-                //finish();
                 break;
 
             case "ClassRoster":
@@ -193,18 +216,13 @@ public class Main extends AppCompatActivity implements NavigationDrawerCallbacks
                 bundle.putInt("bzofghia", newClass);
                 changeActivities.putExtras(bundle);
                 startActivity(changeActivities);
-                //finish();
                 break;
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (navigationDrawerFragment.isDrawerOpen()) {
-            navigationDrawerFragment.closeDrawer();
-        } else {
-            super.onBackPressed();
-            this.finishAffinity();
-        }
+        super.onBackPressed();
+        this.finishAffinity();
     }
 }
