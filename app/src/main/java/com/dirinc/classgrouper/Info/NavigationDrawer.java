@@ -174,11 +174,6 @@ public class NavigationDrawer {
         return this;
     }
 
-    public void removeHamburgerAnimation() {
-        activity.getSupportActionBar().setHomeAsUpIndicator(new IconicsDrawable(activity.getApplicationContext())
-                .icon(GoogleMaterial.Icon.gmd_arrow_back).color(Color.WHITE).sizeDp(16));
-    }
-
     private void addHamburgerAnimation() {
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
                 activity, drawerLayout, toolbar,

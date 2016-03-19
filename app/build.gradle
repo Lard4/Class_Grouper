@@ -41,4 +41,10 @@ dependencies {
     compile('com.github.afollestad.material-dialogs:core:0.8.5.7@aar') {
         transitive = true
     }
+    compile('com.github.afollestad:sectioned-recyclerview:0.2.0') {
+        transitive = true
+    }
+    compile('com.afollestad:material-cab:0.1.9@aar') {
+        transitive = true
+    }
 }

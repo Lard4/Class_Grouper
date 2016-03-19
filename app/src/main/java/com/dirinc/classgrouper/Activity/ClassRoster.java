@@ -4,10 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -55,9 +52,8 @@ public class ClassRoster extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.roster_recycler);
         mLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        final RecyclerView.Adapter mAdapter = new CardAdapter(loadClasses(), classNumber, this);
+        final RecyclerView.Adapter mAdapter = new MainAdapter(loadClasses(), classNumber, this);
         mRecyclerView.setAdapter(mAdapter);
-
 
         final MaterialDialog dialoger = new MaterialDialog.Builder(this)
                 .title("Custom Groups")

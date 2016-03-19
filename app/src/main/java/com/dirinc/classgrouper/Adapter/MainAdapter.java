@@ -25,35 +25,29 @@ import com.dirinc.classgrouper.Activity.*;
 import com.dirinc.classgrouper.Info.*;
 import com.dirinc.classgrouper.R;
 
-import org.w3c.dom.Text;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
+public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
-    private List<Student> studentData;
+    private HashMap<Integer, Student> studentData;
     private List<ClassInfo> classData;
     private HashMap<Integer, String> thisClass;
 
-    private int nClass;
     private boolean isMain;
-    private ClassInfo classEditor;
     private View layout;
     public Context context;
 
     /** Roster Activity **/
-    public CardAdapter(ArrayList<ClassInfo> classData, int nClass, Context context) {
+    public MainAdapter(ArrayList<ClassInfo> classData, int nClass, Context context) {
         super();
         this.isMain = false;
         this.context = context;
         this.classData = classData;
-        this.nClass = nClass;
-        this.classEditor = new ClassInfo(nClass, context);
-        this.studentData = new ArrayList<>();
+        this.studentData = new HashMap<>();
         this.thisClass = classData.get(nClass).getMap();
 
         for (int i = 0; i < thisClass.size(); i++) {
@@ -62,13 +56,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 student.setInitials(getInitials(i))
                         .setColor(generateColor())
                         .setName(getName(i));
-                studentData.add(student);
+                studentData.put(i, student);
             }
         }
     }
 
     /** Main Activity **/
-    public CardAdapter(ArrayList<ClassInfo> classData, View layout, Context context) {
+    public MainAdapter(ArrayList<ClassInfo> classData, View layout, Context context) {
         super();
         this.isMain = true;
         this.layout = layout;
@@ -157,6 +151,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     //May someday break something... Oh whale.
+                    generateGroups(2);
                     CardView card = (CardView) v.getParent().getParent();
 
                     if (card.getAlpha() != .2f) {
@@ -336,8 +331,51 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 rand.nextInt(156) + 100);   //B
     }
 
-    public void generateGroups() {
+    public void generateGroups(int nGroups) {
+        HashMap<Integer, HashMap> groups = new HashMap<>();
+        ArrayList<Integer> numbers = new ArrayList<>();
+        int nStudents = studentData.size();
+        int studentsPerGroup = (nStudents / nGroups);
+        int counter = 1;
+        int studentCounter = 0;
 
+        for (int i = 0; i < nStudents; i++) {
+            numbers.add(i);
+        }
+
+        // Even if the groups are uneven, this is our starting point
+        for (int i = nGroups; i > 0; i--) {
+            for (int ii = 0; ii < studentsPerGroup; ii++) {
+                HashMap<Integer, Student> newGroup = new HashMap<>();
+                int random = numbers.get(new Random().nextInt(numbers.size()));
+
+                try {
+                    newGroup.put(random, studentData.get(random));
+                    numbers.remove(random);
+                } catch (Exception e) {
+                    while (true) {
+                        int nRandom = numbers.get(new Random().nextInt(numbers.size()));
+                        try {
+                            newGroup.put(nRandom, studentData.get(nRandom));
+                            numbers.remove(nRandom);
+                            break;
+                        } catch (Exception ex) { }
+                    }
+                }
+            }
+        }
+
+        /* Handle uneven groups
+        if (nStudents % nGroups != 0) {
+            int studentsLeftOver = (students % nGroups);
+
+            while (studentsLeftOver > 0) {
+                groups.put(counter, (studentsPerGroup + 1));
+                studentsLeftOver--;
+                counter++;
+            }
+        }
+        */
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
