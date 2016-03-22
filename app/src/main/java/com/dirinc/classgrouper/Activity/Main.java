@@ -1,10 +1,12 @@
 package com.dirinc.classgrouper.Activity;
 
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.afollestad.appthemeengine.ATEActivity;
 import com.dirinc.classgrouper.Adapter.*;
 import com.dirinc.classgrouper.Fragment.*;
 import com.dirinc.classgrouper.Info.*;
@@ -61,6 +64,9 @@ public class Main extends AppCompatActivity {
 
         createDrawer(this, toolbar);
         createCards();
+
+        UiModeManager uiManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
+        uiManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
     }
 
     public void initToolbar() {
@@ -94,7 +100,7 @@ public class Main extends AppCompatActivity {
                 }, 1)
                 .addItem("PrimaryDrawerItem", "No Classes!",
                         ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.ic_class),
-                        3, new Drawer.OnDrawerItemClickListener() {
+                        -1, new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         switchActivities("ClassRoster", 0);

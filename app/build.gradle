@@ -30,7 +30,7 @@ dependencies {
     compile 'com.mikepenz:iconics-core:2.5.9@aar'
     compile 'com.mikepenz:google-material-typeface:2.2.0.1.original@aar'
     compile 'com.mikepenz:material-design-iconic-typeface:2.2.0.1@aar'
-    compile('com.mikepenz:materialdrawer:5.1.5@aar') {
+    compile('com.mikepenz:materialdrawer:5.1.6@aar') {
         transitive = true
     }
 
@@ -44,7 +44,10 @@ dependencies {
     compile('com.github.afollestad:sectioned-recyclerview:0.2.0') {
         transitive = true
     }
-    compile('com.afollestad:material-cab:0.1.9@aar') {
+    compile('com.github.afollestad:app-theme-engine:1.0.0@aar') {
+        transitive = true
+    }
+    compile('com.github.afollestad.material-dialogs:commons:0.8.5.4@aar') {
         transitive = true
     }
 }

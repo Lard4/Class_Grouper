@@ -32,4 +32,6 @@
 
     <dimen name="navigation_drawer_width">320dp</dimen>
     <dimen name="toolbar_elevation">4dp</dimen>
+
+    <dimen name="material_drawer_sticky_footer_elevation">2dp</dimen>
 </resources>

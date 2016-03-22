@@ -18,6 +18,9 @@
     <color name="textColorSecondary">#FF727272</color>
 
     <color name="divider">#50B6B6B6</color>
+    <color name="drawer_divider">#25000000</color>
+    <color name="material_drawer_divider">@color/drawer_divider</color>
+    <color name="material_drawer_dark_divider">@color/drawer_divider</color>
 
     <color name="semiTransparent">#32FFFFFF</color>
 

@@ -1,6 +1,7 @@
 package com.dirinc.classgrouper.Info;
 
 import android.app.Activity;
+import android.app.UiModeManager;
 import android.app.VoiceInteractor;
 import android.content.Intent;
 import android.graphics.Color;
@@ -29,6 +30,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.HashMap;
@@ -66,11 +68,15 @@ public class NavigationDrawer {
                         new PrimaryDrawerItem()
                                 .withName("Home")
                                 .withIcon(GoogleMaterial.Icon.gmd_home),
-                        new DividerDrawerItem()
+                        new SectionDrawerItem()
+                                .withName("Classes")
+                                .withSelectable(false)
                 )
                 .build();
+
         drawerKey.put("Home", 1);
-        drawerKey.put("Divider1", 2);
+        drawerKey.put("Classes Title", 2);
+
         drawerLayout = drawer.getDrawerLayout();
         drawerLayout.setScrimColor(Color.parseColor("#80FFFFFF"));
 
@@ -81,6 +87,11 @@ public class NavigationDrawer {
 
     public NavigationDrawer addItem(String type, String name, IIcon drawable, int position,
                                     Drawer.OnDrawerItemClickListener onClick) {
+
+        if (position == -1) { //Add to bottom
+            position = drawerKey.size() + 1;
+        }
+
         switch (type) {
             case "PrimaryDrawerItem":
                 drawer.addItemAtPosition(new PrimaryDrawerItem()
@@ -110,6 +121,11 @@ public class NavigationDrawer {
 
     public NavigationDrawer addItem(String type, String name, Drawable drawable, int position,
                                     Drawer.OnDrawerItemClickListener onClick) {
+
+        if (position == -1) { //Add to bottom
+            position = drawerKey.size() + 1;
+        }
+
         switch (type) {
             case "PrimaryDrawerItem":
                 drawer.addItemAtPosition(new PrimaryDrawerItem()
