@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -82,7 +83,7 @@ public class CreateClass extends AppCompatActivity {
         mDataSet.add(1, getResources().getString(R.string.prompt_new_student_name));
 
         mRecyclerView = (RecyclerView) findViewById(R.id.create_class_recycler);
-        mAdapter = new ListAdapter(mDataSet, classPrefs);
+        mAdapter = new ListAdapter(mDataSet, classPrefs, getApplicationContext(), mRecyclerView, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);

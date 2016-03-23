@@ -1,7 +1,10 @@
 package com.dirinc.classgrouper.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,11 +29,20 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     private List<String> mDataset = new ArrayList<>();
     private List<String> studentNames = new ArrayList<>();
     private SharedPreferences prefs;
+    private Context context;
+    private AppCompatActivity activity;
 
-    public ListAdapter(List<String> myDataset, SharedPreferences prefs) {
+    public ListAdapter(List<String> myDataset, SharedPreferences prefs,
+                       Context context, ViewGroup root, AppCompatActivity activity) {
+
         this.mDataset = myDataset;
         this.prefs = prefs;
         this.studentNames.add(0, "");
+        this.context = context;
+        this.activity = activity;
+
+        //View view = LayoutInflater.from(context)
+        //        .inflate(R.layout.create_class_non_recycler, root, false);
     }
 
     @Override
@@ -144,6 +156,18 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                 studentNames.add(position, charSequence.toString());
             }
             updatePrefs();
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.create_class_recycler);
+                    if (recyclerView != null) recyclerView.smoothScrollToPosition(getItemCount() + 1);
+
+                    handler.postDelayed(this, 100);
+                    handler.removeCallbacks(this);
+                }
+            }, 100);
         }
 
         @Override
