@@ -50,6 +50,8 @@ public class Main extends AppCompatActivity {
 
         this.view = findViewById(R.id.main_layout);
 
+        final AppCompatActivity activity = this;
+
         this.overridePendingTransition(
                 android.R.anim.slide_in_left,
                 android.R.anim.slide_out_right);
@@ -58,15 +60,12 @@ public class Main extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switchActivities("CreateClass", 0);
+                switchActivities(activity, "CreateClass", 0);
             }
         });
 
         createDrawer(this, toolbar);
         createCards();
-
-        UiModeManager uiManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
-        uiManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
     }
 
     public void initToolbar() {
@@ -97,16 +96,7 @@ public class Main extends AppCompatActivity {
                             Snackbar.make(view, "There are no email clients installed", Snackbar.LENGTH_SHORT);
                         }
                     }
-                }, 1)
-                .addItem("PrimaryDrawerItem", "No Classes!",
-                        ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.ic_class),
-                        -1, new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        switchActivities("ClassRoster", 0);
-                        return false;
-                    }
-                });
+                }, 1);
     }
 
     public NavigationDrawer getDrawer(AppCompatActivity activity, Toolbar tb) {
@@ -120,7 +110,7 @@ public class Main extends AppCompatActivity {
         assert mRecyclerView != null;
         mRecyclerView.setLayoutManager(mLayoutManager);
         RecyclerView.Adapter mAdapter = new MainAdapter(getClassData(this),
-                findViewById(R.id.main_layout), this);
+                findViewById(R.id.main_layout), this, navigationDrawer, this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -191,35 +181,35 @@ public class Main extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            switchActivities("Settings", 0);
+            switchActivities(this, "Settings", 0);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void switchActivities(String newActivity, int newClass) {
+    public static void switchActivities(AppCompatActivity activity, String newActivity, int newClass) {
         Intent changeActivities;
 
         switch (newActivity) {
             case "CreateClass":
-                changeActivities = new Intent(this, CreateClass.class);
+                changeActivities = new Intent(activity, CreateClass.class);
                 Log.d("ActivitySwitch", "Switching to CreateClass Activity");
-                startActivity(changeActivities);
+                activity.startActivity(changeActivities);
                 break;
 
             case "Settings":
-                changeActivities = new Intent(this, Settings.class);
+                changeActivities = new Intent(activity, Settings.class);
                 Log.d("ActivitySwitch", "Switching to Settings Activity");
-                startActivity(changeActivities);
+                activity.startActivity(changeActivities);
                 break;
 
             case "ClassRoster":
-                changeActivities = new Intent(getApplicationContext(), ClassRoster.class);
+                changeActivities = new Intent(activity, ClassRoster.class);
                 Log.d("ActivitySwitch", "Switching to ClassRoster Activity");
                 Bundle bundle = new Bundle();
                 bundle.putInt("bzofghia", newClass);
                 changeActivities.putExtras(bundle);
-                startActivity(changeActivities);
+                activity.startActivity(changeActivities);
                 break;
         }
     }

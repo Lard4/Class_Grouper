@@ -42,7 +42,7 @@
         android:layout_width="12dp"
         android:layout_height="12dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="22dp"
         app:iiv_color="@color/colorAccent"
         app:iiv_icon="gmd-close" />
 

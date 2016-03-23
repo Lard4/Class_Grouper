@@ -14,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.OvershootInterpolator;
 
 import com.afollestad.appthemeengine.ATEActivity;
@@ -27,6 +29,10 @@ import com.github.clans.fab.FloatingActionMenu;
 import java.util.*;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 public class ClassRoster extends AppCompatActivity {
     private int classNumber;
@@ -51,18 +57,29 @@ public class ClassRoster extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.roster_recycler);
-        mLayoutManager = new GridLayoutManager(this, 2);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        final RecyclerView.Adapter mAdapter = new MainAdapter(loadClasses(), classNumber, this);
-        mRecyclerView.setAdapter(mAdapter);
-
         final MaterialDialog dialoger = new MaterialDialog.Builder(this)
                 .title("Custom Groups")
                 .customView(R.layout.custom_group, true)
                 .positiveText("OK")
                 .negativeText("CANCEL")
                 .build();
+
+        final FloatingActionMenu fam = initFam(dialoger);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.roster_recycler);
+        mLayoutManager = new GridLayoutManager(this, 2);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        final RecyclerView.Adapter mAdapter = new MainAdapter(loadClasses(), classNumber, this);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dX, int dY) {
+                if (dY > 0 && fam.isShown())
+                    fam.hideMenu(true);
+                else if (dY < 0 && !fam.isShown())
+                    fam.showMenu(true);
+            }
+        });
 
         final View view = dialoger.getCustomView();
 
@@ -71,23 +88,6 @@ public class ClassRoster extends AppCompatActivity {
                     (MaterialNumberPicker) view.findViewById(R.id.number_picker);
             numberPicker.setMaxValue(mAdapter.getItemCount() - 1);
         }
-
-        final FloatingActionMenu fam = (FloatingActionMenu) findViewById(R.id.fab_menu);
-        assert fam != null;
-        handleFam(fam);
-        fam.setClosedOnTouchOutside(true);
-
-        fam.setOnMenuButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (menuIsOpened) {
-                    dialoger.show();
-                } else {
-                    fam.toggle(true);
-                    menuIsOpened = !menuIsOpened; // Flipperoo
-                }
-            }
-        });
     }
 
     @Override
@@ -97,9 +97,31 @@ public class ClassRoster extends AppCompatActivity {
                 this.finish();
                 switchActivities("Main");
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public FloatingActionMenu initFam(final MaterialDialog dialog) {
+        final FloatingActionMenu fam = (FloatingActionMenu) findViewById(R.id.fab_menu);
+        assert fam != null;
+        handleFam(fam);
+        fam.setClosedOnTouchOutside(true);
+
+        fam.setOnMenuButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (menuIsOpened) {
+                    dialog.show();
+                } else {
+                    fam.toggle(true);
+                    menuIsOpened = !menuIsOpened; // Flipperoo
+                }
+            }
+        });
+
+        return fam;
     }
 
     public void handleFam(final FloatingActionMenu fam) {
@@ -155,4 +177,5 @@ public class ClassRoster extends AppCompatActivity {
                 break;
         }
     }
+
 }

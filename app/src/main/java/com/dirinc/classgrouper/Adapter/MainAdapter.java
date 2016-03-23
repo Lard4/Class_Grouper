@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -17,13 +18,18 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dirinc.classgrouper.Activity.*;
 import com.dirinc.classgrouper.Info.*;
 import com.dirinc.classgrouper.R;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,10 +42,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private HashMap<Integer, Student> studentData;
     private List<ClassInfo> classData;
     private HashMap<Integer, String> thisClass;
+    private NavigationDrawer navigationDrawer;
 
     private boolean isMain;
     private View layout;
-    public Context context;
+    private Context context;
+    private AppCompatActivity activity;
+
+    private int lastPosition = -1;
 
     /** Roster Activity **/
     public MainAdapter(ArrayList<ClassInfo> classData, int nClass, Context context) {
@@ -62,16 +72,20 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     }
 
     /** Main Activity **/
-    public MainAdapter(ArrayList<ClassInfo> classData, View layout, Context context) {
+    public MainAdapter(ArrayList<ClassInfo> classData, View layout, Context context,
+                       NavigationDrawer navigationDrawer, AppCompatActivity activity) {
         super();
         this.isMain = true;
         this.layout = layout;
         this.classData = classData;
         this.context = context;
+        this.navigationDrawer = navigationDrawer;
+        this.activity = activity;
+        addClassesToDrawer();
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int dontUse) {
         View v;
         if (isMain) {
             v = LayoutInflater.from(viewGroup.getContext())
@@ -134,7 +148,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 }
             });
         } else {
-            final Student student = studentData.get(position);
+            Student student = studentData.get(position);
 
             viewHolder.studentCardColor.setBackgroundColor(student.getColor());
             setStudentName(viewHolder.studentCardInitials, student);
@@ -246,6 +260,21 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             return classData.size();
         } else {
             return studentData.size();
+        }
+    }
+
+    public void addClassesToDrawer() {
+        for (int ix = 0; ix < classData.size(); ix++) {
+            final int finalI = ix;
+            navigationDrawer.addItem(NavigationDrawer.PrimaryDrawerItem, classData.get(ix).getCardName(),
+                    context.getResources().getDrawable(R.drawable.ic_class), -1,
+                    (new Drawer.OnDrawerItemClickListener() {
+                        @Override
+                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                            Main.switchActivities(activity, "ClassRoster", finalI);
+                            return false;
+                        }
+                    }));
         }
     }
 
@@ -378,11 +407,27 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         */
     }
 
+    /*
+    private void setAnimation(View viewToAnimate, int position) {
+        viewToAnimate.animate().cancel();
+        viewToAnimate.setTranslationY(100);
+        viewToAnimate.setAlpha(0);
+        viewToAnimate.animate().alpha(1.0f).translationY(0).setDuration(75).setStartDelay(position * 100);
+
+        if (position > lastPosition) {
+            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
+    }
+    */
+
     class ViewHolder extends RecyclerView.ViewHolder {
         public CardView studentCard;
         public RelativeLayout studentCardColor;
         public TextView studentCardInitials;
         public ImageView studentCardDelete, studentCardAbsent;
+        public LinearLayout studentCardLayout;
 
         public TextView classCardTitle, classCardStudentCount;
         public ImageView classCardColor;
@@ -405,6 +450,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 this.studentCardDelete = (ImageView) itemView.findViewById(R.id.student_delete);
                 this.studentCardAbsent = (ImageView) itemView.findViewById(R.id.student_absent);
                 this.studentCard = (CardView) itemView.findViewById(R.id.student_card);
+                this.studentCardLayout = (LinearLayout) itemView.findViewById(R.id.student_card_linlayout);
             }
         }
     }

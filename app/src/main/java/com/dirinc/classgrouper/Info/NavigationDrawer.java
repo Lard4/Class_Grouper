@@ -47,6 +47,10 @@ public class NavigationDrawer {
 
     public HashMap<String, Integer> drawerKey = new HashMap<>(); //Starts at 1
 
+    public static String PrimaryDrawerItem = "PrimaryDrawerItem";
+    public static String SecondaryDrawerItem = "SecondaryDrawerItem";
+    public static String DividerDrawerItem = "DividerDrawerItem";
+
     public NavigationDrawer(AppCompatActivity activity, Toolbar toolbar) {
         this.activity = activity;
         this.toolbar = toolbar;
@@ -109,7 +113,7 @@ public class NavigationDrawer {
                         position);
                 break;
 
-            case "Divider":
+            case "DividerDrawerItem":
                 drawer.addItemAtPosition(new DividerDrawerItem(), position);
                 break;
         }

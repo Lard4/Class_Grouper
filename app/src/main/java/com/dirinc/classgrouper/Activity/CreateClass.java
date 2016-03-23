@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -52,6 +53,7 @@ public class CreateClass extends AppCompatActivity {
         setContentView(R.layout.activity_create_class);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         this.overridePendingTransition(
                 android.R.anim.slide_in_left,
@@ -76,6 +78,19 @@ public class CreateClass extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                switchActivities("Main");
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void initRecycler() {

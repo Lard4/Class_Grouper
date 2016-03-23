@@ -50,4 +50,6 @@ dependencies {
     compile('com.github.afollestad.material-dialogs:commons:0.8.5.4@aar') {
         transitive = true
     }
+
+    compile 'jp.wasabeef:recyclerview-animators:2.2.1'
 }
