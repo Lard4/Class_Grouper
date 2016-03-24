@@ -1,15 +1,12 @@
 package com.dirinc.classgrouper.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -18,11 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.dirinc.classgrouper.Info.Student;
 import com.dirinc.classgrouper.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
@@ -33,17 +28,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     private Context context;
     private AppCompatActivity activity;
 
-    public ListAdapter(List<String> myDataset, SharedPreferences prefs,
-                       Context context, ViewGroup root, AppCompatActivity activity) {
+    public ListAdapter(List<String> myDataset, SharedPreferences prefs, Context context,
+                       AppCompatActivity activity) {
 
         this.mDataset = myDataset;
         this.prefs = prefs;
         this.studentNames.add(0, "");
         this.context = context;
         this.activity = activity;
-
-        //View view = LayoutInflater.from(context)
-        //        .inflate(R.layout.create_class_non_recycler, root, false);
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.dirinc.classgrouper.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,12 +13,10 @@ import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.afollestad.appthemeengine.ATEActivity;
 import com.dirinc.classgrouper.Adapter.ListAdapter;
 import com.dirinc.classgrouper.R;
 
@@ -30,7 +27,6 @@ import java.util.List;
 public class CreateClass extends AppCompatActivity {
 
     private EditText className;
-    private EditText studentOneName;
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences classPrefs;
@@ -40,12 +36,6 @@ public class CreateClass extends AppCompatActivity {
     List<String> mDataSet = new ArrayList<>();
 
     private static final String SHARED_PREFS = "shared_preferences";
-
-    private HashMap<Integer, String> classMap = new HashMap<>();
-
-    private ImageButton createClass;
-
-    private int id = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +56,8 @@ public class CreateClass extends AppCompatActivity {
 
         className = (EditText) findViewById(R.id.className);
 
-        createClass = (ImageButton) findViewById(R.id.createClass);
-        createClass.setOnClickListener(new View.OnClickListener() {
+        ImageButton createClass = (ImageButton) findViewById(R.id.createClass);
+        if (createClass != null) createClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
@@ -85,7 +75,7 @@ public class CreateClass extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
-                switchActivities("Main");
+                Main.switchActivities(this, "Main", 69);
                 return true;
 
             default:
@@ -134,7 +124,7 @@ public class CreateClass extends AppCompatActivity {
             genPrefsEdit.putInt("numberOfClasses", classNumber() + 1);
             genPrefsEdit.apply();
 
-            switchActivities("Main");
+            Main.switchActivities(this, "Main", 69);
             finish();
         } else {
             Toast.makeText(getApplicationContext(), "Name your class!", Toast.LENGTH_SHORT)
@@ -142,30 +132,9 @@ public class CreateClass extends AppCompatActivity {
         }
     }
 
-    public void switchActivities(String newActivity) {
-        Intent changeActivities;
-
-        switch (newActivity) {
-            case "CreateClass":
-                changeActivities = new Intent(this, CreateClass.class);
-                startActivity(changeActivities);
-                break;
-
-            case "Settings":
-                changeActivities = new Intent(this, Settings.class);
-                startActivity(changeActivities);
-                break;
-
-            case "Main":
-                changeActivities = new Intent(this, Main.class);
-                startActivity(changeActivities);
-                break;
-        }
-    }
-
     @Override
     public void onBackPressed() {
         finish();
-        switchActivities("Main");
+        Main.switchActivities(this, "Main", 69);
     }
 }

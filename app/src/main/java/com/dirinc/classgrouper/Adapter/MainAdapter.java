@@ -48,8 +48,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private Context context;
     private AppCompatActivity activity;
 
-    private int lastPosition = -1;
-
     /** Roster Activity **/
     public MainAdapter(ArrayList<ClassInfo> classData, int nClass, Context context) {
         super();
@@ -157,7 +155,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                     public void onClick(View v) {
                         studentData.remove(position);
                         classData.get(position - 1).removeStudent(position);
-                        rippleDelete(position);
+                        rippleDelete();
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position, studentData.size());
                     }
@@ -188,13 +186,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                         }
                     }, 20); //Hold up 20ms to finish drawing
                 }
-            } else {
-                //studentData.remove(position);
             }
         }
     }
 
-    public void rippleDelete(int position) {
+    public void rippleDelete() {
         HashMap<Integer, Student> newMap = new HashMap<>();
 
         for (int i = 0; i <= studentData.size(); i++) {
@@ -340,6 +336,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             for (String s : name.split(" ")) {
                 initials += s.charAt(0);
             }
+
             return initials;
         } else {
             return null;
@@ -421,21 +418,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         }
         */
     }
-
-    /*
-    private void setAnimation(View viewToAnimate, int position) {
-        viewToAnimate.animate().cancel();
-        viewToAnimate.setTranslationY(100);
-        viewToAnimate.setAlpha(0);
-        viewToAnimate.animate().alpha(1.0f).translationY(0).setDuration(75).setStartDelay(position * 100);
-
-        if (position > lastPosition) {
-            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
-            viewToAnimate.startAnimation(animation);
-            lastPosition = position;
-        }
-    }
-    */
 
     class ViewHolder extends RecyclerView.ViewHolder {
         public CardView studentCard;

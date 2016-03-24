@@ -5,11 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,11 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.OvershootInterpolator;
 
-import com.afollestad.appthemeengine.ATEActivity;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dirinc.classgrouper.Adapter.*;
 import com.dirinc.classgrouper.Info.*;
@@ -32,18 +26,12 @@ import com.github.clans.fab.FloatingActionMenu;
 import java.util.*;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 public class ClassRoster extends AppCompatActivity {
-    private int classNumber;
     private boolean menuIsOpened = false;
 
-    private HashMap<Integer, String> thisClass = new HashMap<>();
-    public RecyclerView mRecyclerView;
-    public RecyclerView.LayoutManager mLayoutManager;
+    private int classNumber;
+    private RecyclerView.Adapter mainAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,31 +57,14 @@ public class ClassRoster extends AppCompatActivity {
 
         final FloatingActionMenu fam = initFam(dialoger);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.roster_recycler);
-        mLayoutManager = new GridLayoutManager(this, 2);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        final RecyclerView.Adapter mAdapter = new MainAdapter(loadClasses(), classNumber, this);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dX, int dY) {
-                super.onScrolled(recyclerView, dX, dY);
-                if (dY > 0 && fam.isShown()) {
-                    fam.startAnimation(AnimationUtils.loadAnimation(ClassRoster.this, R.anim.fab_scale_down));
-                    fam.setVisibility(View.GONE);
-                } else if (dY < 0 && !fam.isShown()) {
-                    fam.setVisibility(View.VISIBLE);
-                    fam.startAnimation(AnimationUtils.loadAnimation(ClassRoster.this, R.anim.fab_scale_up));
-                }
-            }
-        });
+        reduceReuseRecycle(fam);
 
         final View view = dialoger.getCustomView();
 
         if (view != null) {
             final MaterialNumberPicker numberPicker =
                     (MaterialNumberPicker) view.findViewById(R.id.number_picker);
-            numberPicker.setMaxValue(mAdapter.getItemCount() - 1);
+            numberPicker.setMaxValue(mainAdapter.getItemCount() - 1);
         }
     }
 
@@ -102,7 +73,7 @@ public class ClassRoster extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
-                switchActivities("Main");
+                Main.switchActivities(this, Main.aMain, 69);
                 return true;
 
             default:
@@ -129,6 +100,30 @@ public class ClassRoster extends AppCompatActivity {
         });
 
         return fam;
+    }
+
+    public void reduceReuseRecycle(final FloatingActionMenu fam) {
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.roster_recycler);
+        RecyclerView.LayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        mainAdapter = new MainAdapter(loadClasses(), classNumber, this);
+
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(gridLayoutManager);
+            recyclerView.setAdapter(mainAdapter);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dX, int dY) {
+                    super.onScrolled(recyclerView, dX, dY);
+                    if (dY > 0 && fam.isShown()) {
+                        fam.startAnimation(AnimationUtils.loadAnimation(ClassRoster.this, R.anim.fab_scale_down));
+                        fam.setVisibility(View.GONE);
+                    } else if (dY < 0 && !fam.isShown()) {
+                        fam.setVisibility(View.VISIBLE);
+                        fam.startAnimation(AnimationUtils.loadAnimation(ClassRoster.this, R.anim.fab_scale_up));
+                    }
+                }
+            });
+        }
     }
 
     public void handleFam(final FloatingActionMenu fam) {
@@ -171,17 +166,5 @@ public class ClassRoster extends AppCompatActivity {
         Intent changeActivities = new Intent(this, Main.class);
         Log.d("ActivitySwitch", "Switching to Main Activity");
         startActivity(changeActivities);
-    }
-
-    public void switchActivities(String newActivity) {
-        Intent changeActivities;
-
-        switch (newActivity) {
-            case "Main":
-                changeActivities = new Intent(this, Main.class);
-                Log.d("ActivitySwitch", "Switching to Main Activity");
-                startActivity(changeActivities);
-                break;
-        }
     }
 }

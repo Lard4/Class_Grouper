@@ -1,12 +1,9 @@
 package com.dirinc.classgrouper.Activity;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
@@ -23,8 +20,6 @@ public class Settings extends AppCompatActivity implements CompoundButton.OnChec
 
     private Switch highContrast;
     private Switch fullNames;
-
-    private NavigationDrawer drawer;
 
     private static final String SHARED_PREFS = "shared_preferences";
     public static final String HCT = "high_contrast_text_enabled";
@@ -73,8 +68,6 @@ public class Settings extends AppCompatActivity implements CompoundButton.OnChec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        //TODO: Get navigation drawer
-
         this.overridePendingTransition(
                 android.R.anim.slide_in_left,
                 android.R.anim.slide_out_right);
@@ -83,9 +76,6 @@ public class Settings extends AppCompatActivity implements CompoundButton.OnChec
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        ActionBar actionBar = getSupportActionBar();
-        setActionBar(actionBar);
 
         highContrast = (Switch) findViewById(R.id.settings_high_contrast_text_switch);
         highContrast.setOnCheckedChangeListener(this);
@@ -100,8 +90,9 @@ public class Settings extends AppCompatActivity implements CompoundButton.OnChec
         setSwitch(fullNames, 3, FN);
 
         Main main = new Main();
-        drawer = main.getDrawer(this, toolbar);
+        NavigationDrawer drawer = main.getDrawer(this, toolbar);
         //drawer.removeHamburgerAnimation();
+        //TODO: Sync drawer
     }
 
     public void setSwitch(Switch mSwitch, int key, String name) {
@@ -124,29 +115,10 @@ public class Settings extends AppCompatActivity implements CompoundButton.OnChec
         mSwitch.setChecked(checked);
     }
 
-    public void setActionBar(ActionBar actionBar) {
-        if (actionBar != null) {
-            // Show the back button in the action bar.
-            //actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    public void switchActivities(String newActivity) {
-        Intent changeActivities;
-
-        switch (newActivity) {
-            case "Main":
-                changeActivities = new Intent(this, Main.class);
-                Log.d("ActivitySwitch", "Switching to Main Activity");
-                startActivity(changeActivities);
-                break;
-        }
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-        switchActivities("Main");
+        Main.switchActivities(this, "Main", 69);
     }
 }

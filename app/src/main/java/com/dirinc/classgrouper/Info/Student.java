@@ -6,10 +6,12 @@ public class Student {
     private int color;
     private boolean isAbsent;
 
-    /*
+    /**
+     *
      * Set methods shall return 'this' because
      * #MethodChaining is more fun.
-     */
+     *
+     **/
 
     public String getInitials() {
         return initials;

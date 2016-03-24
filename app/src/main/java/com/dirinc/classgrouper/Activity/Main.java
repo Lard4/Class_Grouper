@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.animation.AnimationUtils;
 
 import com.dirinc.classgrouper.Adapter.*;
-import com.dirinc.classgrouper.Fragment.*;
 import com.dirinc.classgrouper.Info.*;
 import com.dirinc.classgrouper.R;
 import com.dirinc.classgrouper.Util.NavigationDrawer;
@@ -30,13 +29,15 @@ import java.util.Random;
 
 public class Main extends AppCompatActivity {
 
-    public static NavigationDrawerFragment navigationDrawerFragment;
-
     private Toolbar toolbar;
     private FloatingActionButton fab;
     private NavigationDrawer navigationDrawer;
-
     private View view;
+
+    public static final String aCreateClass = "CreateClass";
+    public static final String aClassRoster = "ClassRoster";
+    public static final String aSettings = "Settings";
+    public static final String aMain = "Main";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,25 +102,27 @@ public class Main extends AppCompatActivity {
     }
 
     public void createCards() {
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.class_recycler);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
-        assert mRecyclerView != null;
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        RecyclerView.Adapter mAdapter = new MainAdapter(getClassData(this),
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.class_recycler);
+        RecyclerView.LayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.Adapter mainAdapter = new MainAdapter(getClassData(this),
                 findViewById(R.id.main_layout), this, navigationDrawer, this);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dX, int dY) {
-                if (dY > 0 && fab.isShown()) {
-                    fab.startAnimation(AnimationUtils.loadAnimation(Main.this, R.anim.fab_scale_down));
-                    fab.setVisibility(View.GONE);
-                } else if (dY < 0 && !fab.isShown()) {
-                    fab.setVisibility(View.VISIBLE);
-                    fab.startAnimation(AnimationUtils.loadAnimation(Main.this, R.anim.fab_scale_up));
+
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(gridLayoutManager);
+            recyclerView.setAdapter(mainAdapter);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dX, int dY) {
+                    if (dY > 0 && fab.isShown()) {
+                        fab.startAnimation(AnimationUtils.loadAnimation(Main.this, R.anim.fab_scale_down));
+                        fab.setVisibility(View.GONE);
+                    } else if (dY < 0 && !fab.isShown()) {
+                        fab.setVisibility(View.VISIBLE);
+                        fab.startAnimation(AnimationUtils.loadAnimation(Main.this, R.anim.fab_scale_up));
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public ArrayList<ClassInfo> getClassData(Context context) {
@@ -177,9 +180,7 @@ public class Main extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
+        if (item.getItemId() == R.id.action_settings) {
             switchActivities(this, "Settings", 0);
             return true;
         }
@@ -190,6 +191,12 @@ public class Main extends AppCompatActivity {
         Intent changeActivities;
 
         switch (newActivity) {
+            case "Main":
+                changeActivities = new Intent(activity, Main.class);
+                Log.d("ActivitySwitch", "Switching to Main Activity");
+                activity.startActivity(changeActivities);
+                break;
+
             case "CreateClass":
                 changeActivities = new Intent(activity, CreateClass.class);
                 Log.d("ActivitySwitch", "Switching to CreateClass Activity");

@@ -2,8 +2,6 @@ package com.dirinc.classgrouper.Info;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
 import com.dirinc.classgrouper.Activity.Main;
@@ -25,14 +23,6 @@ public class ClassInfo {
         this.nClass = nClass;
         this.context = context;
         sharedPreferences = context.getSharedPreferences("class" + nClass, 0);
-        /*
-        @SuppressWarnings("unchecked")
-        // Dont panic, <String, Integer> is only temporary...
-        HashMap<String, Integer> map = (HashMap<String, Integer>) sharedPreferences.getAll();
-        for (String s : map.keySet()) {
-            String value = String.valueOf(map.get(s));
-            thisClass.put(Integer.parseInt(s), value);
-        } */
     }
 
     public HashMap<Integer, String> getMap() {

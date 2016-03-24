@@ -1,7 +1,6 @@
 package com.dirinc.classgrouper.Activity;
 
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.animation.Animation;
@@ -19,7 +18,7 @@ public class SplashScreen extends AppCompatActivity {
 
         ImageView icon = (ImageView) findViewById(R.id.splash_icon);
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.splashscreen);
-        icon.setAnimation(animation);
+        if (icon != null) icon.setAnimation(animation);
 
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
