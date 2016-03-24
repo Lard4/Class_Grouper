@@ -5,8 +5,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -74,10 +77,13 @@ public class ClassRoster extends AppCompatActivity {
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dX, int dY) {
-                if (dY > 0 && fam.isShown())
+                super.onScrolled(recyclerView, dX, dY);
+
+                if (dY > 0 && fam.isShown()) {
                     fam.hideMenu(true);
-                else if (dY < 0 && !fam.isShown())
+                } else if (dY < 0 && !fam.isShown()) {
                     fam.showMenu(true);
+                }
             }
         });
 
@@ -177,5 +183,4 @@ public class ClassRoster extends AppCompatActivity {
                 break;
         }
     }
-
 }

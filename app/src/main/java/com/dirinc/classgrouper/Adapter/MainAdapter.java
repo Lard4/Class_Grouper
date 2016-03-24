@@ -150,42 +150,45 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         } else {
             Student student = studentData.get(position);
 
-            viewHolder.studentCardColor.setBackgroundColor(student.getColor());
-            setStudentName(viewHolder.studentCardInitials, student);
-            viewHolder.studentCardDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //TODO: Actually work.
-                    studentData.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, studentData.size());
-                }
-            });
-            viewHolder.studentCardAbsent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //May someday break something... Oh whale.
-                    generateGroups(2);
-                    CardView card = (CardView) v.getParent().getParent();
-
-                    if (card.getAlpha() != .2f) {
-                        makeAbsent(true, position, viewHolder);
-                    } else {
-                        makeAbsent(false, position, viewHolder);
-                    }
-                }
-            });
-            if (studentData.get(position).getAbsent()) {
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+            if (true/*student != null*/) {
+                viewHolder.studentCardColor.setBackgroundColor(student.getColor());
+                setStudentName(viewHolder.studentCardInitials, student);
+                viewHolder.studentCardDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void run() {
-                        makeAbsent(true, position, viewHolder);
-
-                        handler.postDelayed(this, 20);
-                        handler.removeCallbacks(this);
+                    public void onClick(View v) {
+                        //TODO: Actually work.
+                        studentData.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, studentData.size());
+                        notifyDataSetChanged();
                     }
-                }, 20); //Hold up 20ms to finish drawing
+                });
+                viewHolder.studentCardAbsent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //May someday break something... Oh whale.
+                        //generateGroups(2);
+                        CardView card = (CardView) v.getParent().getParent();
+
+                        if (card.getAlpha() != .2f) {
+                            makeAbsent(true, position, viewHolder);
+                        } else {
+                            makeAbsent(false, position, viewHolder);
+                        }
+                    }
+                });
+                if (studentData.get(position).getAbsent()) {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            makeAbsent(true, position, viewHolder);
+
+                            handler.postDelayed(this, 20);
+                            handler.removeCallbacks(this);
+                        }
+                    }, 20); //Hold up 20ms to finish drawing
+                }
             }
         }
     }

@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.afollestad.appthemeengine.ATEActivity;
 import com.dirinc.classgrouper.Adapter.*;
@@ -115,10 +117,13 @@ public class Main extends AppCompatActivity {
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dX, int dY) {
-                if (dY > 0 && fab.isShown())
-                    fab.hide();
-                else if (dY < 0 && !fab.isShown())
-                    fab.show();
+                if (dY > 0 && fab.isShown()) {
+                    fab.startAnimation(AnimationUtils.loadAnimation(Main.this, R.anim.fab_scale_down));
+                    fab.setVisibility(View.GONE);
+                } else if (dY < 0 && !fab.isShown()) {
+                    fab.setVisibility(View.VISIBLE);
+                    fab.startAnimation(AnimationUtils.loadAnimation(Main.this, R.anim.fab_scale_up));
+                }
             }
         });
     }
