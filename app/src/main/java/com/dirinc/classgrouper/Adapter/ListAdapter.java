@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.dirinc.classgrouper.Info.Student;
@@ -50,7 +51,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.student_text, parent, false);
 
-        return new ViewHolder(view, new EditTextListener());
+        return new ViewHolder(view, new EditTextListener(view));
     }
 
     @Override
@@ -140,6 +141,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     private class EditTextListener implements TextWatcher {
         private int position;
+        private EditText editText;
+
+        public EditTextListener(View view) {
+            this.editText = (EditText) view.findViewById(R.id.student_name);
+        }
 
         public void updatePosition(int position) {
             this.position = position;
@@ -157,17 +163,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             }
             updatePrefs();
 
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.create_class_recycler);
-                    if (recyclerView != null) recyclerView.smoothScrollToPosition(getItemCount() + 1);
-
-                    handler.postDelayed(this, 100);
-                    handler.removeCallbacks(this);
-                }
-            }, 100);
+            ScrollView scrollView = (ScrollView) activity.findViewById(R.id.scrollview);
+            if (scrollView != null) {
+                scrollView.setFocusable(false);
+                scrollView.fullScroll(View.FOCUS_DOWN);
+                editText.requestFocus();
+            }
         }
 
         @Override

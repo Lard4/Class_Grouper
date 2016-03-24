@@ -18,8 +18,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -28,6 +26,7 @@ import android.widget.TextView;
 import com.dirinc.classgrouper.Activity.*;
 import com.dirinc.classgrouper.Info.*;
 import com.dirinc.classgrouper.R;
+import com.dirinc.classgrouper.Util.NavigationDrawer;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
@@ -150,17 +149,17 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         } else {
             Student student = studentData.get(position);
 
-            if (true/*student != null*/) {
+            if (student != null) {
                 viewHolder.studentCardColor.setBackgroundColor(student.getColor());
                 setStudentName(viewHolder.studentCardInitials, student);
                 viewHolder.studentCardDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TODO: Actually work.
                         studentData.remove(position);
+                        classData.get(position - 1).removeStudent(position);
+                        rippleDelete(position);
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position, studentData.size());
-                        notifyDataSetChanged();
                     }
                 });
                 viewHolder.studentCardAbsent.setOnClickListener(new View.OnClickListener() {
@@ -189,8 +188,21 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                         }
                     }, 20); //Hold up 20ms to finish drawing
                 }
+            } else {
+                //studentData.remove(position);
             }
         }
+    }
+
+    public void rippleDelete(int position) {
+        HashMap<Integer, Student> newMap = new HashMap<>();
+
+        for (int i = 0; i <= studentData.size(); i++) {
+            if (studentData.get(i) != null) {
+                newMap.put(newMap.size(), studentData.get(i));
+            }
+        }
+        studentData = newMap;
     }
 
     public void setStudentName(TextView name, Student student) {

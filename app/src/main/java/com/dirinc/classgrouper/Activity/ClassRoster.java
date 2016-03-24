@@ -78,11 +78,12 @@ public class ClassRoster extends AppCompatActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dX, int dY) {
                 super.onScrolled(recyclerView, dX, dY);
-
                 if (dY > 0 && fam.isShown()) {
-                    fam.hideMenu(true);
+                    fam.startAnimation(AnimationUtils.loadAnimation(ClassRoster.this, R.anim.fab_scale_down));
+                    fam.setVisibility(View.GONE);
                 } else if (dY < 0 && !fam.isShown()) {
-                    fam.showMenu(true);
+                    fam.setVisibility(View.VISIBLE);
+                    fam.startAnimation(AnimationUtils.loadAnimation(ClassRoster.this, R.anim.fab_scale_up));
                 }
             }
         });

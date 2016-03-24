@@ -1,15 +1,12 @@
 package com.dirinc.classgrouper.Activity;
 
-import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,17 +15,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.afollestad.appthemeengine.ATEActivity;
 import com.dirinc.classgrouper.Adapter.*;
 import com.dirinc.classgrouper.Fragment.*;
 import com.dirinc.classgrouper.Info.*;
 import com.dirinc.classgrouper.R;
+import com.dirinc.classgrouper.Util.NavigationDrawer;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
